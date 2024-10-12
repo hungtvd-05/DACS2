@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <section>
+        <div class="container-fluid bg-primary p-5 mt-5">
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <form action="search" method="get">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="ch" th:value="${searchCh}" placeholder="Tìm kiếm sản phẩm">
+                            <button class="btn btn-light text-dark ms-3 col-md-2" ><i class="fa-solid fa-magnifying-glass"></i>Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid content1">
+            <div class="row">
+                <div class="col-md-2 mb-5">
+                    <div class="card card-sh">
+                        <div class="card-header text-center">
+                            <h4>Danh mục</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="list-group">
+                                <a href="/san-pham"
+                                   th:classappend="${paramValue == ''} ? 'active':''"
+                                   class="list-group-item list-group-item-action"
+                                   aria-current="true"> Tất cả </a>
+                                <a th:each="c:${categories}"
+                                   th:href="@{'/san-pham?danh-muc='+${c.name}}"
+                                   th:classappend="${paramValue == c.name} ? 'active':''"
+                                   class="list-group-item list-group-item-action">[[${c.name}]]</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-10">
+                    <div class="card card-sh">
+                        <div class="card-header text-center">
+                            <h4>Sản phẩm</h4>
+                        </div>
+                        <div class="card-body">
+                            <div th:if="${search == true && searchResult == false}" class="text-center">
+                                Không có sản phẩm nào có tên như vậy!
+                            </div>
+                            <div th:if="${search == false || (search == true && searchResult == true)}">
+                                <div th:if="${products.size() == 0}" class="text-center">Không có sản phẩm nào ở đây!</div>
+                                <div class="row">
+                                    <th:block th:if="${products.size() > 0}">
+                                        <div th:each="product:${products}" class="col-3">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <img src="/img/product_img/laptop.jpg" height="150px" style="display: block; margin: 0 auto">
+                                                    <p class="fs-5 text-center">[[${product.ten}]]</p>
+                                                    <div class="text-center">
+                                                        <p class="fs-6 fw-bold">
+                                                            <span th:utext="${product.getGiaSaleFormatted()}"></span> <span th:if="${product.sale > 0}" class="fs-6 sale-card">-[[${product.sale}]]%</span>
+                                                        </p>
+                                                    </div>
+                                                    <a th:href="@{'/san-pham/san-pham-id=' + ${product.id}}" class="btn btn-primary col-6 offset-3">Xem chi tiết</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </th:block>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav aria-label="Page navigation example" class="d-flex justify-content-center" th:if="${search == false && products.size() > 0}">
+            <ul class="pagination">
+                <li class="page-item" th:unless="${isFirst}">
+                    <a class="page-link" th:if="${paramValue == ''}" th:href="@{'/san-pham?trang=' + ${trang}}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                    <a class="page-link" th:unless="${paramValue == ''}" th:href="@{'/san-pham?danh-muc=' + ${paramValue} + '&trang=' + ${trang}}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li th:each="i:${#numbers.sequence(1, totalPages)}" class="page-item" th:classappend="${trang + 1 == i ? 'active':''}">
+                    <a class="page-link" th:unless="${paramValue == ''}" th:href="@{'/san-pham?danh-muc=' + ${paramValue} + '&' + 'trang=' + ${i}}">[[${i}]]</a>
+                    <a class="page-link" th:if="${paramValue == ''}" th:href="@{'/san-pham?trang=' + ${i}}">[[${i}]]</a>
+                </li>
+                <li class="page-item" th:unless="${isLast}">
+                    <a class="page-link" aria-label="Next" th:if="${paramValue == ''}" th:href="@{'/san-pham?trang=' + ${trang + 2}}">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                    <a class="page-link" aria-label="Next" th:unless="${paramValue == ''}" th:href="@{'/san-pham?danh-muc=' + ${paramValue} + '&trang=' + ${trang + 2}}">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <nav aria-label="Page navigation example" class="d-flex justify-content-center" th:if="${search == true && searchResult == true && products.size() > 0}">
+            <ul class="pagination">
+                <li class="page-item" th:unless="${isFirst}">
+                    <a class="page-link" th:href="@{'/search?ch=' + ${searchCh} + '&trang=' + ${trang}}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li th:each="i:${#numbers.sequence(1, totalPages)}" class="page-item" th:classappend="${trang + 1 == i ? 'active':''}">
+                    <a class="page-link" th:href="@{'/search?ch=' + ${searchCh} + '&' + 'trang=' + ${i}}">[[${i}]]</a>
+                </li>
+                <li class="page-item" th:unless="${isLast}">
+                    <a class="page-link" aria-label="Next" th:href="@{'/search?ch=' + ${searchCh} + '&trang=' + ${trang + 2}}">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </section>
+</body>
+</html>

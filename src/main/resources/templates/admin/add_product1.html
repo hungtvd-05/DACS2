@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base::layout(~{::section})}">>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <script type="text/javascript" th:src="@{/js/tinymce/tinymce.min.js}"></script>
+</head>
+<body>
+  <section>
+    <div class="container mt-5 p-5">
+      <div class="">
+        <div class="card card-sh">
+          <div class="card-header text-center">
+            <p class="fs-4">Thêm sản phẩm</p>
+            <th:block th:if="${session.succMsg}">
+              <p class="text-success fw-bold">[[${session.succMsg}]]</p>
+              <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+            </th:block>
+
+            <th:block th:if="${session.errorMsg}">
+              <p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+              <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+            </th:block>
+          </div>
+          <div class="card-body">
+            <form action="/admin/luu-san-pham" method="post" enctype="multipart/form-data">
+              <div class="mb-3">
+                <label for="ten">Nhập tên sản phẩm</label>
+                <textarea id="ten" name="ten" class="form-control"></textarea>
+              </div>
+
+              <div class="mb-3">
+                <label for="danhmuc">Chọn danh mục</label>
+                <select id="danhmuc" class="form-control" name="danhmuc">
+                  <option th:each="c:${categories}">[[${c.name}]]</option>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label for="gia">Nhập giá sản phẩm</label>
+                <input id="gia" name="gia" class="form-control" type="number" min="0">
+              </div>
+
+              <div class="row">
+                <div class="mb-3 col">
+                  <label for="soluong">Nhập số lượng</label>
+                  <input id="soluong" name="soluong" class="form-control" type="number" min="1">
+                </div>
+                <div class="mb-3 col">
+                  <label for="file1">Upload hình ảnh</label>
+                  <input id="file1" name="file1" class="form-control" type="file" accept="image/*" multiple>
+                </div>
+              </div>
+
+              <div id="imagePreview" class="mt-2"></div>
+
+<!--              xử lí ảnh để preview sau khi input-->
+              <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                  const imageInput = document.getElementById('file');
+                  const imagePreview = document.getElementById('imagePreview');
+
+                  imageInput.addEventListener('change', function(event) {
+                    imagePreview.innerHTML = ''; // Clear previous previews
+                    const files = event.target.files;
+
+                    for (let i = 0; i < files.length; i++) {
+                      const file = files[i];
+                      if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+
+                        reader.onload = function(e) {
+                          const img = document.createElement('img');
+                          img.src = e.target.result;
+                          img.style.maxWidth = '200px';
+                          img.style.maxHeight = '200px';
+                          img.style.marginRight = '10px';
+                          img.style.marginBottom = '10px';
+                          imagePreview.appendChild(img);
+                        }
+
+                        reader.readAsDataURL(file);
+                      }
+                    }
+                  });
+                });
+              </script>
+
+              <div class="mb-3">
+                <label for="mota">Nhập mô tả sản phẩm</label>
+                <textarea id="mota" name="mota" class="form-control">
+                </textarea>
+
+              </div>
+
+              <div class="row">
+                <div class="col-8">
+                  <button class="btn btn-primary w-100">Thêm</button>
+                </div>
+                <div class="col-4">
+                  <a href="/admin" class="btn btn-success w-100">Quay lại</a>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!--    script cho textarea-->
+    <script th:src="@{/js/tinymce/tinymce.min.js}"></script>
+
+    <script th:inline="javascript">
+      document.addEventListener('DOMContentLoaded', function() {
+        tinymce.init({
+          selector: 'textarea#ten',
+          // width: 1000,
+          height: 200,
+          plugins: [
+            'advlist', 'autolink', 'link', 'lists', 'charmap', 'preview',
+            'visualblocks', 'code',
+            'emoticons', 'template',
+            'fullscreen', 'insertdatetime', 'paste'
+          ],
+          toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify |' +
+                  'bullist numlist outdent indent | preview fullscreen forecolor backcolor emoticons',
+          menu: {
+            favs: {title: 'menu', items: 'code visualaid | searchreplace | emoticons'}
+          },
+          menubar: 'view insert format',
+          content_style: 'body{font-family:Helvetica, Arial, sans-serif; font-size:16px}',
+          fontsize_formats: '8pt 10pt 12pt 14pt 18pt 24pt 36pt',
+        });
+      });
+    </script>
+
+    <script th:inline="javascript">
+      tinymce.init({
+        selector: "textarea#mota",
+        plugins: "code",
+        toolbar: "undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link code image_upload",
+        menubar: false,
+        statusbar: false,
+        content_style: ".mce-content-body {font-size:15px;font-family:Arial,sans-serif;}",
+        height: 400,
+        setup: function(ed) {
+          var fileInput = $('<input id="tinymce-uploader" type="file" name="pic" accept="image/*" style="display:none">');
+          $(ed.getElement()).parent().append(fileInput);
+
+          fileInput.on("change", function(){
+            var file = this.files[0];
+            var formData = new FormData();
+            formData.append("file", file);
+
+            $.ajax({
+              url: "/tinymce_upload",
+              type: "POST",
+              data: formData,
+              contentType: false,
+              processData: false,
+              beforeSend: function() {
+                // Có thể thêm loading indicator ở đây
+              },
+              success: function(response){
+                if(response) {
+                  ed.insertContent('<img src="/upload/'+response+'"/>');
+                }
+              },
+              error: function(xhr, status, error) {
+                console.error('Upload failed:', error);
+                // Có thể thêm thông báo lỗi cho người dùng
+              },
+              complete: function() {
+                // Xóa loading indicator nếu có
+                fileInput.val(''); // Reset file input
+              }
+            });
+          });
+
+          ed.addButton('image_upload', {
+            tooltip: 'Upload Image',
+            icon: 'image',
+            onclick: function () {
+              fileInput.trigger('click');
+            }
+          });
+        }
+      });
+    </script>
+<!--    end script-->
+  </section>
+</body>
+</html>

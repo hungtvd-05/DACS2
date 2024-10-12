@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base::layout(~{::section})}">>
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+</head>
+<body>
+<section>
+  <link rel="stylesheet" th:href="@{/css/view_product.css}">
+
+  <div class="container-fluid mt-5 content1">
+    <div class="card card-sh">
+      <div class="card-body">
+        <div class="row">
+          <th:block th:if="${session.succMsg}">
+            <p class="text-success alert alert-success text-center" role="alert">[[${session.succMsg}]]</p>
+            <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+          </th:block>
+
+          <th:block th:if="${session.errorMsg}">
+            <p class="text-danger text-center  alert alert-danger">[[${session.errorMsg}]]</p>
+            <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+
+          </th:block>
+          <div class="col-md-3 mb-5">
+
+          </div>
+          <div class="col-md-3 mb-5">
+            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-inner">
+                <div th:each="image, iterStat : ${product.getArrayAnh()}"
+                     th:class="'carousel-item ' + (${iterStat.first} ? 'active' : '')">
+                  <img th:src="@{'/img/product_img/' + ${image}}" class="d-block w-100" alt="...">
+                </div>
+              </div>
+
+              <div class="indicators">
+                <div class="carousel-indicators row">
+                  <div th:each="image, iterStat : ${product.getArrayAnh()}"
+                       class="col-3 item">
+                    <a th:data-bs-target="'#carouselExampleIndicators'"
+                       th:data-bs-slide-to="${iterStat.index}"
+                       th:class="${iterStat.first} ? 'active' : ''"
+                       th:aria-current="${iterStat.first} ? 'true' : 'false'"
+                       th:aria-label="'Slide ' + ${iterStat.count}">
+                      <img th:src="@{'/img/product_img/' + ${image}}"
+                           class="d-block w-100"
+                           th:alt="'Slide ' + ${iterStat.count}">
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-5">
+            <p class="fs-3">[[${product.ten}]]</p>
+            <p>
+              <span class="fw-bold"> Thông tin sản phẩm: </span>
+              <br> Trạng thái:
+              <th:block th:if="${product.soluong>0}">
+                <span class="badge bg-success">Còn hàng</span>
+              </th:block>
+
+              <th:block th:unless="${product.soluong>0}">
+                <span class="badge bg-warning">Hết hàng</span>
+              </th:block>
+
+
+              <br> Danh mục: <a th:href="@{'/san-pham/danh-muc-id=' + ${category.id}}"
+                                class="text-black text-decoration-none">[[${category.name}]]</a>
+              <br> Chính sách: Đổi trả miễn phí trong 7 ngày
+            </p>
+
+            <p class="fs-5 fw-bold">
+              Giá: [[${product.getGiaSaleFormatted()}]]
+              <span th:if="${product.sale>0}" class="fs-6 text-decoration-line-through text-secondary">[[${product.getGiaFormatted()}]]</span>
+              <span th:if="${product.sale>0}" class="fs-6  text-success">[[${product.sale}]]% Sale</span>
+            </p>
+
+            <div class="row">
+              <div class="col-md-2 text-success text-center p-2">
+                <i class="fas fa-money-bill-wave fa-2x"></i>
+                <p>Thanh toán khi nhận hàng</p>
+              </div>
+              <div class="col-md-2 text-danger text-center p-2">
+                <i class="fas fa-undo-alt fa-2x"></i>
+                <p>Sẵn sàng đổi trả</p>
+              </div>
+              <div class="col-md-2 text-primary text-center p-2">
+                <i class="fas fa-truck-moving fa-2x"></i>
+                <p>Miễn phí vận chuyển</p>
+              </div>
+            </div>
+
+            <th:block th:if="${product.soluong > 0}">
+              <th:block th:if="${user==null}">
+                <a href="/dang-nhap" class="btn btn-danger col-md-12 form-control">Thêm vào giỏ hàng</a>
+              </th:block>
+
+              <th:block th:unless="${user==null}">
+                <a th:href="@{'/user/addCart?pid='+${product.id}+'&uid='+${user.id}}" class="btn btn-danger col-md-12 form-control">Thêm vào giỏ hàng</a>
+              </th:block>
+            </th:block>
+
+            <th:block th:unless="${product.soluong > 0}">
+              <a th:href="" class="btn text-white btn-warning col-md-12">Sản phẩm tạm hết hàng</a>
+            </th:block>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+</body>
+</html>

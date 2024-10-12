@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base::layout(~{::section})}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="Description" content="Enter your description here"/>
+
+  <title>Title</title>
+</head>
+<body>
+<section>
+  <div class="container-fluid mt-5 p-5 bg-light">
+    <div class="row">
+      <div class="col-md-10 offset-md-1 ">
+
+        <p class="fs-3 text-center">My Profile</p>
+        <th:block th:if="${session.succMsg}">
+          <p class="text-success fw-bold  text-center">[[${session.succMsg}]]</p>
+          <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+        </th:block>
+
+        <th:block th:if="${session.errorMsg}">
+          <p class="text-danger fw-bold  text-center">[[${session.errorMsg}]]</p>
+          <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+        </th:block>
+        <hr>
+        <div class="text-center">
+          <img alt="" th:src="@{'/img/profile_img/'+${user.profileImage}}"
+               class="border p-2"
+               style="width: 110px; height: 110px; border-radius: 50%;">
+        </div>
+        <div class="col-md-8 offset-md-2 mt-4">
+          <form action="/user/update-profile" method="post" enctype="multipart/form-data">
+            <table class="table table-borderless">
+
+              <tbody>
+
+                <tr>
+                  <th scope="row">Tên</th>
+                  <td>:</td>
+                  <td>
+                    <input type="text" name="name" class="form-control" th:value="${user.name}">
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Số điện thoại</th>
+                  <td>:</td>
+                  <td>
+                    <input type="tel" name="mobileNumber" class="form-control" th:value="${user.mobileNumber}">
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Email</th>
+                  <td>:</td>
+                  <td><input type="text" name="" class="form-control"
+                             readonly th:value="${user.email}"></td>
+                </tr>
+
+                <tr>
+                  <th scope="row">Số nhà/đường</th>
+                  <td>:</td>
+                  <td><input type="text" name="address" class="form-control"
+                             th:value="${user.address}"></td>
+                </tr>
+                <tr>
+                  <th scope="row">Tỉnh/Thành phố</th>
+                  <td>:</td>
+                  <td>
+                    <select class="form-select m-0" id="city" aria-label=".form-select-sm" name="city">
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Quận/Huyện</th>
+                  <td>:</td>
+                  <td>
+                    <select class="form-select m-0" id="district" aria-label=".form-select-sm" name="prefecture">
+                      <option selected>Chọn quận huyện</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Xã/Phường</th>
+                  <td>:</td>
+                  <td>
+                    <select class="form-select m-0" id="ward" aria-label=".form-select-sm" name="ward">
+                      <option selected>Chọn phường xã</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Ảnh cá nhân</th>
+                  <td>:</td>
+                  <td><input type="file" name="img" class="form-control"
+                             value=""></td>
+                </tr>
+                <tr>
+                  <th scope="row">Role</th>
+                  <td>:</td>
+                  <td><input type="text" name="" class="form-control"
+                             readonly th:value="${user.role}"></td>
+                </tr>
+                <tr>
+                  <th scope="row">Account Status</th>
+                  <td>:</td>
+                  <td><input type="text" name="" class="form-control"
+                             readonly th:value="${user.isEnable}"> <input
+                          type="hidden" th:value="${user.id}" name="id"></td>
+                </tr>
+
+              </tbody>
+            </table>
+            <div class="text-center mb-4">
+              <button class="btn btn-sm bg-primary text-light">Cập nhật</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+      <hr>
+      <div class="col-md-10 offset-md-1 mt-1">
+        <p class="text-center fs-3">Thay đổi mật khẩu</p>
+        <div class="col-md-6 offset-md-3">
+          <form action="/user/change-password" method="post">
+            <table class="table table-borderless">
+
+              <tbody>
+
+              <tr>
+                <th scope="row">Mật khẩu hiện tại</th>
+
+                <td><input type="password" id="currentPassword" name="currentPassword" class="form-control" placeholder="Nhập mật khẩu hiện tại"></td>
+              </tr>
+
+              <tr>
+                <th scope="row">Mật khẩu mới</th>
+                <td>
+                  <input type="password" id="newPassword" name="newPassword" class="form-control mb-3" placeholder="Nhập mật khẩu mới" oninput="validatePassword(this.value)" required>
+                  <div class="form-group">
+                    <ul>
+                      <li id="minLength">
+                        <i class="fas fa-times text-danger"></i> Tối thiểu 8 kí tự
+                      </li>
+                      <li id="uppercase">
+                        <i class="fas fa-times text-danger"></i> Có ít nhất 1 kí tự viết hoa
+                      </li>
+                      <li id="lowercase">
+                        <i class="fas fa-times text-danger"></i> Có ít nhất 1 kí tự viết thường
+                      </li>
+                      <li id="symbol">
+                        <i class="fas fa-times text-danger"></i>Có ít nhất 1 kí tự đặt biệt (@$!%*?&)
+                      </li>
+                    </ul>
+                  </div>
+                  <span id="errorMessage" class="font-weight-bold text-danger"></span>
+                </td>
+
+              </tr>
+
+              <tr>
+                <th scope="row">Xác nhận mật khẩu</th>
+
+                <td><input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Nhập lại mật khẩu"></td>
+              </tr>
+
+
+              </tbody>
+
+            </table>
+            <div class="text-center mb-4">
+              <button class="btn btn-sm bg-primary text-light" id="submit-button">Cập nhật</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <script>
+    var citis = document.getElementById("city");
+    var districts = document.getElementById("district");
+    var wards = document.getElementById("ward");
+    var Parameter = {
+      url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
+      method: "GET",
+      responseType: "application/json",
+    };
+    var promise = axios(Parameter);
+    promise.then(function (result) {
+      renderCity(result.data);
+    });
+
+    function renderCity(data) {
+      for (const x of data) {
+        const option = new Option(x.Name, x.Name);
+        if (x.Name === "[[${user.city}]]") {
+          option.selected = true;
+          const result = data.filter(n => n.Name === x.Name);
+
+          for (const k of result[0].Districts) {
+            const optionDistricts = new Option(k.Name, k.Name);
+            if (k.Name === "[[${user.prefecture}]]") {
+              optionDistricts.selected = true;
+
+              const dataWards = result[0].Districts.filter(j => j.Name === k.Name)[0].Wards;
+
+              for (const w of dataWards) {
+                const optionWards = new Option(w.Name, w.Name);
+                if (w.Name === "[[${user.ward}]]") {
+                  optionWards.selected = true;
+                }
+                wards.options[wards.options.length] = optionWards;
+              }
+            }
+            district.options[district.options.length] = optionDistricts;
+          }
+        }
+        citis.options[citis.options.length] = option;
+      }
+      citis.onchange = function () {
+        district.length = 1;
+        ward.length = 1;
+        if(this.value != ""){
+          const result = data.filter(n => n.Name === this.value);
+
+          for (const k of result[0].Districts) {
+            district.options[district.options.length] = new Option(k.Name, k.Name);
+          }
+        }
+      };
+      district.onchange = function () {
+        ward.length = 1;
+        const dataCity = data.filter((n) => n.Name === citis.value);
+        if (this.value != "") {
+          const dataWards = dataCity[0].Districts.filter(n => n.Name === this.value)[0].Wards;
+
+          for (const w of dataWards) {
+            wards.options[wards.options.length] = new Option(w.Name, w.Name);
+          }
+        }
+      };
+    }
+
+
+  </script>
+
+  <script>
+    // Function to toggle password visibility
+    document.getElementById('submit-button').addEventListener('click',
+            function () {
+              const passwordInput = document.getElementById('newPassword');
+              const icon = this.querySelector('i');
+
+              if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+              } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+              }
+            });
+
+    function validatePassword(password) {
+      const strongPasswordRegex =
+              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>\-_])[A-Za-z\d!@#$%^&*(),.?":{}|<>\-_]{8,}$/;
+      const errorMessage = document.getElementById('errorMessage');
+
+      // Check each condition and update the corresponding label
+      document.getElementById('minLength').innerHTML =
+              password.length >= 8 ?
+                      '<i class="fas fa-check text-success"></i> Tối thiểu 8 kí tự' :
+                      '<i class="fas fa-times text-danger"></i> Tối thiểu 8 kí tự';
+      document.getElementById('uppercase').innerHTML =
+              /[A-Z]/.test(password) ?
+                      '<i class="fas fa-check text-success"></i> Có ít nhất 1 kí tự viết hoa' :
+                      '<i class="fas fa-times text-danger"></i> Có ít nhất 1 kí tự viết hoa';
+      document.getElementById('lowercase').innerHTML =
+              /[a-z]/.test(password) ?
+                      '<i class="fas fa-check text-success"></i> Có ít nhất 1 kí tự viết thường' :
+                      '<i class="fas fa-times text-danger"></i> Có ít nhất 1 kí tự viết thường';
+      document.getElementById('symbol').innerHTML =
+              /[!@#$%^&*(),.?":{}|<>\-_]/.test(password) ?
+                      '<i class="fas fa-check text-success"></i> Có ít nhất 1 kí tự đặt biệt (@$!%*?&)' :
+                      '<i class="fas fa-times text-danger"></i> Có ít nhất 1 kí tự đặt biệt (@$!%*?&)';
+
+      // Check overall validity and update the error message
+      if (strongPasswordRegex.test(password)) {
+        errorMessage.textContent = 'Mật khẩu mạnh';
+        errorMessage.classList.remove('text-danger');
+        errorMessage.classList.add('text-success');
+        return true;
+      } else {
+        errorMessage.textContent = 'Mật khẩu yếu';
+        errorMessage.classList.remove('text-success');
+        errorMessage.classList.add('text-danger');
+        return false;
+      }
+    }
+    document.getElementById('submit-button').addEventListener('click', function(event) {
+      const currentPassword = document.getElementById('currentPassword').value;
+      const password = document.getElementById('newPassword').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      if (!validatePassword(password)) {
+        event.preventDefault();
+        alert('Mật khẩu của bạn không đủ mạnh. Vui lòng kiểm tra lại các yêu cầu.');
+      }
+
+      if (currentPassword === password && validatePassword(password)) {
+        event.preventDefault();
+        alert('Mật khẩu cũ và mật khẩu mới không được giống nhau. Vui lòng kiểm tra lại.');
+      }
+
+      if (password !== confirmPassword && validatePassword(password)) {
+        event.preventDefault();
+        alert('Mật khẩu và mật khẩu xác nhận không khớp. Vui lòng kiểm tra lại.');
+      }
+
+    });
+  </script>
+</section>
+
+</body>
+</html>

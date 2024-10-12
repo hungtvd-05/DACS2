@@ -1,0 +1,57 @@
+package com.dacs2.model;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.text.NumberFormat;
+import java.util.Locale;
+
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Entity
+public class Product {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(length = 500)
+    private String ten;
+
+    @Lob
+    @Column(columnDefinition = "TEXT")
+    private String mota;
+
+    private String danhmuc;
+
+    private Double gia;
+
+    private int soluong;
+
+    private String anh;
+
+    public String getGiaFormatted() {
+        return NumberFormat.getCurrencyInstance(new Locale("vi", "VN")).format(gia);
+    }
+
+    public String[] getArrayAnh() {
+        return anh.split(", ");
+    }
+
+    private Boolean trangthai;
+
+    private int sale;
+
+    private Double giasale;
+
+    public String getGiaSaleFormatted() {
+        return NumberFormat.getCurrencyInstance(new Locale("vi", "VN")).format(giasale);
+    }
+
+}

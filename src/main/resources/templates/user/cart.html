@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="Description" content="Enter your description here"/>
+
+    <title>Title</title>
+</head>
+<body>
+<section>
+    <h1>Login page</h1>
+    <div class="container-fluid mt-5 content1">
+        <div class="card card-sh">
+            <div class="card-header text-center">
+                <h4>Giỏ hàng</h4>
+                <th:block th:if="${session.succMsg}">
+                    <p class="text-success fw-bold">[[${session.succMsg}]]</p>
+                    <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+                </th:block>
+
+                <th:block th:if="${session.errorMsg}">
+                    <p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+                    <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+                </th:block>
+            </div>
+            <div class="card-body">
+                <div th:if="${carts.size() == 0}" class="text-center">Giỏ hàng rỗng!</div>
+                <div th:if="${carts.size() > 0}" class="text-center">
+                    <form id="cartForm" action="updateQuantities" method="post">
+                        <input type="hidden" id="id" name="id" th:value="${user.id}">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Tên</th>
+                                <th scope="col">Ảnh</th>
+                                <th scope="col">Giá</th>
+                                <th scope="col">Số lượng <input class="btn btn-primary btn-sm" type="submit" value="Cập nhật"></th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody class="danhsach">
+                            <tr th:each="cart, c:${carts}">
+                                <td data-label="Tên" th:utext="${cart.getProduct().getTen()}" class="fs-5 ten dulieu"></td>
+                                <td data-label="Ảnh" class="fs-5">
+                                    <img th:src="@{'/img/product_img/' + ${cart.getProduct().getArrayAnh()[0]}}" width="70px" height="70px">
+                                </td>
+                                <td data-label="Giá" th:utext="${cart.getProduct().getGiaSaleFormatted()}" class="fs-5 dulieu"></td>
+                                <td data-label="Số lượng" class="fs-5 dulieu text-center">
+                                    <input type="number" th:value="${cart.getQuantity()}" min="1" step="1">
+                                </td>
+                                <td>
+                                    <a th:href="@{'/user/deleteCart?id='+${cart.id}}" class="btn btn-danger btn-sm"><i class="fa-solid fa-pen-to-square"></i>Xóa</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td class="fw-bold">Tổng</td>
+                                <td>[[${totalPrice}]]</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                    <div class="text-center">
+                        <a th:href="@{/user/orders}" href="" class="btn btn-warning">Thanh toán</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function getAllQuantities() {
+            const quantities = [];
+            const quantityInputs = document.querySelectorAll('.danhsach tr td input[type="number"]');
+            quantityInputs.forEach(input => {
+                quantities.push(parseInt(input.value));
+            });
+            return quantities;
+        }
+
+        document.getElementById('cartForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Tạo input hidden để chứa danh sách tên file
+            const quantitiesInput = document.createElement('input');
+            quantitiesInput.type = 'hidden';
+            quantitiesInput.name = 'quantities';
+
+            quantitiesInput.value = getAllQuantities();
+
+            // Thêm input vào form
+            this.appendChild(quantitiesInput);
+
+            // Submit form
+            this.submit();
+        });
+    </script>
+</section>
+
+</body>
+</html>
