@@ -10,6 +10,7 @@ import java.text.NumberFormat;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 @Entity
@@ -42,6 +43,10 @@ public class Orders {
     private OrderAddress orderAddress;
 
     private Boolean isPaid;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "orderId", referencedColumnName = "orderId")
+    private List<ProductOrder> productOrders;
 
     public String getDateFormatted() {
         return orderDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));

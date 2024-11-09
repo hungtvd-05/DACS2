@@ -17,10 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -45,6 +42,7 @@ public class OrderServiceImpl implements OrderService {
 
         UserDtls userDtls = userRepository.findById(userId).get();
         List<Cart> carts = cartRepository.findByUserId(userId);
+        List<ProductOrder> productOrders = new ArrayList<>();
 
         String orderId = UUID.randomUUID().toString();
         String orderName = "";
@@ -66,11 +64,10 @@ public class OrderServiceImpl implements OrderService {
             productOrder.setPrice(cart.getProduct().getGiasale());
 
             productOrder.setQuantity(cart.getQuantity());
+            productOrders.add(productOrder);
 
             orderName += cart.getProduct().getTen() + ": " + cart.getQuantity() + " x " + cart.getProduct().getGiaSaleFormatted() + "\n";
             totalPrice += cart.getProduct().getGiasale() * cart.getQuantity();
-
-            productOrderRepository.save(productOrder);
 
         }
 
@@ -88,6 +85,7 @@ public class OrderServiceImpl implements OrderService {
         } else {
             order.setIsPaid(false);
         }
+        order.setProductOrders(productOrders);
 
         commonUtil.sendMailForOrder(order, order.getStatus());
 
