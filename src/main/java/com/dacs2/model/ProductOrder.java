@@ -25,8 +25,6 @@ public class ProductOrder {
 
     private String orderId;
 
-    private Date orderDate;
-
     @ManyToOne
     private Product product;
 
@@ -34,29 +32,8 @@ public class ProductOrder {
 
     private Integer quantity;
 
-    @ManyToOne
-    private UserDtls user;
-
-    private String status;
-
-    private String paymentType;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    private OrderAddress orderAddress;
-
-    public String getDateFormatted() {
-        return orderDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-    }
-
     public String getTotalPriceFormatted() {
         return NumberFormat.getCurrencyInstance(new Locale("vi", "VN")).format(quantity * price);
-    }
-
-    public String getFullAdressFormatted() {
-        return orderAddress.getAddress() + ", " +
-                orderAddress.getWard() + ", " +
-                orderAddress.getPrefecture() + ", " +
-                orderAddress.getCity();
     }
 
 }

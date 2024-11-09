@@ -1,6 +1,6 @@
 package com.dacs2.util;
 
-import com.dacs2.model.ProductOrder;
+import com.dacs2.model.Orders;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
@@ -43,7 +43,7 @@ public class CommonUtil {
         return siteUrl.replace(request.getServletPath(), "");
     }
 
-    public Boolean sendMailForProductOrder(ProductOrder order, String status) throws MessagingException, UnsupportedEncodingException {
+    public Boolean sendMailForOrder(Orders order, String status) throws MessagingException, UnsupportedEncodingException {
 
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
@@ -56,9 +56,8 @@ public class CommonUtil {
                 "<p>Tên người nhận: "+ order.getOrderAddress().getFullName() +"</p>" +
                 "<p>Số điện thoại: "+ order.getOrderAddress().getPhoneNumber() +"</p>" +
                 "<p>Địa chỉ giao hàng: "+ order.getFullAdressFormatted() +"</p>" +
-                "<p>Tên sản phẩm: " + order.getProduct().getTen() + "</p>" +
-                "<p>Số lượng: " + order.getQuantity() + "</p>" +
-                "<p>Giá: " + order.getTotalPriceFormatted() + "</p>" +
+                "<p>Tên sản phẩm: " + order.getOrderName() + "</p>" +
+                "<p>Tổng giá: " + order.getTotalPriceFormatted() + "</p>" +
                 "<p>Phương thức thanh toán: " + order.getPaymentType() + "</p>";
 
         helper.setSubject("Thông tin đơn hàng!");

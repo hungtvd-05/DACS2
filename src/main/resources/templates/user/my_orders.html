@@ -40,12 +40,8 @@
                             <tr th:each="order:${orders}">
                                 <td scope="row" ><b>[[${order.orderId}]]</b></td>
                                 <td th:text="${order.getDateFormatted()}"></td>
-                                <td th:text="${order.getProduct().getTen()}"></td>
-                                <td>
-                                    Số lượng: [[${order.quantity}]] <br>
-                                    Giá: [[${order.getProduct().getGiaSaleFormatted()}]] <br>
-                                    Tổng: [[${order.getTotalPriceFormatted()}]]
-                                </td>
+                                <td th:text="${order.getOrderName()}" style="white-space: pre-wrap; word-wrap: break-word;"></td>
+                                <td th:text="${order.getTotalPriceFormatted()}"></td>
                                 <td th:text="${order.getStatus()}"></td>
                                 <td>
                                     <th:block th:if="${order.status!='Đã hủy!'}">

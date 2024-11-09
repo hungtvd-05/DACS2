@@ -1,9 +1,6 @@
 package com.dacs2.controller;
 
-import com.dacs2.model.Category;
-import com.dacs2.model.Product;
-import com.dacs2.model.ProductOrder;
-import com.dacs2.model.UserDtls;
+import com.dacs2.model.*;
 import com.dacs2.service.*;
 import com.dacs2.util.OrderStatus;
 import jakarta.mail.MessagingException;
@@ -241,6 +238,8 @@ public class AdminController {
         String[] imageNames = fileNames.replace("\"", "").split(",");
         ArrayList<String> newImageNames = new ArrayList<>();
 
+        System.out.println(1);
+
 //        list ảnh cũ
         List<String> listAnhCu = new ArrayList<>(Arrays.asList(product1.getArrayAnh()));
 
@@ -263,6 +262,7 @@ public class AdminController {
             System.out.println(imageName);
             Files.deleteIfExists(Paths.get(targetPath + imageName));
         }
+        System.out.println(2);
 
         product1.setTen(product.getTen());
         product1.setGia(product.getGia());
@@ -274,8 +274,10 @@ public class AdminController {
         product1.setSale(product.getSale());
         product1.setGiasale(product.getGia() * (100 - product.getSale()) / 100);
         product1.setAnh(newImageNames.toString().replace("[", "").replace("]",""));
+        System.out.println(3);
 
         Product updateProduct = productService.saveProduct(product1);
+        System.out.println(4);
 
         if (!ObjectUtils.isEmpty(updateProduct)) {
             session.setAttribute("succMsg", "Sản phẩm đã cập nhật.");
@@ -374,7 +376,7 @@ public class AdminController {
         m.addAttribute("searchCh", "");
         m.addAttribute("categories", categoryService.getCategoryByIsActive());
         m.addAttribute("search", false);
-        Page<ProductOrder> page = orderService.getAllOrdersPagination(pageNumber - 1, pageSize);
+        Page<Orders> page = orderService.getAllOrdersPagination(pageNumber - 1, pageSize);
         m.addAttribute("orders", page.getContent());
         m.addAttribute("trang", page.getNumber());
         m.addAttribute("pageSize", pageSize);
@@ -422,7 +424,7 @@ public class AdminController {
             return "redirect:/admin/don-hang";
         }
 
-        Page<ProductOrder> page = orderService.searchOrderByOrderIdPagination(pageNumber - 1, pageSize, orderId.trim());
+        Page<Orders> page = orderService.searchOrderByOrderIdPagination(pageNumber - 1, pageSize, orderId.trim());
 
         if (ObjectUtils.isEmpty(page.getContent())) {
             m.addAttribute("searchResult", false);

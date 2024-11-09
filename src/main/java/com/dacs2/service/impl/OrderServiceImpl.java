@@ -1,11 +1,10 @@
 package com.dacs2.service.impl;
 
-import com.dacs2.model.Cart;
-import com.dacs2.model.OrderAddress;
-import com.dacs2.model.OrderRequest;
-import com.dacs2.model.ProductOrder;
+import com.dacs2.model.*;
 import com.dacs2.repository.CartRepository;
+import com.dacs2.repository.OrderRepository;
 import com.dacs2.repository.ProductOrderRepository;
+import com.dacs2.repository.UserRepository;
 import com.dacs2.service.OrderService;
 import com.dacs2.util.CommonUtil;
 import com.dacs2.util.OrderStatus;
@@ -27,10 +26,16 @@ import java.util.UUID;
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
-    private ProductOrderRepository orderRepository;
+    private ProductOrderRepository productOrderRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Autowired
     private CartRepository cartRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private CommonUtil commonUtil;
@@ -38,68 +43,85 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void saveOrder(Integer userId, OrderRequest orderRequest) throws MessagingException, UnsupportedEncodingException {
 
+        UserDtls userDtls = userRepository.findById(userId).get();
         List<Cart> carts = cartRepository.findByUserId(userId);
+
+        String orderId = UUID.randomUUID().toString();
+        String orderName = "";
+        Double totalPrice = 0.0;
+        OrderAddress address = new OrderAddress();
+        address.setFullName(orderRequest.getFullName());
+        address.setAddress(orderRequest.getAddress());
+        address.setCity(orderRequest.getCity());
+        address.setPrefecture(orderRequest.getPrefecture());
+        address.setWard(orderRequest.getWard());
+        address.setPhoneNumber(orderRequest.getPhoneNumber());
 
         for (Cart cart : carts) {
 
-            ProductOrder order = new ProductOrder();
-            order.setOrderId(UUID.randomUUID().toString());
-            order.setOrderDate(new Date());
+            ProductOrder productOrder = new ProductOrder();
+            productOrder.setOrderId(orderId);
 
-            order.setProduct(cart.getProduct());
-            order.setPrice(cart.getProduct().getGiasale());
+            productOrder.setProduct(cart.getProduct());
+            productOrder.setPrice(cart.getProduct().getGiasale());
 
-            order.setQuantity(cart.getQuantity());
-            order.setUser(cart.getUser());
+            productOrder.setQuantity(cart.getQuantity());
 
-            order.setStatus(OrderStatus.IN_PROGRESS.getName());
-            order.setPaymentType(orderRequest.getPaymentType());
+            orderName += cart.getProduct().getTen() + ": " + cart.getQuantity() + " x " + cart.getProduct().getGiaSaleFormatted() + "\n";
+            totalPrice += cart.getProduct().getGiasale() * cart.getQuantity();
 
-            OrderAddress address = new OrderAddress();
-            address.setFullName(orderRequest.getFullName());
-            address.setAddress(orderRequest.getAddress());
-            address.setCity(orderRequest.getCity());
-            address.setPrefecture(orderRequest.getPrefecture());
-            address.setWard(orderRequest.getWard());
-            address.setPhoneNumber(orderRequest.getPhoneNumber());
-
-            order.setOrderAddress(address);
-
-            commonUtil.sendMailForProductOrder(order, order.getStatus());
-
-            orderRepository.save(order);
+            productOrderRepository.save(productOrder);
 
         }
+
+        Orders order = new Orders();
+        order.setOrderId(orderId);
+        order.setOrderName(orderName);
+        order.setOrderDate(new Date());
+        order.setOrderAddress(address);
+        order.setTotalPrice(totalPrice);
+        order.setStatus(OrderStatus.IN_PROGRESS.getName());
+        order.setUser(userDtls);
+        order.setPaymentType(orderRequest.getPaymentType());
+        if (orderRequest.getPaymentType().equals("ONLINE")) {
+            order.setIsPaid(true);
+        } else {
+            order.setIsPaid(false);
+        }
+
+        commonUtil.sendMailForOrder(order, order.getStatus());
+
+        orderRepository.save(order);
 
     }
 
     @Override
-    public List<ProductOrder> getOrdersByUserId(Integer userId) {
+    public List<Orders> getOrdersByUserId(Integer userId) {
         return orderRepository.findByUserId(userId);
     }
 
     @Override
-    public ProductOrder updateOrderStatus(Integer id, String status) throws MessagingException, UnsupportedEncodingException {
-        Optional<ProductOrder> order = orderRepository.findById(id);
+    public Orders updateOrderStatus(Integer id, String status) throws MessagingException, UnsupportedEncodingException {
+        Optional<Orders> order = orderRepository.findById(id);
         if (order.isPresent()) {
-            ProductOrder productOrder = order.get();
-            productOrder.setStatus(status);
+            Orders orderP = order.get();
+            orderP.setStatus(status);
 
-            commonUtil.sendMailForProductOrder(productOrder, status);
+            commonUtil.sendMailForOrder(orderP, status);
 
-            return orderRepository.save(productOrder);
+            return orderRepository.save(orderP);
         }
         return null;
     }
 
     @Override
-    public Page<ProductOrder> getAllOrdersPagination(Integer pageNumber, Integer pageSize) {
+    public Page<Orders> getAllOrdersPagination(Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "id"));
         return orderRepository.findAll(pageable);
     }
 
     @Override
-    public Page<ProductOrder> searchOrderByOrderIdPagination(Integer pageNumber, Integer pageSize, String orderId) {
+    public Page<Orders> searchOrderByOrderIdPagination(Integer pageNumber, Integer pageSize, String orderId) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "id"));
         return orderRepository.findByOrderIdContainingIgnoreCase(pageable, orderId);
     }

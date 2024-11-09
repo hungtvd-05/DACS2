@@ -7,9 +7,11 @@
 </head>
 <body>
 <section>
-  <link rel="stylesheet" th:href="@{/css/table.css}">
 
-  <div class="container mt-5 content1 fs-5">
+  <div class="container-sm content1 mt-5 fs-5">
+    <div class="mb-2">
+      <a href="/admin/san-pham" class="text-decoration-none"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
+    </div>
     <div class="">
       <div class="card card-sh">
         <div class="card-header text-center">
@@ -36,8 +38,7 @@
               <div class="mb-3 col">
                 <label for="danhmuc">Chọn danh mục</label>
                 <select id="danhmuc" class="form-control" name="danhmuc">
-                  <option>[[${product.danhmuc}]]</option>
-                  <option th:each="c:${categories}">[[${c.name}]]</option>
+                  <option th:each="c:${categories}" th:value="${c.name}" th:selected="${c.name == product.danhmuc}">[[${c.name}]]</option>
                 </select>
               </div>
               <div class="mb-3 col">
