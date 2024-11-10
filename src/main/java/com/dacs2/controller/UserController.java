@@ -2,13 +2,12 @@ package com.dacs2.controller;
 
 import com.dacs2.model.Cart;
 import com.dacs2.model.OrderRequest;
+import com.dacs2.model.Orders;
 import com.dacs2.model.UserDtls;
-import com.dacs2.service.CartService;
-import com.dacs2.service.CategoryService;
-import com.dacs2.service.OrderService;
-import com.dacs2.service.UserService;
+import com.dacs2.service.*;
 import com.dacs2.util.OrderStatus;
 import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,6 +44,9 @@ public class UserController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private CheckOutService checkOutService;
 
     @GetMapping("/")
     public String home() {
@@ -142,10 +144,20 @@ public class UserController {
     }
 
     @PostMapping("/save-order")
-    public String saveOrder(@ModelAttribute OrderRequest request, Principal p) throws MessagingException, UnsupportedEncodingException {
+    public String saveOrder(@ModelAttribute OrderRequest request, Principal p,
+                            HttpServletRequest httpServletRequest)
+            throws MessagingException, UnsupportedEncodingException {
 
-        orderService.saveOrder(getLoggedInUserDetails(p).getId(), request);
+        String baseUrl = httpServletRequest.getScheme() + "://" + httpServletRequest.getServerName() + ":" + httpServletRequest.getServerPort();
+        Orders createOrder = orderService.createOrder(getLoggedInUserDetails(p).getId(), request);
 
+        if (request.getPaymentType().equals("ONLINE")) {
+            String vnpayUrl = checkOutService.checkOutWithPayOnline(createOrder, baseUrl);
+
+            return "redirect:" + vnpayUrl;
+        }
+
+        orderService.saveOrder(createOrder);
         return "redirect:/user/thanh-toan-thanh-cong";
     }
 

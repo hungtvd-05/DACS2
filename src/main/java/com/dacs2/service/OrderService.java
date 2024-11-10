@@ -12,7 +12,9 @@ import java.util.List;
 @Service
 public interface OrderService {
 
-    public void saveOrder(Integer userId, OrderRequest orderRequest) throws MessagingException, UnsupportedEncodingException;
+    public Orders createOrder(Integer userId, OrderRequest orderRequest) throws UnsupportedEncodingException, MessagingException;
+
+    public void saveOrder(Orders order) throws MessagingException, UnsupportedEncodingException;
 
     public List<Orders> getOrdersByUserId(Integer userId);
 
@@ -21,5 +23,7 @@ public interface OrderService {
     public Page<Orders> getAllOrdersPagination(Integer pageNumber, Integer pageSize);
 
     public Page<Orders> searchOrderByOrderIdPagination(Integer pageNumber, Integer pageSize, String orderId);
+
+    public Boolean deleteOrder(Orders order);
 
 }

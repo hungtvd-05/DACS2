@@ -5,6 +5,8 @@ import com.dacs2.repository.CartRepository;
 import com.dacs2.repository.OrderRepository;
 import com.dacs2.repository.ProductOrderRepository;
 import com.dacs2.repository.UserRepository;
+import com.dacs2.service.CartService;
+import com.dacs2.service.CheckOutService;
 import com.dacs2.service.OrderService;
 import com.dacs2.util.CommonUtil;
 import com.dacs2.util.OrderStatus;
@@ -15,15 +17,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-
-    @Autowired
-    private ProductOrderRepository productOrderRepository;
 
     @Autowired
     private OrderRepository orderRepository;
@@ -37,9 +37,12 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private CommonUtil commonUtil;
 
-    @Override
-    public void saveOrder(Integer userId, OrderRequest orderRequest) throws MessagingException, UnsupportedEncodingException {
+    @Autowired
+    private CartService cartService;
 
+
+    @Override
+    public Orders createOrder(Integer userId, OrderRequest orderRequest) throws UnsupportedEncodingException, MessagingException {
         UserDtls userDtls = userRepository.findById(userId).get();
         List<Cart> carts = cartRepository.findByUserId(userId);
         List<ProductOrder> productOrders = new ArrayList<>();
@@ -80,16 +83,28 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(OrderStatus.IN_PROGRESS.getName());
         order.setUser(userDtls);
         order.setPaymentType(orderRequest.getPaymentType());
+        order.setProductOrders(productOrders);
+        order.setProcessed(false);
         if (orderRequest.getPaymentType().equals("ONLINE")) {
             order.setIsPaid(true);
         } else {
             order.setIsPaid(false);
         }
-        order.setProductOrders(productOrders);
+        orderRepository.save(order);
+
+        return order;
+    }
+
+    @Override
+    public void saveOrder(Orders order) throws MessagingException, UnsupportedEncodingException {
+
+        order.setProcessed(true);
+        order.setOrderDate(new Date());
 
         commonUtil.sendMailForOrder(order, order.getStatus());
 
         orderRepository.save(order);
+        cartService.clearCartByUserId(order.getUser().getId());
 
     }
 
@@ -122,5 +137,16 @@ public class OrderServiceImpl implements OrderService {
     public Page<Orders> searchOrderByOrderIdPagination(Integer pageNumber, Integer pageSize, String orderId) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "id"));
         return orderRepository.findByOrderIdContainingIgnoreCase(pageable, orderId);
+    }
+
+    @Override
+    public Boolean deleteOrder(Orders order) {
+
+        if (!ObjectUtils.isEmpty(order)) {
+            orderRepository.delete(order);
+            return true;
+        }
+
+        return false;
     }
 }

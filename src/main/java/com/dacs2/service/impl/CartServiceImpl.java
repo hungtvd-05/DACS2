@@ -98,4 +98,17 @@ public class CartServiceImpl implements CartService {
     public Double getTotalPrice(Integer userId) {
         return cartRepository.sumPriceByUserId(userId);
     }
+
+    @Override
+    public Boolean clearCartByUserId(Integer userId) {
+
+        List<Cart> cartList = cartRepository.findByUserId(userId);
+
+        if (!ObjectUtils.isEmpty(cartList)) {
+            cartRepository.deleteAll(cartList);
+            return true;
+        }
+
+        return false;
+    }
 }

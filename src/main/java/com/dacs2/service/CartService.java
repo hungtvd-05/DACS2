@@ -18,4 +18,6 @@ public interface CartService {
 
     public Double getTotalPrice(Integer userId);
 
+    public Boolean clearCartByUserId(Integer userId);
+
 }

@@ -13,4 +13,6 @@ public interface OrderRepository extends JpaRepository<Orders, Integer> {
 
     public Page<Orders> findByOrderIdContainingIgnoreCase(Pageable pageable, String orderId);
 
+    public Orders findByOrderId(String orderId);
+
 }

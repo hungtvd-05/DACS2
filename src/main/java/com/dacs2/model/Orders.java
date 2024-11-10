@@ -44,6 +44,8 @@ public class Orders {
 
     private Boolean isPaid;
 
+    private Boolean processed;
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "orderId", referencedColumnName = "orderId")
     private List<ProductOrder> productOrders;

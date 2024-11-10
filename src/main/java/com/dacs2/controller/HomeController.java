@@ -1,11 +1,10 @@
 package com.dacs2.controller;
 
+import com.dacs2.model.Orders;
 import com.dacs2.model.Product;
 import com.dacs2.model.UserDtls;
-import com.dacs2.service.CartService;
-import com.dacs2.service.CategoryService;
-import com.dacs2.service.ProductService;
-import com.dacs2.service.UserService;
+import com.dacs2.repository.OrderRepository;
+import com.dacs2.service.*;
 import com.dacs2.util.CommonUtil;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,7 +26,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
-import java.util.List;
+import java.text.NumberFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 @Controller
@@ -54,6 +58,9 @@ public class HomeController {
 
     @Autowired
     private CartService cartService;
+
+    @Autowired
+    private CheckOutService checkOutService;
 
     @ModelAttribute
     public void getUserDetails(Principal p, Model m) {
@@ -230,6 +237,28 @@ public class HomeController {
         m.addAttribute("isLast", page.isLast());
 
         return "product";
+    }
+
+    @GetMapping("/vnpay-payment")
+    public String InfoPaying(HttpServletRequest request, Model m) throws MessagingException, UnsupportedEncodingException {
+        String orderInfo = request.getParameter("vnp_OrderInfo");
+        String paymentTime = request.getParameter("vnp_PayDate");
+        String transactionId = request.getParameter("vnp_TransactionNo");
+        Double totalPrice = Double.parseDouble(request.getParameter("vnp_Amount"));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        LocalDateTime localDateTime = LocalDateTime.parse(paymentTime, formatter);
+        Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+
+        int paymentStatus = checkOutService.orderReturn(request, date);
+
+        m.addAttribute("orderId", orderInfo);
+        m.addAttribute("totalPrice", NumberFormat.getCurrencyInstance(new Locale("vi", "VN")).format(totalPrice / 100));
+        m.addAttribute("paymentTime", date.toString());
+        m.addAttribute("transactionId", transactionId);
+        m.addAttribute("ordersuccess", paymentStatus);
+
+        return "user/orderStatus";
     }
 
 }
