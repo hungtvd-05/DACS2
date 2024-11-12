@@ -1,9 +1,7 @@
 package com.dacs2.controller;
 
-import com.dacs2.model.Orders;
 import com.dacs2.model.Product;
 import com.dacs2.model.UserDtls;
-import com.dacs2.repository.OrderRepository;
 import com.dacs2.service.*;
 import com.dacs2.util.CommonUtil;
 import jakarta.mail.MessagingException;
@@ -246,15 +244,15 @@ public class HomeController {
         String transactionId = request.getParameter("vnp_TransactionNo");
         Double totalPrice = Double.parseDouble(request.getParameter("vnp_Amount"));
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-        LocalDateTime localDateTime = LocalDateTime.parse(paymentTime, formatter);
-        Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+        DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        LocalDateTime dateTime = LocalDateTime.parse(paymentTime, inputFormat);
+        DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("HH-mm-ss dd/MM/yyyy");
 
-        int paymentStatus = checkOutService.orderReturn(request, date);
+        int paymentStatus = checkOutService.orderReturn(request);
 
         m.addAttribute("orderId", orderInfo);
         m.addAttribute("totalPrice", NumberFormat.getCurrencyInstance(new Locale("vi", "VN")).format(totalPrice / 100));
-        m.addAttribute("paymentTime", date.toString());
+        m.addAttribute("paymentTime", dateTime.format(outputFormat));
         m.addAttribute("transactionId", transactionId);
         m.addAttribute("ordersuccess", paymentStatus);
 

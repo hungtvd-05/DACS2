@@ -5,13 +5,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
 
 public interface CheckOutService {
 
     @Transactional
     public String checkOutWithPayOnline(Orders order, String urlReturn);
 
-    public int orderReturn(HttpServletRequest request, Date date) throws MessagingException, UnsupportedEncodingException;
+    public int orderReturn(HttpServletRequest request) throws MessagingException, UnsupportedEncodingException;
 
 }

@@ -118,7 +118,7 @@ public class CheckOutServiceImpl implements CheckOutService {
     }
 
     @Override
-    public int orderReturn(HttpServletRequest request, Date date) throws MessagingException, UnsupportedEncodingException {
+    public int orderReturn(HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
         Map fields = new HashMap();
         String orderInfo = request.getParameter("vnp_OrderInfo");
         Orders order = orderRepository.findByOrderId(orderInfo);
@@ -148,7 +148,6 @@ public class CheckOutServiceImpl implements CheckOutService {
             if ("00".equals(request.getParameter("vnp_TransactionStatus"))) {
                 if (!ObjectUtils.isEmpty(order)) {
                     if (order.getProcessed() == false) {
-                        order.setOrderDate(date);
                         orderService.saveOrder(order);
                     }
                 }

@@ -1,6 +1,7 @@
 package com.dacs2.controller;
 
 import com.dacs2.model.*;
+import com.dacs2.repository.NewsRepository;
 import com.dacs2.service.*;
 import com.dacs2.util.OrderStatus;
 import jakarta.mail.MessagingException;
@@ -53,6 +54,12 @@ public class AdminController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private NewsService newsService;
+
+    @Autowired
+    private NewsRepository newsRepository;
 
     @ModelAttribute
     public void getUserDetails(Principal p, Model m) {
@@ -157,7 +164,7 @@ public class AdminController {
     @GetMapping("/san-pham")
     public String loadViewProduct(Model m,
                                   @RequestParam(name = "trang", defaultValue = "1") Integer pageNumber,
-                                  @RequestParam(name = "pageSize", defaultValue = "15") Integer pageSize) {
+                                  @RequestParam(name = "pageSize", defaultValue = "40") Integer pageSize) {
         Page<Product> page = productService.getAllProductsPagination(pageNumber - 1, pageSize);
         m.addAttribute("search", false);
         m.addAttribute("products", page.getContent());
@@ -319,7 +326,7 @@ public class AdminController {
     @GetMapping("/users")
     public String getAllUsers(Model m,
                               @RequestParam(name = "trang", defaultValue = "1") Integer pageNumber,
-                              @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize) {
+                              @RequestParam(name = "pageSize", defaultValue = "40") Integer pageSize) {
 
         m.addAttribute("searchCh", "");
         m.addAttribute("search", false);
@@ -371,7 +378,7 @@ public class AdminController {
     @GetMapping("/don-hang")
     public String getAllOrders(Model m,
                                @RequestParam(name = "trang", defaultValue = "1") Integer pageNumber,
-                               @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+                               @RequestParam(name = "pageSize", defaultValue = "40") Integer pageSize) {
 
         m.addAttribute("searchCh", "");
         m.addAttribute("categories", categoryService.getCategoryByIsActive());
@@ -419,7 +426,7 @@ public class AdminController {
     @GetMapping("/search-don-hang")
     public String searchOrderProduct(@RequestParam String orderId, Model m,
                                      @RequestParam(name = "trang", defaultValue = "1") Integer pageNumber,
-                                     @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+                                     @RequestParam(name = "pageSize", defaultValue = "40") Integer pageSize) {
         if (orderId.trim().isEmpty()) {
             return "redirect:/admin/don-hang";
         }
@@ -447,7 +454,7 @@ public class AdminController {
     @GetMapping("/search-san-pham")
     public String searchProduct(@RequestParam String ch, Model m,
                                 @RequestParam(name = "trang", defaultValue = "1") Integer pageNumber,
-                                @RequestParam(name = "pageSize", defaultValue = "1") Integer pageSize) {
+                                @RequestParam(name = "pageSize", defaultValue = "40") Integer pageSize) {
         if (ch.trim().isEmpty()) {
             return "redirect:/admin/san-pham";
         }
@@ -551,6 +558,111 @@ public class AdminController {
     public String admin(Model m) {
         m.addAttribute("admins", userService.getAllAdmin());
         return "/admin/admin";
+    }
+
+    @GetMapping("/them-bai-viet")
+    public String addNews() {
+        return "/admin/add_news";
+    }
+
+    @PostMapping("/save-news")
+    public String saveNews(@ModelAttribute News news, HttpSession session) {
+
+        if (!ObjectUtils.isEmpty(newsService.saveNews(news))) {
+            session.setAttribute("succMsg", "Đã thêm bài viết!");
+        } else {
+            session.setAttribute("errorMsg", "Lỗi!");
+        }
+
+        return "redirect:/admin/them-bai-viet";
+
+    }
+
+    @GetMapping("/bai-viet")
+    public String getAllNews(Model m,
+                             @RequestParam(name = "trang", defaultValue = "1") Integer pageNumber,
+                             @RequestParam(name = "pageSize", defaultValue = "40") Integer pageSize) {
+        List<News> newsList = newsRepository.findAll();
+
+        m.addAttribute("newsList", newsList);
+
+
+        m.addAttribute("searchCh", "");
+        m.addAttribute("search", false);
+        Page<News> page = newsService.getNewsByPage(pageNumber - 1, pageSize);
+        m.addAttribute("newsList", page.getContent());
+        m.addAttribute("trang", page.getNumber());
+        m.addAttribute("pageSize", pageSize);
+        m.addAttribute("totalElements", page.getTotalElements());
+        m.addAttribute("totalPages", page.getTotalPages());
+        m.addAttribute("isFirst", page.isFirst());
+        m.addAttribute("isLast", page.isLast());
+
+
+        return "/admin/news";
+
+    }
+
+    @GetMapping("/search-bai-viet")
+    public String searchNews(Model m,
+                             @RequestParam String ch,
+                             @RequestParam(name = "trang", defaultValue = "1") Integer pageNumber,
+                             @RequestParam(name = "pageSize", defaultValue = "40") Integer pageSize) {
+        if (ch.trim().isEmpty()) {
+            return "redirect:/admin/bai-viet";
+        }
+
+        m.addAttribute("searchCh", "");
+        m.addAttribute("search", false);
+        Page<News> page = newsService.searchNews(ch.trim(), pageNumber - 1, pageSize);
+        m.addAttribute("newsList", page.getContent());
+        m.addAttribute("trang", page.getNumber());
+        m.addAttribute("pageSize", pageSize);
+        m.addAttribute("totalElements", page.getTotalElements());
+        m.addAttribute("totalPages", page.getTotalPages());
+        m.addAttribute("isFirst", page.isFirst());
+        m.addAttribute("isLast", page.isLast());
+
+
+        return "/admin/news";
+
+    }
+
+    @GetMapping("/cap-nhat-bai-viet/{id}")
+    public String loadEditNews(@PathVariable Integer id, Model m) {
+        m.addAttribute("news", newsService.getNewsById(id));
+        return "/admin/edit_news";
+    }
+
+    @PostMapping("/update-news")
+    public String updateNews(@ModelAttribute News news, HttpSession session) {
+        News updateNews = newsService.getNewsById(news.getId());
+
+        if (!ObjectUtils.isEmpty(news)) {
+            updateNews.setTitle(news.getTitle());
+            updateNews.setContent(news.getContent());
+            updateNews.setStatus(news.getStatus());
+        }
+
+        if (!ObjectUtils.isEmpty(newsService.updateNews(updateNews))) {
+            session.setAttribute("succMsg", "Đã cập nhật thành công!");
+        } else {
+            session.setAttribute("errorMsg", "Lỗi!");
+        }
+
+        return "redirect:/admin/cap-nhat-bai-viet/" + news.getId();
+
+    }
+
+    @GetMapping("/delete-news/{id}")
+    public String deleteNews(@PathVariable Integer id, HttpSession session) {
+        if (newsService.deleteNews(id)) {
+            session.setAttribute("succMsg", "Bài viết đã được xóa!");
+        } else {
+            session.setAttribute("errorMsg", "Lỗi!");
+        }
+
+        return "redirect:/admin/bai-viet";
     }
 
 }
