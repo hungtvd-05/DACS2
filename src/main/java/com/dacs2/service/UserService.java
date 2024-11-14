@@ -41,4 +41,10 @@ public interface UserService {
 
     public Boolean existsEmail(String email);
 
+    void updateConfirmEmailToken(String email, String confirmToken);
+
+    public UserDtls addUser(UserDtls user);
+
+    public UserDtls confirmEmail(String confirmToken);
+
 }

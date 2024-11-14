@@ -26,9 +26,7 @@ import java.nio.file.StandardCopyOption;
 import java.security.Principal;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -120,30 +118,59 @@ public class HomeController {
 
     @PostMapping("/luu-user")
     public String saveUser(@ModelAttribute UserDtls user,
+                           HttpServletRequest request,
                            @RequestParam("img") MultipartFile file,
-                           HttpSession session) throws IOException {
+                           HttpSession session) throws IOException, MessagingException {
 
         if (userService.existsEmail(user.getEmail())) {
             session.setAttribute("errorMsg", "Email này đã tồn tại!");
             return "redirect:/dang-ky";
         }
+
         String imageName = file.isEmpty() ? "default.jpg" : file.getOriginalFilename();
         user.setProfileImage(imageName);
-        UserDtls saveUser = userService.saveUser(user);
+        UserDtls addUser = userService.addUser(user);
 
-        if (!ObjectUtils.isEmpty(saveUser)) {
+        if (!ObjectUtils.isEmpty(addUser)) {
+
+            String confirmToken = UUID.randomUUID().toString();
+            userService.updateConfirmEmailToken(addUser.getEmail(), confirmToken);
+
+            String url = CommonUtil.generateUrl(request) + "/xac-nhan-tai-khoan?token=" + confirmToken;
+
+            Boolean sendMail = commonUtil.sendConfirmEmail(url, addUser.getEmail());
+
             if (!file.isEmpty()) {
 
                 Path path = Paths.get(imgPath + File.separator + "profile_img" + File.separator + imageName);
 
                 Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
             }
-            session.setAttribute("succMsg", "Đã thêm người dùng!");
+
+            if (sendMail) {
+                session.setAttribute("succMsg", "Đã gửi xác nhận tài khoản qua mail của bạn!");
+            } else {
+                session.setAttribute("errorMsg", "Lỗi!");
+            }
+
         } else {
             session.setAttribute("errorMsg", "Lỗi!");
         }
 
         return "redirect:/dang-ky";
+    }
+
+    @GetMapping("/xac-nhan-tai-khoan")
+    public String showConfirmedEmail(@RequestParam String token, Model m) {
+
+        UserDtls user = userService.confirmEmail(token);
+
+        if (user == null) {
+            m.addAttribute("msg", "Đường link không hiệu dụng!");
+            return "message";
+        }
+        m.addAttribute("token", token);
+        return "user/confirmsuccess";
     }
 
     @GetMapping("/quen-mat-khau")

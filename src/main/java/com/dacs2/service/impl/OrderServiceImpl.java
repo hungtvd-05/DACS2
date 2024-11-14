@@ -1,12 +1,8 @@
 package com.dacs2.service.impl;
 
 import com.dacs2.model.*;
-import com.dacs2.repository.CartRepository;
-import com.dacs2.repository.OrderRepository;
-import com.dacs2.repository.ProductOrderRepository;
-import com.dacs2.repository.UserRepository;
+import com.dacs2.repository.*;
 import com.dacs2.service.CartService;
-import com.dacs2.service.CheckOutService;
 import com.dacs2.service.OrderService;
 import com.dacs2.util.CommonUtil;
 import com.dacs2.util.OrderStatus;
@@ -35,10 +31,16 @@ public class OrderServiceImpl implements OrderService {
     private UserRepository userRepository;
 
     @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
     private CommonUtil commonUtil;
 
     @Autowired
     private CartService cartService;
+
+    @Autowired
+    private ProductOrderRepository productOrderRepository;
 
 
     @Override
@@ -85,11 +87,7 @@ public class OrderServiceImpl implements OrderService {
         order.setPaymentType(orderRequest.getPaymentType());
         order.setProductOrders(productOrders);
         order.setProcessed(false);
-        if (orderRequest.getPaymentType().equals("ONLINE")) {
-            order.setIsPaid(true);
-        } else {
-            order.setIsPaid(false);
-        }
+        order.setIsPaid(false);
         orderRepository.save(order);
 
         return order;
@@ -100,11 +98,16 @@ public class OrderServiceImpl implements OrderService {
 
         order.setProcessed(true);
         order.setOrderDate(new Date());
-
-        commonUtil.sendMailForOrder(order, order.getStatus());
+        if (order.getPaymentType().equals("ONLINE")) {
+            order.setIsPaid(true);
+        } else {
+            order.setIsPaid(false);
+        }
 
         orderRepository.save(order);
         cartService.clearCartByUserId(order.getUser().getId());
+
+        commonUtil.sendMailForOrder(order, order.getStatus());
 
     }
 
@@ -119,6 +122,18 @@ public class OrderServiceImpl implements OrderService {
         if (order.isPresent()) {
             Orders orderP = order.get();
             orderP.setStatus(status);
+
+            if (status.equals("Đã vận chuyển thành công!")) {
+                orderP.setIsPaid(true);
+                List<Product> products = new ArrayList<>();
+                List<ProductOrder> productOrders = productOrderRepository.findByOrderId(order.get().getOrderId());
+                for (ProductOrder productOrder : productOrders) {
+                    Product product = productOrder.getProduct();
+                    product.setSoluong(product.getSoluong() - productOrder.getQuantity());
+                    products.add(product);
+                }
+                productRepository.saveAll(products);
+            }
 
             commonUtil.sendMailForOrder(orderP, status);
 

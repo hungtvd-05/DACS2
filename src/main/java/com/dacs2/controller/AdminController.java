@@ -1,7 +1,6 @@
 package com.dacs2.controller;
 
 import com.dacs2.model.*;
-import com.dacs2.repository.NewsRepository;
 import com.dacs2.service.*;
 import com.dacs2.util.OrderStatus;
 import jakarta.mail.MessagingException;
@@ -57,9 +56,6 @@ public class AdminController {
 
     @Autowired
     private NewsService newsService;
-
-    @Autowired
-    private NewsRepository newsRepository;
 
     @ModelAttribute
     public void getUserDetails(Principal p, Model m) {
@@ -582,10 +578,6 @@ public class AdminController {
     public String getAllNews(Model m,
                              @RequestParam(name = "trang", defaultValue = "1") Integer pageNumber,
                              @RequestParam(name = "pageSize", defaultValue = "40") Integer pageSize) {
-        List<News> newsList = newsRepository.findAll();
-
-        m.addAttribute("newsList", newsList);
-
 
         m.addAttribute("searchCh", "");
         m.addAttribute("search", false);

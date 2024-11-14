@@ -49,4 +49,8 @@ public class UserDtls {
 
     private String resetToken;
 
+    private String confirmToken;
+
+    private Boolean confirmed;
+
 }

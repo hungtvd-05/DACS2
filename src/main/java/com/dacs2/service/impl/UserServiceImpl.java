@@ -48,8 +48,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDtls confirmEmail(String confirmToken) {
+        UserDtls user = userRepository.findByConfirmToken(confirmToken);
+        user.setConfirmed(true);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public UserDtls addUser(UserDtls user) {
+        UserDtls findUser = userRepository.findByEmail(user.getEmail());
+        if (ObjectUtils.isEmpty(findUser)) {
+            user.setRole("ROLE_USER");
+            user.setIsEnable(true);
+            user.setAccountNonLocked(true);
+            user.setFailedAttempt(0);
+            String encodePassword =  passwordEncoder.encode(user.getPassword());
+            user.setPassword(encodePassword);
+            user.setConfirmed(false);
+            return userRepository.save(user);
+        }
+        return findUser;
+    }
+
+    @Override
     public UserDtls getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+        return userRepository.findByEmailAndConfirmed(email, true);
     }
 
     @Override
@@ -110,9 +133,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUserResetToken(String email, String resetToken) {
-        UserDtls user = userRepository.findByEmail(email);
+        UserDtls user = userRepository.findByEmailAndConfirmed(email, true);
         user.setResetToken(resetToken);
         userRepository.save(user);
+    }
+
+    @Override
+    public void updateConfirmEmailToken(String email, String confirmToken) {
+        UserDtls user = userRepository.findByEmailAndConfirmed(email, false);
+        if (!ObjectUtils.isEmpty(user)) {
+            user.setConfirmToken(confirmToken);
+            userRepository.save(user);
+        }
     }
 
     @Override
@@ -189,7 +221,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean existsEmail(String email) {
-        if (ObjectUtils.isEmpty(userRepository.findByEmail(email))) {
+        if (ObjectUtils.isEmpty(userRepository.findByEmailAndConfirmed(email, true))) {
             return false;
         }
         return true;

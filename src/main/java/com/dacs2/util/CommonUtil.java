@@ -17,6 +17,26 @@ public class CommonUtil {
     @Autowired
     private JavaMailSender mailSender;
 
+    public Boolean sendConfirmEmail(String url, String email) throws MessagingException, UnsupportedEncodingException {
+
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+
+        helper.setFrom("hungtvd.26@gmail.com", "Shoping cart");
+        helper.setTo(email);
+
+        String content = "<p>Hello.</p>" +
+                "<p>Bạn đã yêu cầu đăng ký tài khoản.</p>" +
+                "<p>Hãy bấm vào link này để xác nhận tạo tài khoản: </p>" +
+                "<p><a href = \"" + url + "\">Link xác nhận tài khoản</a></p>";
+
+        helper.setSubject("Xác nhận tài khoản");
+        helper.setText(content, true);
+        mailSender.send(mimeMessage);
+
+        return true;
+    }
+
     public Boolean sendMail(String url, String email) throws MessagingException, UnsupportedEncodingException {
 
         MimeMessage mimeMessage = mailSender.createMimeMessage();

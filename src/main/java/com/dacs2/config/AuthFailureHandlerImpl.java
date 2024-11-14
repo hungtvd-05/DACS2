@@ -29,7 +29,7 @@ public class AuthFailureHandlerImpl extends SimpleUrlAuthenticationFailureHandle
 
         String  email = request.getParameter("username");
 
-        UserDtls userDtls = userRepository.findByEmail(email);
+        UserDtls userDtls = userRepository.findByEmailAndConfirmed(email, true);
 
         if (userDtls != null) {
             if (userDtls.getIsEnable()) {

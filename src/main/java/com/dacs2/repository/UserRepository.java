@@ -11,6 +11,8 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<UserDtls, Integer> {
 
+    public UserDtls findByEmailAndConfirmed(String email, Boolean confirmed);
+
     public UserDtls findByEmail(String email);
 
     public Page<UserDtls> findByRole(Pageable pageable, String role);
@@ -29,4 +31,5 @@ public interface UserRepository extends JpaRepository<UserDtls, Integer> {
 
     public UserDtls findByResetToken(String token);
 
+    UserDtls findByConfirmToken(String confirmToken);
 }
