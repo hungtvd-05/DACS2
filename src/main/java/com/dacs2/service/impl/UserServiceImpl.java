@@ -82,16 +82,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean updateAccountStatus(Integer id, Boolean status) {
+    public UserDtls updateAccountStatus(Integer id, Boolean status) {
         Optional<UserDtls> findByuser = userRepository.findById(id);
 
         if (findByuser.isPresent()) {
             UserDtls userDtls = findByuser.get();
             userDtls.setIsEnable(status);
             userRepository.save(userDtls);
-            return true;
+            return userDtls;
         }
-        return false;
+        return null;
     }
 
     @Override

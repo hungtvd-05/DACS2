@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{base::layout(~{::section})}">>
+      th:replace="~{admin/base::layout(~{::section})}">>
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
@@ -9,7 +9,7 @@
 <section>
   <link rel="stylesheet" th:href="@{/css/table.css}">
 
-  <div class="content1 mt-5">
+  <div class="content1">
     <div class="row">
       <div class="col-md-9">
         <p class="text-center fs-4">Danh mục</p>
@@ -36,9 +36,13 @@
               <img th:src="@{'/img/category_img/' + ${cat.imageName}}" width="50px" height="50px">
             </td>
             <td data-label="Trạng thái" th:text="${cat.isActive ? 'Hiện' : 'Ẩn'}"></td>
-            <td>
+            <td class="text-end">
               <a th:href="@{'/admin/sua-danh-muc/' + ${cat.id}}" class="btn btn-primary btn-sm"><i class="fa-solid fa-pen-to-square"></i>Sửa</a>
-              <a th:href="@{'/admin/xoa-danh-muc/' + ${cat.id}}" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i>Xóa</a>
+              <a href="javascript:void(0)"
+                 class="btn btn-danger btn-sm delete-btn"
+                 th:data-id="${cat.id}">
+                <i class="fa-solid fa-trash"></i>Xóa
+              </a>
             </td>
           </tr>
           </tbody>
@@ -92,6 +96,38 @@
       </div>
     </div>
   </div>
+
+  <script>
+    $(document).ready(function() {
+
+      $('.delete-btn').click(function() {
+        var btn = $(this);
+        var id = btn.data('id');
+        var row = btn.closest('tr');
+
+        $.ajax({
+          url: '/api/xoa-danh-muc',
+          method: 'GET',
+          data: {
+            id: id
+          },
+          success: function(response) {
+            if (response && response.isDelete) {
+              row.fadeOut(200, function() {
+                $(this).remove();
+              });
+            }
+
+          },
+          error: function(xhr, status, error) {
+            console.error('Error loading revenue data:', error);
+            $("#error-message").show().text('Không thể tải dữ liệu. Vui lòng thử lại sau.');
+          }
+        });
+
+      });
+    })
+  </script>
 </section>
 </body>
 </html>

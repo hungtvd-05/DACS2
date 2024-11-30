@@ -2,8 +2,6 @@ package com.dacs2.controller;
 
 import com.dacs2.model.*;
 import com.dacs2.service.*;
-import com.dacs2.util.OrderStatus;
-import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,16 +15,12 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("/admin")
@@ -57,6 +51,12 @@ public class AdminController {
     @Autowired
     private NewsService newsService;
 
+    @Autowired
+    private WebInfoService webInfoService;
+
+    @Autowired
+    private BrandService brandService;
+
     @ModelAttribute
     public void getUserDetails(Principal p, Model m) {
 
@@ -65,6 +65,7 @@ public class AdminController {
             UserDtls userDtls = userService.getUserByEmail(email);
             m.addAttribute("user", userDtls);
             m.addAttribute("countCart", cartService.getCountCart(userDtls.getId()));
+            m.addAttribute("webInfo", webInfoService.getWebInfo());
         }
 
         m.addAttribute("categorys", categoryService.getCategoryByIsActive());
@@ -99,7 +100,7 @@ public class AdminController {
                 session.setAttribute("errorMsg", "Dữ liệu chưa được lưu!");
             } else {
 
-                Path path = Paths.get(imgPath + File.separator + "category_img" + File.separator + savedCategory.getId() + "_" + file.getOriginalFilename());
+                Path path = Paths.get(imgPath + File.separator + "category_img" + File.separator + file.getOriginalFilename());
 
                 Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
@@ -107,18 +108,6 @@ public class AdminController {
             }
         }
 
-        return "redirect:/admin/danh-muc";
-    }
-
-    @GetMapping("/xoa-danh-muc/{id}")
-    public String deleteCategory(@PathVariable long id, HttpSession session) {
-        Boolean deleteCategory = categoryService.deleteCategory(id);
-
-        if (deleteCategory) {
-            session.setAttribute("succMsg", "Danh mục đã được xóa");
-        } else {
-            session.setAttribute("errorMsg", "Lỗi");
-        }
         return "redirect:/admin/danh-muc";
     }
 
@@ -135,7 +124,7 @@ public class AdminController {
         String imageName = file.isEmpty() ? category1.getImageName():file.getOriginalFilename();
 
         if (!ObjectUtils.isEmpty(category)) {
-            category1.setName(category.getName());
+            category1.setName(category.getName().trim());
             category1.setIsActive(category.getIsActive());
             category1.setImageName(imageName);
         }
@@ -145,7 +134,7 @@ public class AdminController {
         if (!ObjectUtils.isEmpty(updateCategory)) {
 
             if (!file.isEmpty()) {
-                Path path = Paths.get(imgPath + File.separator + "category_img" + File.separator + category.getId() + "_" + file.getOriginalFilename());
+                Path path = Paths.get(imgPath + File.separator + "category_img" + File.separator + file.getOriginalFilename());
 
                 Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
             }
@@ -155,6 +144,57 @@ public class AdminController {
         }
 
         return "redirect:/admin/sua-danh-muc/" + category.getId();
+    }
+
+    @GetMapping("/thuong-hieu")
+    public String brand(Model m) {
+        m.addAttribute("brands", brandService.getAllBrand());
+        return "admin/brand";
+    }
+
+    @PostMapping("/luu-thuong-hieu")
+    public String saveBrand(@ModelAttribute Brand brand, HttpSession session) {
+
+        brand.setName(brand.getName().trim());
+
+        Boolean existBrand = brandService.existBrand(brand.getName());
+
+        if (existBrand) {
+            session.setAttribute("errorMsg", "Tên thương hiệu đã tồn tại.");
+        } else {
+
+            Brand savedBrand = brandService.save(brand);
+
+            if (ObjectUtils.isEmpty(savedBrand)) {
+                session.setAttribute("errorMsg", "Đã thêm tên thương hiệu!");
+            } else {
+                session.setAttribute("succMsg", "Dữ liệu đã được lưu!");
+            }
+        }
+
+        return "redirect:/admin/thuong-hieu";
+    }
+
+    @GetMapping("/sua-thuong-hieu/{id}")
+    public String loadEditBrand(@PathVariable Integer id, Model m) {
+        m.addAttribute("brand", brandService.getBrandById(id));
+        return "admin/edit_brand";
+    }
+
+    @PostMapping("/cap-nhat-thuong-hieu")
+    public String updateBrand(@ModelAttribute Brand brand, HttpSession session) {
+
+        brand.setName(brand.getName().trim());
+
+        Brand savedBrand = brandService.save(brand);
+
+        if (!ObjectUtils.isEmpty(savedBrand)) {
+            session.setAttribute("succMsg", "Đã cập nhật thương hiệu");
+        } else {
+            session.setAttribute("errorMsg", "Lỗi");
+        }
+
+        return "redirect:/admin/sua-thuong-hieu/" + brand.getId();
     }
 
     @GetMapping("/san-pham")
@@ -177,24 +217,15 @@ public class AdminController {
     public String loadAddProduct(Model m) {
         List<Category> categories = categoryService.getAllCategory();
         m.addAttribute("categories", categories);
+        m.addAttribute("brands", brandService.getAllBrand());
         return "admin/add_product";
-    }
-
-    @GetMapping("/xoa-san-pham/{id}")
-    public String deleteProduct(@PathVariable int id, HttpSession session) {
-        Boolean deleteProduct = productService.deleteProduct(id);
-        if (deleteProduct) {
-            session.setAttribute("succMsg", "Danh mục đã được xóa");
-        } else {
-            session.setAttribute("errorMsg", "Lỗi");
-        }
-        return "redirect:/admin/san-pham";
     }
 
     @GetMapping("/sua-san-pham/{id}")
     public String loadEditProduct(@PathVariable int id, Model m) {
         m.addAttribute("product", productService.getProductById(id));
         m.addAttribute("categories", categoryService.getAllCategory());
+        m.addAttribute("brands", brandService.getAllBrand());
         return "admin/edit_product";
     }
 
@@ -204,9 +235,7 @@ public class AdminController {
     }
 
     @PostMapping("/luu-san-pham")
-    public String saveProduct(@ModelAttribute Product product, @RequestParam(value = "imageNames", required = false) String fileNames, HttpSession session) throws IOException {
-        int productId = productService.getMaxProductId() + 1;
-
+    public String saveProduct(@ModelAttribute Product product, @RequestParam("brand") Integer brandId, @RequestParam("category") Long categoryId, @RequestParam(value = "imageNames", required = false) String fileNames, HttpSession session) throws IOException {
         String[] imageNames = fileNames.replace("\"", "").split(",");
         ArrayList<String> newImageNames = new ArrayList<>();
 
@@ -214,13 +243,14 @@ public class AdminController {
         String targetPath = imgPath + File.separator + "product_img" + File.separator;
 
         for (String imageName : imageNames) {
-            Files.move(Paths.get(sourcePath + imageName), Paths.get(targetPath + productId + "_" + imageName), StandardCopyOption.REPLACE_EXISTING);
-            newImageNames.add(productId + "_" + imageName);
+            Files.move(Paths.get(sourcePath + imageName), Paths.get(targetPath + imageName), StandardCopyOption.REPLACE_EXISTING);
+            newImageNames.add(imageName);
         }
         
         product.setAnh(newImageNames.toString().replace("[", "").replace("]",""));
         product.setGiasale(product.getGia() * (100 - product.getSale()) / 100);
-
+        product.setDanhmuc(categoryService.getCategoryById(categoryId));
+        product.setBrand(brandService.getBrandById(brandId));
         Product saveProduct = productService.saveProduct(product);
 
         if (!ObjectUtils.isEmpty(saveProduct)) {
@@ -233,15 +263,13 @@ public class AdminController {
     }
 
     @PostMapping("/cap-nhat-san-pham")
-    public String updateProduct(@ModelAttribute Product product, @RequestParam(value = "imageNames", required = false) String fileNames, HttpSession session) throws IOException {
+    public String updateProduct(@ModelAttribute Product product, @RequestParam("brand") Integer brandId, @RequestParam("category") Long categoryId, @RequestParam(value = "imageNames", required = false) String fileNames, HttpSession session) throws IOException {
         int index;
         int productId = product.getId();
         Product product1 = productService.getProductById(productId);
 
         String[] imageNames = fileNames.replace("\"", "").split(",");
         ArrayList<String> newImageNames = new ArrayList<>();
-
-        System.out.println(1);
 
 //        list ảnh cũ
         List<String> listAnhCu = new ArrayList<>(Arrays.asList(product1.getArrayAnh()));
@@ -262,25 +290,22 @@ public class AdminController {
         }
 
         for (String imageName : listAnhCu) {
-            System.out.println(imageName);
             Files.deleteIfExists(Paths.get(targetPath + imageName));
         }
-        System.out.println(2);
 
         product1.setTen(product.getTen());
         product1.setGia(product.getGia());
         product1.setMota(product.getMota());
         product1.setSoluong(product.getSoluong());
-        product1.setDanhmuc(product.getDanhmuc());
+        product1.setDanhmuc(categoryService.getCategoryById(categoryId));
+        product1.setBrand(brandService.getBrandById(brandId));
         product1.setAnh(product.getAnh());
         product1.setTrangthai(product.getTrangthai());
         product1.setSale(product.getSale());
         product1.setGiasale(product.getGia() * (100 - product.getSale()) / 100);
         product1.setAnh(newImageNames.toString().replace("[", "").replace("]",""));
-        System.out.println(3);
 
         Product updateProduct = productService.saveProduct(product1);
-        System.out.println(4);
 
         if (!ObjectUtils.isEmpty(updateProduct)) {
             session.setAttribute("succMsg", "Sản phẩm đã cập nhật.");
@@ -357,20 +382,6 @@ public class AdminController {
         return "/admin/users";
     }
 
-    @GetMapping("/updateSts")
-    public String updateUserAccount(@RequestParam Boolean status, @RequestParam String role, @RequestParam Integer id, HttpSession session) throws IOException {
-        Boolean f = userService.updateAccountStatus(id, status);
-        if (f) {
-            session.setAttribute("succMsg", "Trạng thái của tài khoản đã được cập nhật!");
-        } else {
-            session.setAttribute("errorMsg", "Lỗi!");
-        }
-        if (role == "ROLE_USER") {
-            return "redirect:/admin/users";
-        }
-        return "redirect:/admin/admin";
-    }
-
     @GetMapping("/don-hang")
     public String getAllOrders(Model m,
                                @RequestParam(name = "trang", defaultValue = "1") Integer pageNumber,
@@ -391,34 +402,6 @@ public class AdminController {
         return "/admin/orders";
     }
 
-    @PostMapping("/update-order-status")
-    public String updateOrderStatus(@RequestParam String searchOrderId, @RequestParam Integer id, @RequestParam Integer st, @RequestParam Integer trang, HttpSession session) throws MessagingException, UnsupportedEncodingException {
-        OrderStatus[] values = OrderStatus.values();
-        String status = null;
-
-        for (OrderStatus os : values) {
-            if (os.getId().equals(st)) {
-                status = os.getName();
-            }
-        }
-
-        if (!ObjectUtils.isEmpty(orderService.updateOrderStatus(id, status))) {
-            session.setAttribute("succMsg", "Đã cập nhật đơn hàng!");
-        } else {
-            session.setAttribute("succMsg", "Không thể cập nhật đơn hàng!");
-        }
-
-        if (searchOrderId.trim().isEmpty()) {
-            return "redirect:/admin/don-hang";
-        } else {
-            if (trang != null) {
-                return "redirect:/admin/search-don-hang?orderId=" + searchOrderId + "&trang=" + trang;
-            }
-            return "redirect:/admin/search-don-hang?orderId=" + searchOrderId;
-        }
-
-    }
-
     @GetMapping("/search-don-hang")
     public String searchOrderProduct(@RequestParam String orderId, Model m,
                                      @RequestParam(name = "trang", defaultValue = "1") Integer pageNumber,
@@ -428,12 +411,6 @@ public class AdminController {
         }
 
         Page<Orders> page = orderService.searchOrderByOrderIdPagination(pageNumber - 1, pageSize, orderId.trim());
-
-        if (ObjectUtils.isEmpty(page.getContent())) {
-            m.addAttribute("searchResult", false);
-        } else {
-            m.addAttribute("searchResult", true);
-        }
 
         m.addAttribute("search", true);
         m.addAttribute("orders", page.getContent());
@@ -455,12 +432,6 @@ public class AdminController {
             return "redirect:/admin/san-pham";
         }
         Page<Product> page = productService.searchProdcutOnAdmin(pageNumber - 1, pageSize, ch.trim());
-
-        if (ObjectUtils.isEmpty(page.getContent())) {
-            m.addAttribute("searchResult", false);
-        } else {
-            m.addAttribute("searchResult", true);
-        }
 
         m.addAttribute("search", true);
         m.addAttribute("products", page.getContent());
@@ -562,7 +533,14 @@ public class AdminController {
     }
 
     @PostMapping("/save-news")
-    public String saveNews(@ModelAttribute News news, HttpSession session) {
+    public String saveNews(@ModelAttribute News news, @RequestParam("file") MultipartFile file, HttpSession session) throws IOException {
+
+        if (!file.isEmpty()) {
+            news.setImageName(file.getOriginalFilename());
+            Path path = Paths.get(imgPath + File.separator + "news" + File.separator + file.getOriginalFilename());
+
+            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+        }
 
         if (!ObjectUtils.isEmpty(newsService.saveNews(news))) {
             session.setAttribute("succMsg", "Đã thêm bài viết!");
@@ -627,13 +605,21 @@ public class AdminController {
     }
 
     @PostMapping("/update-news")
-    public String updateNews(@ModelAttribute News news, HttpSession session) {
+    public String updateNews(@ModelAttribute News news, @RequestParam("file") MultipartFile file, HttpSession session) throws IOException {
         News updateNews = newsService.getNewsById(news.getId());
+
+        if (!file.isEmpty()) {
+            updateNews.setImageName(file.getOriginalFilename());
+            Path path = Paths.get(imgPath + File.separator + "news" + File.separator + file.getOriginalFilename());
+
+            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+        }
 
         if (!ObjectUtils.isEmpty(news)) {
             updateNews.setTitle(news.getTitle());
             updateNews.setContent(news.getContent());
             updateNews.setStatus(news.getStatus());
+            updateNews.setStyle(news.getStyle());
         }
 
         if (!ObjectUtils.isEmpty(newsService.updateNews(updateNews))) {
@@ -646,15 +632,25 @@ public class AdminController {
 
     }
 
-    @GetMapping("/delete-news/{id}")
-    public String deleteNews(@PathVariable Integer id, HttpSession session) {
-        if (newsService.deleteNews(id)) {
-            session.setAttribute("succMsg", "Bài viết đã được xóa!");
-        } else {
-            session.setAttribute("errorMsg", "Lỗi!");
-        }
+    @GetMapping("/danh-gia")
+    public String danhGia() {
+        return "/admin/rating";
+    }
 
-        return "redirect:/admin/bai-viet";
+    @GetMapping("/khac")
+    public String other() {
+        return "/admin/other";
+    }
+
+    @PostMapping("/update-webcomponents")
+    public String updateWebComponents(@ModelAttribute WebInfo webInfo, @RequestParam(value = "img", required = false) MultipartFile img, HttpSession session) throws IOException {
+
+        if (!ObjectUtils.isEmpty(webInfoService.updateWebInfo(webInfo, img))) {
+            session.setAttribute("succMsg", "Đã cập nhật thông tin website của bạn!");
+        } else {
+            session.setAttribute("errorMsg", "Lỗi cập nhật!");
+        }
+        return "redirect:/admin/khac";
     }
 
 }

@@ -36,4 +36,8 @@ public class ProductOrder {
         return NumberFormat.getCurrencyInstance(new Locale("vi", "VN")).format(quantity * price);
     }
 
+    @ManyToOne
+    @JoinColumn(name = "rating_id")
+    private Rating rating;
+
 }

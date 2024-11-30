@@ -28,7 +28,11 @@ public class Product {
     @Column(columnDefinition = "TEXT")
     private String mota;
 
-    private String danhmuc;
+    @ManyToOne
+    private Category danhmuc;
+
+    @ManyToOne
+    private Brand brand;
 
     private Double gia;
 
@@ -52,6 +56,14 @@ public class Product {
 
     public String getGiaSaleFormatted() {
         return NumberFormat.getCurrencyInstance(new Locale("vi", "VN")).format(giasale);
+    }
+
+    private int soluongDanhgia;
+
+    private int tongsoSao;
+
+    public Double getRating() {
+        return tongsoSao * 1.0 / soluongDanhgia;
     }
 
 }

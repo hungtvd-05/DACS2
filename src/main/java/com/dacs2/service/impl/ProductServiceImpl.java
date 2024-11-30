@@ -1,6 +1,7 @@
 package com.dacs2.service.impl;
 
 import com.dacs2.model.Product;
+import com.dacs2.repository.CategoryRepository;
 import com.dacs2.repository.ProductRepository;
 import com.dacs2.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +20,12 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @Override
     public Product saveProduct(Product product) {
         return productRepository.save(product);
-    }
-
-    @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
     }
 
     @Override
@@ -42,34 +41,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getProductById(int id) {
+    public Product getProductById(Integer id) {
         return productRepository.findById(id).orElse(null);
     }
 
     @Override
-    public int getMaxProductId() {
-        return productRepository.findMaxId();
-    }
-
-    @Override
     public List<Product> getProductByDanhMuc(String danhmuc) {
-        return productRepository.findByDanhmucAndTrangthai(danhmuc, true);
-    }
-
-    @Override
-    public List<Product> getAllProductsForHome(String danhmuc) {
-        List<Product> products = null;
-        if (ObjectUtils.isEmpty(danhmuc)) {
-            products = productRepository.findAllProductsForHome();
-        } else {
-            products = productRepository.findByDanhmucAndTrangthai(danhmuc, true);
-        }
-        return products;
-    }
-
-    @Override
-    public List<Product> searchProduct(String ch) {
-        return productRepository.findByTenContainingIgnoreCaseOrDanhmucContainingIgnoreCase(ch, ch);
+        return productRepository.findByDanhmucAndTrangthai(categoryRepository.findByName(danhmuc), true);
     }
 
     public static Integer convertToNumber(String str) {
@@ -83,21 +61,23 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<Product> searchProdcutOnAdmin(Integer pageNumber, Integer pageSize, String ch) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "id"));
-        return productRepository.findByIdOrTenContainingIgnoreCaseOrDanhmucContainingIgnoreCase(pageable, convertToNumber(ch), ch, ch);
+        return productRepository.findByKeywordForAdmin(pageable, convertToNumber(ch), ch);
     }
 
     @Override
-    public Page<Product> getAllProductsForHomePagination(Integer pageNumber, Integer pageSize, String danhmuc) {
+    public Page<Product> getAllProductsForHomePagination(Integer pageNumber, Integer pageSize, String danhmuc, String thuonghieu) {
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<Product> pageProduct = null;
-        if (ObjectUtils.isEmpty(danhmuc)) {
-            pageProduct = productRepository.findAllProductsForHome(pageable);
-        } else {
-            pageProduct = productRepository.findByDanhmucAndTrangthai(pageable, danhmuc, true);
-        }
 
-        return pageProduct;
+        if (!ObjectUtils.isEmpty(danhmuc) && !ObjectUtils.isEmpty(thuonghieu)) {
+            return productRepository.findByDanhmuc_NameAndBrand_NameAndTrangthaiTrue(pageable, danhmuc, thuonghieu);
+        } else if (!ObjectUtils.isEmpty(danhmuc)) {
+            return productRepository.findByDanhmuc_NameAndTrangthaiTrue(pageable, danhmuc);
+        } else if (!ObjectUtils.isEmpty(thuonghieu)) {
+            return productRepository.findByBrand_NameAndTrangthaiTrue(pageable, thuonghieu);
+        } else {
+            return productRepository.findByDanhmuc_IsActiveTrueAndBrand_StatusTrueAndTrangthaiTrue(pageable);
+        }
     }
 
     @Override
@@ -105,10 +85,9 @@ public class ProductServiceImpl implements ProductService {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<Product> pageProduct = null;
         if (ObjectUtils.isEmpty(ch)) {
-            pageProduct = productRepository.findAllProductsForHome(pageable);
+            pageProduct = productRepository.findByDanhmuc_IsActiveTrueAndTrangthaiTrue(pageable);
         } else {
-//            pageProduct = productRepository.findByTenContainingIgnoreCaseOrDanhmucContainingIgnoreCase(pageable, ch, ch);
-            pageProduct = productRepository.findByKeyword(pageable, ch);
+            pageProduct = productRepository.findByKeywordForHome(pageable, ch);
         }
         return pageProduct;
     }
@@ -117,5 +96,10 @@ public class ProductServiceImpl implements ProductService {
     public Page<Product> getAllProductsPagination(Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "id"));
         return productRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<Product> getProductForView(Integer id) {
+        return productRepository.getProductForView(id);
     }
 }

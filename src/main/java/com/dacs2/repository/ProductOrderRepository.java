@@ -9,4 +9,6 @@ public interface ProductOrderRepository extends JpaRepository<ProductOrder, Inte
 
     public List<ProductOrder> findByOrderId(String orderId);
 
+    public List<ProductOrder> findByRatingIsNotNull();
+
 }

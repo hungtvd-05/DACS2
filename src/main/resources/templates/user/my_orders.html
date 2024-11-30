@@ -42,13 +42,17 @@
                                 <td th:text="${order.getDateFormatted()}"></td>
                                 <td th:text="${order.getOrderName()}" style="white-space: pre-wrap; word-wrap: break-word;"></td>
                                 <td th:text="${order.getTotalPriceFormatted()}"></td>
-                                <td th:text="${order.getStatus()}"></td>
+                                <td><span class="orderStatus" th:data-order-id="${order.id}">[[${order.getStatus()}]]</span></td>
                                 <td>
-                                    <th:block th:if="${order.status!='Đã hủy!'}">
-                                        <a th:href="@{'/user/update-status?id='+${order.id}+'&st=6' }" class="btn btn-sm btn-danger">Hủy</a>
+                                    <a class="btn btn-sm btn-primary" th:href="@{'/user/xem-don-hang/id=' + ${order.getOrderId()}}">Xem chi tiết</a>
+                                    <th:block th:if="${order.status!='Đã hủy!' && order.status!='Đã vận chuyển thành công!'}">
+                                        <button class="btn btn-sm btn-danger update-status-btn"
+                                                th:data-order-id="${order.id}">Hủy
+                                        </button>
                                     </th:block>
-                                    <th:block th:unless="${order.status!='Đã hủy!'}">
-                                        <a href="" class="btn btn-sm btn-danger disabled">Hủy</a>
+                                    <a class="btn btn-sm btn-danger cancelBtn disabled" th:data-order-id="${order.id}" hidden="hidden">Hủy</a>
+                                    <th:block th:unless="${order.status!='Đã hủy!' && order.status!='Đã vận chuyển thành công!'}">
+                                        <a class="btn btn-sm btn-danger disabled">Hủy</a>
                                     </th:block>
                                 </td>
                             </tr>
@@ -59,6 +63,41 @@
             </div>
         </div>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+
+            $('.update-status-btn').click(function() {
+                var btn = $(this);
+                var orderId = btn.data('order-id');
+                var statusSpan = $(`span.orderStatus[data-order-id="${orderId}"]`);
+                var cancelBtn = $(`a.cancelBtn[data-order-id="${orderId}"]`);
+                $.ajax({
+                    url: '/api/update-order-status',
+                    method: 'GET',
+                    data: {
+                        id: orderId,
+                        st: 6
+                    },
+                    success: function(response) {
+                        if (response && response.statusName) {
+                            btn.hide();
+                            cancelBtn.prop('hidden', false);
+                            statusSpan.fadeOut(200, function() {
+                                $(this).text(response.statusName).fadeIn(200);
+                            });
+                        }
+
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error loading revenue data:', error);
+                        $("#error-message").show().text('Không thể tải dữ liệu. Vui lòng thử lại sau.');
+                    }
+                });
+            });
+        })
+
+    </script>
 </section>
 </body>
 </html>

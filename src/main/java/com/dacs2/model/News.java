@@ -31,8 +31,12 @@ public class News {
 
     private Date date;
 
+    private String imageName;
+
     public String getDateFormatted() {
         return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
     }
+
+    public String style;
 
 }

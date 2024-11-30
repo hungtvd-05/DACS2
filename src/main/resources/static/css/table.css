@@ -64,6 +64,7 @@ table th {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: normal;
+    justify-content: center;
 }
 
 .ten {

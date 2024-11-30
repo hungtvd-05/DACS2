@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class NewsServiceImpl implements NewsService {
@@ -49,6 +50,12 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
+    public Page<News> getAllNewsForHome(Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+        return newsRepository.findByStatusTrue(pageable);
+    }
+
+    @Override
     public News getNewsById(int id) {
         return newsRepository.findById(id).orElse(null);
     }
@@ -57,5 +64,10 @@ public class NewsServiceImpl implements NewsService {
     public Page<News> searchNews(String keyword, Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         return newsRepository.findByTitleContainingIgnoreCase(keyword, pageable);
+    }
+
+    @Override
+    public List<News> getNewsByStyle(String style) {
+        return newsRepository.findByStyle(style);
     }
 }

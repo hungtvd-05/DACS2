@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="Description" content="Enter your description here"/>
+
+    <title>Title</title>
+</head>
+<body>
+<section>
+<!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.min.css" rel="stylesheet">-->
+
+    <!--    <link rel="stylesheet" th:href="@{/css/table.css}">-->
+    <style>
+        /*.input-group, input.test-value-input {*/
+        /*    max-width: 130px;*/
+        /*}*/
+
+        .cart-page {
+            margin: 50px 0px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .cart-info {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        th {
+            text-align: left;
+            padding: 5px;
+            color: #fff;
+            background: #ff523b;
+            font-weight: normal;
+        }
+
+        td {
+            padding: 5px 5px;
+            text-align: left;
+        }
+
+        td a {
+            color: #ff523b;
+            text-decoration: none;
+        }
+
+        td p {
+            margin: 0;
+        }
+
+        .total-price {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .total-price table {
+            border-top: 3px solid #ff532b;
+            width: 100%;
+            max-width: 350px;
+        }
+
+        /* Ẩn input radio */
+        .rating-stars input[type="radio"] {
+            display: none;
+        }
+
+        /* Căn chỉnh các sao */
+        .rating-stars {
+            display: inline-flex;
+            flex-direction: row-reverse;
+        }
+
+        .rating-stars label {
+            cursor: pointer;
+            padding: 0 2px;
+        }
+
+        /* Hiệu ứng hover */
+        .rating-stars label:hover i,
+        .rating-stars label:hover ~ label i {
+            font-weight: 900; /* Chuyển thành sao đặc khi hover */
+            color: #ffc107 !important; /* Màu vàng khi hover */
+        }
+
+        /* Kiểu cho sao đã được chọn */
+        .rating-stars input[type="radio"]:checked ~ label i {
+            font-weight: 900; /* Sao đặc */
+            color: #ffc107 !important; /* Màu vàng */
+        }
+
+        /* Thêm hiệu ứng transition cho mượt */
+        .rating-stars label i {
+            transition: all 0.2s ease;
+        }
+
+        /* Hiệu ứng scale khi hover (tùy chọn) */
+        .rating-stars label:hover i {
+            transform: scale(1.1);
+        }
+
+        .star {
+            cursor: pointer;
+        }
+
+        .star.selected i {
+            font-weight: 900;
+            color: #ffc107;
+        }
+
+    </style>
+    <div class="container-fluid my-5">
+        <div class="text-center">
+            <h4 class="m-0">Hóa đơn chi tiết</h4>
+            <th:block th:if="${session.succMsg}">
+                <p class="text-success fw-bold">[[${session.succMsg}]]</p>
+                <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+            </th:block>
+
+            <th:block th:if="${session.errorMsg}">
+                <p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+                <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+            </th:block>
+        </div>
+        <div th:if="${listProductOrders.size() == 0}" class="text-center">Giỏ hàng rỗng!</div>
+        <div class="text-center empty-cart-message" hidden="hidden">Giỏ hàng rỗng!</div>
+        <div th:if="${listProductOrders.size() > 0}" class="text-center not-empty-card container-xxl">
+            <input type="hidden" id="id" name="id" th:value="${user.id}">
+            <table class=" cart-page">
+                <thead>
+                <tr>
+                    <th width="85px">Sản phẩm</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="productOrder:${listProductOrders}">
+                    <td>
+                        <div class="cart-info">
+                            <img th:src="@{'/img/product_img/' + ${productOrder.getProduct().getArrayAnh()[0]}}" width="100px" height="100px">
+
+                        </div>
+                    </td>
+                    <td>
+                        <p>[[${productOrder.getProduct().getTen()}]]</p>
+                        <small>Giá: [[${productOrder.getProduct().getGiaSaleFormatted()}]] x [[${productOrder.quantity}]] = [[${productOrder.getTotalPriceFormatted()}]]</small>
+                        <br>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <a th:if="${productOrder.rating == null}"
+                               href="javascript:void(0)"
+                               class="comment-btn"
+                               th:data-product-id="${productOrder.id}"
+                               th:data-product-image="${productOrder.getProduct().getArrayAnh()[0]}"
+                               th:data-product-name="${productOrder.getProduct().ten}"
+                               th:data-product-price="${productOrder.getProduct().getGiaSaleFormatted()}"
+                               th:data-total-price="${productOrder.getTotalPriceFormatted()}"
+                               th:data-quantity="${productOrder.quantity}"
+                               data-bs-toggle="modal"
+                               data-bs-target="#sent-modal" data-target=".bd-example-modal-lg">Đánh giá
+                            </a>
+
+                            <a hidden="hidden" data-bs-toggle="modal"
+                               data-bs-target="#check-modal" data-target=".bd-example-modal-lg"
+                               href="javascript:void(0)"
+                               class="check-comment-btn"
+                               th:data-product-order-id="${productOrder.id}">
+                                <div class="rating" th:data-product-order-id="${productOrder.id}">
+                                    <label class="star">
+                                        <i class="far fa-star fa-sm"></i>
+                                    </label>
+                                    <label class="star">
+                                        <i class="far fa-star fa-sm"></i>
+                                    </label>
+                                    <label class="star">
+                                        <i class="far fa-star fa-sm"></i>
+                                    </label>
+                                    <label class="star">
+                                        <i class="far fa-star fa-sm"></i>
+                                    </label>
+                                    <label class="star">
+                                        <i class="far fa-star fa-sm"></i>
+                                    </label>
+                                </div>
+                            </a>
+
+                            <th:block th:if="${productOrder.rating != null}">
+                                <a data-bs-toggle="modal"
+                                   data-bs-target="#check-modal" data-target=".bd-example-modal-lg"
+                                   href="javascript:void(0)"
+                                   class="check-comment-btn"
+                                   th:data-product-order-id="${productOrder.id}">
+                                    <div>
+                                        <label th:class="${productOrder.rating.rating >= 1} ? 'star selected' : 'star'">
+                                            <i class="far fa-star fa-sm"></i>
+                                        </label>
+                                        <label th:class="${productOrder.rating.rating >= 2} ? 'star selected' : 'star'">
+                                            <i class="far fa-star fa-sm"></i>
+                                        </label>
+                                        <label th:class="${productOrder.rating.rating >= 3} ? 'star selected' : 'star'">
+                                            <i class="far fa-star fa-sm"></i>
+                                        </label>
+                                        <label th:class="${productOrder.rating.rating >= 4} ? 'star selected' : 'star'">
+                                            <i class="far fa-star fa-sm"></i>
+                                        </label>
+                                        <label th:class="${productOrder.rating.rating >= 5} ? 'star selected' : 'star'">
+                                            <i class="far fa-star fa-sm"></i>
+                                        </label>
+                                    </div>
+                                </a>
+                            </th:block>
+
+                            <a th:href="@{'/san-pham/san-pham-id=' + ${productOrder.getProduct().id}}" class="text-primary">Xem sản phẩm</a>
+
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="total-price">
+                <table>
+                    <tr>
+                        <td>Tổng: </td>
+                        <td class="totalPrice">[[${totalPrice}]]</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bd-example-modal-lg" id="sent-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="container py-5 text-body">
+                    <div class="w-100">
+                        <h5>Thêm đánh giá</h5>
+                        <div class="d-flex cart-info-modal">
+                            <img src="" width="80px" height="80px" alt="Product Image" style="margin-right: 10px">
+                            <div>
+                                <h5></h5>
+                                <p></p>
+                            </div>
+                        </div>
+
+                        <div class="rating-stars my-2">
+                            <input type="radio" name="rating" value="5" id="rating-5">
+                            <label for="rating-5" title="5 sao"><i class="far fa-star fa-sm text-danger"></i></label>
+
+                            <input type="radio" name="rating" value="4" id="rating-4">
+                            <label for="rating-4" title="4 sao"><i class="far fa-star fa-sm text-danger"></i></label>
+
+                            <input type="radio" name="rating" value="3" id="rating-3">
+                            <label for="rating-3" title="3 sao"><i class="far fa-star fa-sm text-danger"></i></label>
+
+                            <input type="radio" name="rating" value="2" id="rating-2">
+                            <label for="rating-2" title="2 sao"><i class="far fa-star fa-sm text-danger"></i></label>
+
+                            <input type="radio" name="rating" value="1" id="rating-1" checked>
+                            <label for="rating-1" title="1 sao"><i class="far fa-star fa-sm text-danger"></i></label>
+                        </div>
+
+                        <div data-mdb-input-init class="form-outline">
+                            <textarea class="form-control text-comment" id="text-comment" rows="4"></textarea>
+                        </div>
+                        <div class="text-end mt-3">
+                            <input type="hidden" class="productOrderId">
+                            <a href="javascript:void(0)"
+                               class="sent-comment-btn btn btn-danger"
+                               data-mdb-button-init data-mdb-ripple-init
+                               data-bs-dismiss="modal"
+                               data-bs-target="#sent-modal">Gửi <i class="fas fa-long-arrow-alt-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bd-example-modal-lg" id="check-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="container py-5 text-body">
+                    <div class="w-100">
+                        <h5>Đánh giá</h5>
+                        <div class="d-flex cart-info-modal">
+                            <img src="" width="80px" height="80px" alt="Product Image" style="margin-right: 10px">
+                            <div>
+                                <h5></h5>
+                                <p></p>
+                            </div>
+                        </div>
+
+                        <div class="rating my-2">
+                            <label class="star">
+                                <i class="far fa-star fa-sm"></i>
+                            </label>
+                            <label class="star">
+                                <i class="far fa-star fa-sm"></i>
+                            </label>
+                            <label class="star">
+                                <i class="far fa-star fa-sm"></i>
+                            </label>
+                            <label class="star">
+                                <i class="far fa-star fa-sm"></i>
+                            </label>
+                            <label class="star">
+                                <i class="far fa-star fa-sm"></i>
+                            </label>
+                        </div>
+
+                        <div data-mdb-input-init class="form-outline">
+                            <textarea class="form-control text-comment" id="check-comment" rows="4" style="pointer-events: none;"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+
+        $(document).ready(function() {
+
+            $('.comment-btn').on('click', function() {
+                document.getElementById("text-comment").value = "";
+                var productId = $(this).data('product-id');
+                var productImage = $(this).data('product-image');
+                var productName = $(this).data('product-name');
+                var productPrice = $(this).data('product-price');
+                var productTotalPrice = $(this).data('total-price');
+                var quantity = $(this).data('quantity');
+
+                $('#sent-modal .cart-info-modal img').attr('src', '/img/product_img/' + productImage);
+                $('#sent-modal .cart-info-modal h5').text(productName);
+                $('#sent-modal .cart-info-modal p').text('Giá: ' + productPrice + ' x ' + quantity + ' = ' + productTotalPrice);
+                $('#sent-modal .productOrderId').attr('value', productId);
+            });
+
+            $('.check-comment-btn').on('click', function() {
+                var productOrderId = $(this).data('product-order-id');
+                $.ajax({
+                    url: '/api/getProductOrder',
+                    method: 'GET',
+                    data: {
+                        productOrderId: productOrderId
+                    },
+                    success: function(response) {
+                        if (response && response.productImage && response.productName &&
+                            response.productPrice && response.quantity && response.productTotalPrice) {
+                            const labels = document.querySelectorAll(`#check-modal .rating label`);
+                            labels.forEach(label => {
+                                label.classList.remove('selected');
+                            });
+                            for (let i = 0; i < response.rating; i++) {
+                                labels[i].classList.add('selected');
+                            }
+                            $('#check-modal .cart-info-modal img').attr('src', '/img/product_img/' + response.productImage);
+                            $('#check-modal .cart-info-modal h5').text(response.productName);
+                            $('#check-modal .cart-info-modal p').text('Giá: ' + response.productPrice + ' x ' + response.quantity + ' = ' + response.productTotalPrice);
+                            document.getElementById("check-comment").value = response.textContent;
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error loading revenue data:', error);
+                        $("#error-message").show().text('Không thể tải dữ liệu. Vui lòng thử lại sau.');
+                    }
+                });
+
+
+            });
+
+            $('.sent-comment-btn').click(function() {
+                var productOrderId = $('.productOrderId').val();
+                var textComment = $('.text-comment').val();
+                var selectedRating = $('input[name="rating"]:checked').val();
+                var userId = "[[${user.id}]]";
+
+                $.ajax({
+                    url: '/api/addRate',
+                    method: 'GET',
+                    data: {
+                        userId: userId,
+                        productOrderId: productOrderId,
+                        textComment: textComment,
+                        rating: selectedRating,
+                    },
+                    success: function(response) {
+                        if (response) {
+                            const labels = document.querySelectorAll(`.rating[data-product-order-id="${productOrderId}"] label`);
+                            for (let i = 0; i < selectedRating; i++) {
+                                labels[i].classList.add('selected');
+                            }
+                            $(`.comment-btn[data-product-id=${productOrderId}]`).hide();
+                            $(`.check-comment-btn[data-product-order-id=${productOrderId}]`).prop("hidden", false);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error loading revenue data:', error);
+                        $("#error-message").show().text('Không thể tải dữ liệu. Vui lòng thử lại sau.');
+                    }
+                });
+            });
+        });
+    </script>
+
+</section>
+
+</body>
+</html>

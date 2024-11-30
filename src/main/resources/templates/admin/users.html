@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{base::layout(~{::section})}">>
+      th:replace="~{admin/base::layout(~{::section})}">>
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
@@ -10,7 +10,7 @@
 <section>
   <link rel="stylesheet" th:href="@{/css/table.css}">
 
-  <div class="container-fluid mt-5 pb-4 content1">
+  <div class="container-fluid pb-4 content1">
     <h4 class="text-center">Users</h4>
     <hr>
     <div class="mb-2">
@@ -35,7 +35,6 @@
           <div class="col p-0">
             <button class="btn btn-primary col mb-2">Tìm kiếm</button>
           </div>
-
         </div>
       </form>
     </div>
@@ -55,8 +54,7 @@
           <th scope="col">Email</th>
           <th scope="col">SĐT</th>
           <th scope="col">Địa chỉ</th>
-          <th scope="col">Trạng thái</th>
-          <th scope="col"></th>
+          <th scope="col" class="text-end">Trạng thái</th>
         </tr>
         </thead>
         <tbody class="danhsach">
@@ -70,10 +68,22 @@
           <td data-label="Email" th:utext="${u.getEmail()}" class="fs-5 dulieu"></td>
           <td data-label="SĐT" th:utext="${u.getMobileNumber()}" class="fs-5 dulieu"></td>
           <td data-label="Địa chỉ" th:utext="${u.getAddress() + ', ' + u.getCity()}" class="fs-5 dulieu"></td>
-          <td data-label="Trạng thái" th:text="${u.isEnable ? 'Bật' : 'Tắt'}" class="fs-5 dulieu"></td>
-          <td>
-            <a th:href="@{'/admin/updateSts?status=true&id=' + ${u.id}}" class="btn btn-primary btn-sm">Bật</a>
-            <a th:href="@{'/admin/updateSts?status=false&id=' + ${u.id}}" class="btn btn-danger btn-sm">Tắt</a>
+          <td data-label="Trạng thái" class="fs-5 dulieu text-end">
+            <span class="status" th:userId="${u.id}" th:text="${u.isEnable ? 'Bật' : 'Tắt'}"></span>
+            <a href="javascript:void(0)"
+               class="btn btn-primary btn-sm update-status-btn"
+               th:data-id="${u.id}"
+               data-status="true"
+               data-role="ROLE_USER">
+              Bật
+            </a>
+            <a href="javascript:void(0)"
+               class="btn btn-danger btn-sm update-status-btn"
+               th:data-id="${u.id}"
+               data-status="false"
+               data-role="ROLE_USER">
+              Tắt
+            </a>
           </td>
         </tr>
         </tbody>
@@ -112,6 +122,41 @@
           </li>
         </ul>
       </nav>
+
+      <script>
+        $(document).ready(function() {
+
+          $('.update-status-btn').click(function() {
+            var btn = $(this);
+            var userId = btn.data('id');
+            var status = btn.data('status');
+            var role = btn.data('role');
+
+            var statusSpan = $(`span.status[userId="${userId}"]`);
+            $.ajax({
+              url: '/api/updateSts',
+              method: 'GET',
+              data: {
+                id: userId,
+                status: status
+              },
+              success: function(response) {
+                if (response && response.statusName) {
+                  statusSpan.fadeOut(200, function() {
+                    $(this).text(response.statusName).fadeIn(200);
+                  });
+                }
+
+              },
+              error: function(xhr, status, error) {
+                console.error('Error loading revenue data:', error);
+                $("#error-message").show().text('Không thể tải dữ liệu. Vui lòng thử lại sau.');
+              }
+            });
+
+          });
+        })
+      </script>
     </th:block>
   </div>
 </section>

@@ -1,7 +1,6 @@
 package com.dacs2.controller;
 
-import com.dacs2.model.Product;
-import com.dacs2.model.UserDtls;
+import com.dacs2.model.*;
 import com.dacs2.service.*;
 import com.dacs2.util.CommonUtil;
 import jakarta.mail.MessagingException;
@@ -27,8 +26,11 @@ import java.security.Principal;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Controller
 public class HomeController {
@@ -58,6 +60,30 @@ public class HomeController {
     @Autowired
     private CheckOutService checkOutService;
 
+    @Autowired
+    private WebInfoService webInfoService;
+
+    @Autowired
+    private SliderService sliderService;
+
+    @Autowired
+    private SupportUrlService supportUrlService;
+
+    @Autowired
+    private ContactUrlService contactUrlService;
+
+    @Autowired
+    private NewsService newsService;
+
+    @Autowired
+    private RatingService ratingService;
+
+    @Autowired
+    private CommentService commentService;
+
+    @Autowired
+    private BrandService brandService;
+
     @ModelAttribute
     public void getUserDetails(Principal p, Model m) {
 
@@ -67,13 +93,26 @@ public class HomeController {
             m.addAttribute("user", userDtls);
             m.addAttribute("countCart", cartService.getCountCart(userDtls.getId()));
         }
-
+        m.addAttribute("webInfo", webInfoService.getWebInfo());
         m.addAttribute("categorys", categoryService.getCategoryByIsActive());
+        m.addAttribute("supportUrls", supportUrlService.getSupportUrl());
+        m.addAttribute("contactUrls", contactUrlService.getContactUrls());
 
     }
 
     @GetMapping("/")
-    public String index() {
+    public String index(Model m) {
+        List<Category> categorys = categoryService.getCategoryByIsActive();
+        m.addAttribute("categorys", categorys);
+
+        HashMap<String, List<Product>> map = new HashMap<>();
+        for (Category category : categorys) {
+            List<Product> products = productService.getProductByDanhMuc(category.getName());
+            map.put(category.getName(), products.subList(0, Math.min(products.size(), 8)));
+        }
+        m.addAttribute("mapProduct", map);
+        m.addAttribute("slides", sliderService.getSliderList());
+        m.addAttribute("blogs", newsService.getNewsByStyle("Blog").stream().limit(9).collect(Collectors.toList()));
         return "index";
     }
 
@@ -90,13 +129,16 @@ public class HomeController {
     @GetMapping("/san-pham")
     public String product(Model m,
                           @RequestParam(value = "danh-muc", defaultValue = "") String danhMuc,
+                          @RequestParam(value = "thuong-hieu", defaultValue = "") String thuongHieu,
                           @RequestParam(name = "trang", defaultValue = "1") Integer pageNumber,
                           @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize) {
         m.addAttribute("searchCh", "");
         m.addAttribute("categories", categoryService.getCategoryByIsActive());
-        m.addAttribute("paramValue", danhMuc);
+        m.addAttribute("brands", brandService.getAllBrandIsActive());
+        m.addAttribute("danhMuc", danhMuc.trim());
+        m.addAttribute("thuongHieu", thuongHieu.trim());
         m.addAttribute("search", false);
-        Page<Product> page = productService.getAllProductsForHomePagination(pageNumber - 1, pageSize, danhMuc);
+        Page<Product> page = productService.getAllProductsForHomePagination(pageNumber - 1, pageSize, danhMuc.trim(), thuongHieu.trim());
         m.addAttribute("products", page.getContent());
         m.addAttribute("trang", page.getNumber());
         m.addAttribute("pageSize", pageSize);
@@ -111,8 +153,25 @@ public class HomeController {
     @GetMapping("/san-pham/san-pham-id={id}")
     public String viewProduct(@PathVariable int id, Model m) {
         Product product = productService.getProductById(id);
-        m.addAttribute("category", categoryService.getCategoryByName(product.getDanhmuc()));
+        m.addAttribute("category", product.getDanhmuc());
         m.addAttribute("product", product);
+        m.addAttribute("listProduct", productService.getProductForView(product.getId()));
+        m.addAttribute("ratings", ratingService.getRatingsByProductId(product));
+        m.addAttribute("rate_number", String.format("%.1f", product.getTongsoSao() * 1.0 / product.getSoluongDanhgia()));
+        m.addAttribute("star1", ratingService.count(product, 5));
+
+        for (int i = 1; i < 6; i++) {
+            Integer starCount = ratingService.count(product, i);
+            m.addAttribute("star" + i, starCount != null ? starCount : 0);
+        }
+
+        HashMap<Long, Comment> map = new HashMap<>();
+
+        for (Comment comment : commentService.getAllReplyByAdmin(product)) {
+            map.put(comment.getParentComment().getId(), comment);
+        }
+
+        m.addAttribute("replies", map);
         return "view_product";
     }
 
@@ -237,7 +296,7 @@ public class HomeController {
     @GetMapping("/search")
     public String searchProduct(@RequestParam String ch, Model m,
                                 @RequestParam(name = "trang", defaultValue = "1") Integer pageNumber,
-                                @RequestParam(name = "pageSize", defaultValue = "1") Integer pageSize) {
+                                @RequestParam(name = "pageSize", defaultValue = "36") Integer pageSize) {
 
         if (ch.trim().isEmpty()) {
             return "redirect:/san-pham";
@@ -285,5 +344,28 @@ public class HomeController {
 
         return "user/orderStatus";
     }
+
+    @GetMapping("/blogs")
+    public String blogs(Model m,
+                        @RequestParam(name = "trang", defaultValue = "1") Integer pageNumber,
+                        @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize) {
+        Page<News> page = newsService.getAllNewsForHome(pageNumber - 1, pageSize);
+        m.addAttribute("blogs", page.getContent());
+        m.addAttribute("trang", page.getNumber());
+        m.addAttribute("pageSize", pageSize);
+        m.addAttribute("totalElements", page.getTotalElements());
+        m.addAttribute("totalPages", page.getTotalPages());
+        m.addAttribute("isFirst", page.isFirst());
+        m.addAttribute("isLast", page.isLast());
+        return "blogs";
+    }
+
+    @GetMapping("/blogs/blog-id={id}")
+    public String blogsById(@PathVariable Integer id, Model m) {
+        News blog = newsService.getNewsById(id);
+        m.addAttribute("blog", blog);
+        return "blog";
+    }
+
 
 }

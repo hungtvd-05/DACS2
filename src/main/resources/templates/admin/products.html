@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{base::layout(~{::section})}">>
+      th:replace="~{admin/base::layout(~{::section})}">>
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
@@ -10,7 +10,7 @@
 <section>
   <link rel="stylesheet" th:href="@{/css/table.css}">
 
-  <div class=" mt-5 content1 pb-4">
+  <div class=" content1 pb-4">
     <h4 class="text-center">Sản phẩm</h4>
     <hr>
     <div class="mb-2">
@@ -54,6 +54,7 @@
           <th scope="col">Tên</th>
           <th scope="col">Ảnh</th>
           <th scope="col">Danh mục</th>
+          <th scope="col">Thương hiệu</th>
           <th scope="col">Giá</th>
           <th scope="col">Số lượng</th>
           <th scope="col"></th>
@@ -66,12 +67,17 @@
           <td data-label="Ảnh" class="fs-5">
             <img th:src="@{'/img/product_img/' + ${pro.getArrayAnh()[0]}}" width="70px" height="70px">
           </td>
-          <td data-label="Danh mục" th:utext="${pro.getDanhmuc()}" class="fs-5 dulieu"></td>
+          <td data-label="Danh mục" th:utext="${pro.getDanhmuc().name}" class="fs-5 dulieu"></td>
+          <td data-label="Thương hiệu" th:utext="${pro.getBrand().name}" class="fs-5 dulieu"></td>
           <td data-label="Giá" th:utext="${pro.getGiaFormatted()}" class="fs-5 dulieu"></td>
           <td data-label="Số lượng" th:utext="${pro.getSoluong()}" class="fs-5 dulieu"></td>
-          <td>
+          <td class="text-end">
             <a th:href="@{'/admin/sua-san-pham/' + ${pro.id}}" class="btn btn-primary btn-sm"><i class="fa-solid fa-pen-to-square"></i>Sửa</a>
-            <a th:href="@{'/admin/xoa-san-pham/' + ${pro.id}}" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i>Xóa</a>
+            <a href="javascript:void(0)"
+               class="btn btn-danger btn-sm delete-btn"
+               th:data-id="${pro.id}">
+              <i class="fa-solid fa-trash"></i>Xóa
+            </a>
           </td>
         </tr>
         </tbody>
@@ -111,6 +117,37 @@
         </ul>
       </nav>
 
+      <script>
+        $(document).ready(function() {
+
+          $('.delete-btn').click(function() {
+            var btn = $(this);
+            var id = btn.data('id');
+            var row = btn.closest('tr');
+
+            $.ajax({
+              url: '/api/xoa-san-pham',
+              method: 'GET',
+              data: {
+                id: id
+              },
+              success: function(response) {
+                if (response && response.isDelete) {
+                  row.fadeOut(200, function() {
+                    $(this).remove();
+                  });
+                }
+
+              },
+              error: function(xhr, status, error) {
+                console.error('Error loading revenue data:', error);
+                $("#error-message").show().text('Không thể tải dữ liệu. Vui lòng thử lại sau.');
+              }
+            });
+
+          });
+        })
+      </script>
     </th:block>
   </div>
 </section>

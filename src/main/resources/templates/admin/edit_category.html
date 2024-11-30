@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{base::layout(~{::section})}">>
+      th:replace="~{admin/base::layout(~{::section})}">>
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -12,9 +12,12 @@
     <div class="container mt-5 content1 fs-5">
         <div class="row">
             <div class="col-md-6 offset-md-3">
+                <div class="mb-2">
+                    <a href="/admin/danh-muc" class="text-decoration-none"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
+                </div>
                 <div class="card card-sh">
                     <div class="card-header text-center">
-                        <p class="fs-4">Thêm hạng mục</p>
+                        <p class="fs-4 m-0">Chỉnh sửa danh mục</p>
                         <th:block th:if="${session.succMsg}">
                             <p class="text-success fw-bold">[[${session.succMsg}]]</p>
                             <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>

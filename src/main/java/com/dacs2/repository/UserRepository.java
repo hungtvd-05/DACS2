@@ -32,4 +32,7 @@ public interface UserRepository extends JpaRepository<UserDtls, Integer> {
     public UserDtls findByResetToken(String token);
 
     UserDtls findByConfirmToken(String confirmToken);
+
+    @Query(value = "select * from user_dtls where role = 'ROLE_ADMIN' limit 1", nativeQuery = true)
+    UserDtls getFirstAdmin();
 }

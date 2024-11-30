@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{base::layout(~{::section})}">
+      th:replace="~{admin/base::layout(~{::section})}">
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
@@ -9,18 +9,18 @@
 <section>
   <div class="container-sm container1 mt-5 p-5">
     <div class="mb-2">
-      <a href="/admin" class="text-decoration-none"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
+      <a href="/admin/admin" class="text-decoration-none"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
     </div>
     <div class="card card-sh">
       <div class="card-header text-center">
         <p class="fs-4 m-0">Thêm admin</p>
         <th:block th:if="${session.succMsg}">
-          <p class="text-success fw-bold">[[${session.succMsg}]]</p>
+          <p class="text-success fw-bold m-0">[[${session.succMsg}]]</p>
           <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
         </th:block>
 
         <th:block th:if="${session.errorMsg}">
-          <p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+          <p class="text-danger fw-bold m-0">[[${session.errorMsg}]]</p>
           <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
         </th:block>
       </div>

@@ -15,7 +15,7 @@ public interface UserService {
 
     public Page<UserDtls> getUsers(Integer pageNumber, Integer pageSize, String role);
 
-    public Boolean updateAccountStatus(Integer id, Boolean status);
+    public UserDtls updateAccountStatus(Integer id, Boolean status);
 
     public void increaseFailedAttempt(UserDtls user);
 

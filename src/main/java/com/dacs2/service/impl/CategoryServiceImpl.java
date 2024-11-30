@@ -51,9 +51,4 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> getCategoryByIsActive() {
         return categoryReposity.findByIsActive(true);
     }
-
-    @Override
-    public Category getCategoryByName(String name) {
-        return categoryReposity.findByName(name);
-    }
 }

@@ -19,6 +19,4 @@ public interface CategoryService {
 
     public List<Category> getCategoryByIsActive();
 
-    public Category getCategoryByName(String name);
-
 }

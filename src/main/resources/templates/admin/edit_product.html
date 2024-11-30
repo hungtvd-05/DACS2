@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{base::layout(~{::section})}">>
+      th:replace="~{admin/base::layout(~{::section})}">>
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
@@ -8,7 +8,11 @@
 <body>
 <section>
 
-  <div class="container-sm content1 mt-5 fs-5">
+  <link rel="stylesheet" th:href="@{/css/dropzone.min.css}">
+  <script type="text/javascript" th:src="@{/js/dropzone.min.js}"></script>
+  <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.2.0/ckeditor5.css">
+
+  <div class="container-sm content1 fs-5">
     <div class="mb-2">
       <a href="/admin/san-pham" class="text-decoration-none"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
     </div>
@@ -29,16 +33,24 @@
         <div class="card-body">
           <form action="/admin/cap-nhat-san-pham" method="post" enctype="multipart/form-data" id="productForm">
             <input type="hidden" name="id" th:value="${product.id}">
-            <div class="mb-3">
-              <label for="ten">Nhập tên sản phẩm</label>
-              <input type="text" name="ten" id="ten" class="form-control" th:value="${product.getTen()}" required>
+            <div class="row">
+              <div class="mb-3 col">
+                <label for="ten">Nhập tên sản phẩm</label>
+                <input type="text" name="ten" id="ten" class="form-control" th:value="${product.getTen()}" required>
+              </div>
+              <div class="mb-3 col">
+                <label for="brand">Chọn danh mục</label>
+                <select id="brand" class="form-control" name="brand">
+                  <option th:each="brand:${brands}" th:value="${brand.id}" th:selected="${brand == product.brand}">[[${brand.name}]]</option>
+                </select>
+              </div>
             </div>
 
             <div class="row">
               <div class="mb-3 col">
-                <label for="danhmuc">Chọn danh mục</label>
-                <select id="danhmuc" class="form-control" name="danhmuc">
-                  <option th:each="c:${categories}" th:value="${c.name}" th:selected="${c.name == product.danhmuc}">[[${c.name}]]</option>
+                <label for="category">Chọn danh mục</label>
+                <select id="category" class="form-control" name="category">
+                  <option th:each="c:${categories}" th:value="${c.id}" th:selected="${product.danhmuc == c}">[[${c.name}]]</option>
                 </select>
               </div>
               <div class="mb-3 col">
@@ -92,6 +104,17 @@
                 </div>
               </div>
             </div>
+
+            <script type="importmap">
+              {
+                  "imports": {
+                      "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.2.0/ckeditor5.js",
+                      "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.2.0/"
+                  }
+              }
+            </script>
+
+            <script type="module" th:src="@{/js/ckeditor.js}"></script>
 
             <script th:inline="javascript">
 

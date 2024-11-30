@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{base::layout(~{::section})}">
+      th:replace="~{admin/base::layout(~{::section})}">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 <section>
-
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.2.0/ckeditor5.css">
     <div class="container-sm mt-5 content1 fs-5">
         <div class="mb-2">
-            <a href="/admin" class="text-decoration-none"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
+            <a href="/admin/bai-viet" class="text-decoration-none"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
         </div>
         <div class="card card-sh">
             <div class="card-header text-center">
                 <p class="fs-4 m-0">Thêm bài viết</p>
                 <th:block th:if="${session.succMsg}">
-                    <p class="text-success fw-bold">[[${session.succMsg}]]</p>
+                    <p class="text-success fw-bold m-0">[[${session.succMsg}]]</p>
                     <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
                 </th:block>
 
                 <th:block th:if="${session.errorMsg}">
-                    <p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+                    <p class="text-danger fw-bold m-0">[[${session.errorMsg}]]</p>
                     <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
                 </th:block>
             </div>
@@ -32,21 +32,39 @@
                             <label for="ten">Nhập tiêu đề</label>
                             <input type="text" name="title" id="ten" class="form-control" required>
                         </div>
+                    </div>
 
-                        <div class="mb-3">
+                    <div class="row">
+                        <div class="mb-3 col">
+                            <label for="style">Phân loại</label>
+                            <select id="style" class="form-control" name="style">
+                                <option value="Blog">Blog</option>
+                                <option value="Support">Hỗ trợ khách hàng</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col">
                             <label for="active">Trạng thái</label>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="status" id="active" value="true" checked>
-                                <label class="form-check-label" for="active">
-                                    Hiện
-                                </label>
+                            <div class="d-flex">
+                                <div class="form-check" style="margin-right: 20px">
+                                    <input class="form-check-input" type="radio" name="status" id="active" value="true" checked>
+                                    <label class="form-check-label" for="active">
+                                        Hiện
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="status" id="inactive" value="false">
+                                    <label class="form-check-label" for="inactive">
+                                        Ẩn
+                                    </label>
+                                </div>
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="status" id="inactive" value="false">
-                                <label class="form-check-label" for="inactive">
-                                    Ẩn
-                                </label>
-                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="file">Nhập ảnh</label>
+                        <div>
+                            <input type="file" name="file" id="file" class="form-control">
                         </div>
                     </div>
 
@@ -68,6 +86,15 @@
         </div>
     </div>
 
+    <script type="importmap">
+        {
+            "imports": {
+                "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.2.0/ckeditor5.js",
+                "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.2.0/"
+            }
+        }
+    </script>
+    <script type="module" th:src="@{/js/ckeditor.js}"></script>
     <script type="text/javascript" th:src="@{/js/product.js}"></script>
 
 </section>

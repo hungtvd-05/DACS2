@@ -3,18 +3,24 @@ package com.dacs2.service;
 import com.dacs2.model.News;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 public interface NewsService {
 
-    public News saveNews(News news);
+    News saveNews(News news);
 
-    public Page<News> getNewsByPage(Integer page, Integer size);
+    Page<News> getNewsByPage(Integer page, Integer size);
 
-    public News getNewsById(int id);
+    News getNewsById(int id);
 
-    public News updateNews(News news);
+    News updateNews(News news);
 
-    public Boolean deleteNews(int id);
+    Boolean deleteNews(int id);
 
-    public Page<News> searchNews(String keyword, Integer page, Integer size);
+    Page<News> searchNews(String keyword, Integer page, Integer size);
+
+    List<News> getNewsByStyle(String style);
+
+    Page<News> getAllNewsForHome(Integer page, Integer size);
 
 }

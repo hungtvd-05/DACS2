@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -42,6 +43,11 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private ProductOrderRepository productOrderRepository;
 
+    @Autowired
+    private CommentRepository commentRepository;
+
+    @Autowired
+    private RatingRepository ratingRepository;
 
     @Override
     public Orders createOrder(Integer userId, OrderRequest orderRequest) throws UnsupportedEncodingException, MessagingException {
@@ -133,9 +139,8 @@ public class OrderServiceImpl implements OrderService {
                     products.add(product);
                 }
                 productRepository.saveAll(products);
+                commonUtil.sendMailForOrder(orderP, status);
             }
-
-            commonUtil.sendMailForOrder(orderP, status);
 
             return orderRepository.save(orderP);
         }
@@ -163,5 +168,37 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return false;
+    }
+
+    @Override
+    public List<ProductOrder> getProductOrdersByOrderId(String orderId) {
+        return productOrderRepository.findByOrderId(orderId);
+    }
+
+    @Override
+    public Orders getOrderByOrderId(String orderId) {
+        return orderRepository.findByOrderId(orderId);
+    }
+
+    @Override
+    public ProductOrder ratingProduct(Integer userId, Integer productOrderId, String textComment, Integer rating) {
+        ProductOrder productOrder = productOrderRepository.findById(productOrderId).get();
+
+        Comment comment = new Comment();
+        comment.setContent(textComment);
+        comment.setUser(userRepository.findById(userId).get());
+        comment.setProduct(productOrder.getProduct());
+        comment.setCreatedAt(LocalDateTime.now());
+
+        Rating ratingP = new Rating();
+        ratingP.setRating(rating);
+        ratingP.setComment(commentRepository.save(comment));
+        ratingP.setProduct(productOrder.getProduct());
+
+        productOrder.getProduct().setSoluongDanhgia(productOrder.getProduct().getSoluongDanhgia() + 1);
+        productOrder.getProduct().setTongsoSao(productOrder.getProduct().getTongsoSao() + rating);
+        productOrder.setRating(ratingRepository.save(ratingP));
+
+        return productOrderRepository.save(productOrder);
     }
 }

@@ -48,6 +48,15 @@ public class UserController {
     @Autowired
     private CheckOutService checkOutService;
 
+    @Autowired
+    private WebInfoService webInfoService;
+
+    @Autowired
+    private SupportUrlService supportUrlService;
+
+    @Autowired
+    private ContactUrlService contactUrlService;
+
     @GetMapping("/")
     public String home() {
         return "user/home";
@@ -63,7 +72,10 @@ public class UserController {
             m.addAttribute("countCart", cartService.getCountCart(userDtls.getId()));
         }
 
+        m.addAttribute("webInfo", webInfoService.getWebInfo());
         m.addAttribute("categorys", categoryService.getCategoryByIsActive());
+        m.addAttribute("supportUrls", supportUrlService.getSupportUrl());
+        m.addAttribute("contactUrls", contactUrlService.getContactUrls());
 
     }
 
@@ -95,33 +107,6 @@ public class UserController {
     private UserDtls getLoggedInUserDetails(Principal p) {
         String email = p.getName();
         return userService.getUserByEmail(email);
-    }
-
-    @PostMapping("updateQuantities")
-    public String updateQuantities(@RequestParam(value = "quantities") List<Integer> quantities,
-                                   @RequestParam(value = "id") Integer id,
-                                   HttpSession session) {
-        List<Cart> saveCarts = cartService.updateQuantities(id, quantities);
-
-        if (ObjectUtils.isEmpty(saveCarts)) {
-            session.setAttribute("errorMsg", "Lỗi! Không thể cập nhật số lượng!");
-        } else {
-            session.setAttribute("succMsg", "Cập nhật số lượng thành công!");
-        }
-
-        return "redirect:/user/gio-hang";
-    }
-
-    @GetMapping("/deleteCart")
-    public String deleteCart(@RequestParam Integer id, HttpSession session) {
-
-        if (cartService.deleteCart(id)) {
-            session.setAttribute("succMsg", "Sản phẩm đã được xóa khỏi giỏ hàng!");
-        } else {
-            session.setAttribute("errorMsg", "Lỗi! Không thể xóa sản phẩm ra khỏi giỏ hàng!");
-        }
-
-        return "redirect:/user/gio-hang";
     }
 
     @GetMapping("/orders")
@@ -228,5 +213,15 @@ public class UserController {
         }
 
         return "redirect:/user/profile";
+    }
+
+    @GetMapping("/xem-don-hang/id={orderId}")
+    public String xemDonHang(@PathVariable String orderId, Model model) {
+        Orders orders = orderService.getOrderByOrderId(orderId);
+        model.addAttribute("order", orders);
+        model.addAttribute("listProductOrders", orderService.getProductOrdersByOrderId(orderId));
+        model.addAttribute("totalPrice", NumberFormat.getCurrencyInstance(
+                new Locale("vi", "VN")).format(orderService.getOrderByOrderId(orderId).getTotalPrice()));
+        return "user/view_my_order";
     }
 }

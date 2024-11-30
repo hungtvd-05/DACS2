@@ -70,15 +70,17 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public List<Cart> updateQuantities(Integer userId, List<Integer> quantities) {
+    public Boolean updateQuantity(Integer id, Integer quantity) {
 
-        List<Cart> cartList = cartRepository.findByUserId(userId);
+        Cart cart = cartRepository.findById(id).get();
 
-        IntStream.range(0, cartList.size()).forEach(i -> {
-            cartList.get(i).setQuantity(quantities.get(i));
-        });
+        cart.setQuantity(quantity);
 
-        return cartRepository.saveAll(cartList);
+        if (!ObjectUtils.isEmpty(cartRepository.save(cart))) {
+            return true;
+        }
+
+        return false;
     }
 
     @Override

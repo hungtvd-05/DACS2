@@ -12,7 +12,7 @@ public interface CartService {
 
     public Integer getCountCart(Integer userId);
 
-    public List<Cart> updateQuantities(Integer userId, List<Integer> quantities);
+    public Boolean updateQuantity(Integer id, Integer quantity);
 
     public Boolean deleteCart(Integer id);
 
