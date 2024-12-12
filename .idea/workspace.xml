@@ -4,14 +4,95 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9b3322af-4599-4ffc-b17b-7698d37508af" name="Changes" comment="" />
+    <list default="true" id="9b3322af-4599-4ffc-b17b-7698d37508af" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/api/ApiController$UploadResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/api/ApiController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/config/AuthFailureHandlerImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/config/AuthSucessHandlerImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/config/CustomUser.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/config/SecurityConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/config/UserDetailsServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/config/VNPayConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/controller/AdminController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/controller/HomeController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/controller/UserController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/ecom/EcomApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/Brand.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/Cart.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/Category.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/Comment.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/ContactUrl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/ImageTemp.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/News.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/OrderAddress.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/OrderRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/Orders.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/Product.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/ProductOrder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/Rating.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/Slider.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/SupportUrl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/UserDtls.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/WebInfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/BrandRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/CartRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/CategoryRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/CommentRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/ContactUrlRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/NewsRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/OrderRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/ProductOrderRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/ProductRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/RatingRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/SliderRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/SupportUrlRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/UserRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/WebInfoRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/BrandService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/CartService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/CategoryService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/CheckOutService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/CommentService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/CommonService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/ContactUrlService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/NewsService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/OrderService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/ProductOrderService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/ProductService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/RatingService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/SliderService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/SupportUrlService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/UserService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/WebInfoService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/BrandServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/CartServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/CategoryServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/CheckOutServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/CommentServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/CommonServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/ContactUrlServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/NewsServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/OrderServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/ProductOrderServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/ProductServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/RatingServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/SliderServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/SupportUrlServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/UserServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/WebInfoServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/util/AppConstant.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/util/CommonUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/util/OrderStatus.class" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -41,26 +122,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;Spring Boot.EcomApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Maven.ecom [clean].executor": "Run",
+    "Notification.DisplayName-DoNotAsk-Vcs Important Messages": "VCS important messages",
+    "Notification.DoNotAsk-Vcs Important Messages": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.EcomApplication.executor": "Run",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/vien/Desktop/test",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Artifacts",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="EcomApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
@@ -89,7 +177,9 @@
       <updated>1734008527351</updated>
       <workItem from="1734008529361" duration="1887000" />
       <workItem from="1734015112961" duration="1762000" />
-      <workItem from="1734017156709" duration="1127000" />
+      <workItem from="1734017156709" duration="3564000" />
+      <workItem from="1734021691681" duration="29000" />
+      <workItem from="1734023764496" duration="137000" />
     </task>
     <servers />
   </component>
