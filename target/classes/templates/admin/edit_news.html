@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/base::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<section>
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.2.0/ckeditor5.css">
+    <div class="container-sm mt-5 content1 fs-5">
+        <div class="mb-2">
+            <a href="/admin/bai-viet" class="text-decoration-none"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
+        </div>
+        <div class="card card-sh">
+            <div class="card-header text-center">
+                <p class="fs-4 m-0">Thêm bài viết</p>
+                <th:block th:if="${session.succMsg}">
+                    <p class="text-success fw-bold m-0">[[${session.succMsg}]]</p>
+                    <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+                </th:block>
+
+                <th:block th:if="${session.errorMsg}">
+                    <p class="text-danger fw-bold m-0">[[${session.errorMsg}]]</p>
+                    <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+                </th:block>
+            </div>
+            <div class="card-body">
+                <form action="/admin/update-news" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="id" th:value="${news.id}">
+                    <div class="row">
+                        <div class="mb-3">
+                            <label for="ten">Nhập tiêu đề</label>
+                            <input type="text" name="title" id="ten" class="form-control" th:value="${news.title}" required>
+                        </div>
+
+                        <div class="row">
+                            <div class="mb-3 col">
+                                <label for="style">Phân loại</label>
+                                <select id="style" class="form-control" name="style">
+                                    <option value="Blog" th:selected="${news.style == 'Blog'}">Blog</option>
+                                    <option value="Support" th:selected="${news.style == 'Support'}">Hỗ trợ khách hàng</option>
+                                </select>
+                            </div>
+                            <div class="mb-3 col">
+                                <label for="active">Trạng thái</label>
+                                <div class="d-flex">
+                                    <div class="form-check" style="margin-right: 20px">
+                                        <input class="form-check-input" type="radio" name="status" id="active" value="true" th:checked="${news.status==true}">
+                                        <label class="form-check-label" for="active">
+                                            Hiện
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status" id="inactive" value="false" th:checked="${news.status==false}">
+                                        <label class="form-check-label" for="inactive">
+                                            Ẩn
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="file">Nhập ảnh</label>
+                        <div>
+                            <input type="file" name="file" id="file" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editor">Nhập nôi dung</label>
+                        <textarea id="editor" name="content" class="form-control" th:text="${news.content}"></textarea>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-8">
+                            <button class="btn btn-primary w-100">Lưu</button>
+                        </div>
+                        <div class="col-4">
+                            <a href="/admin" class="btn btn-success w-100">Quay lại</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.2.0/ckeditor5.js",
+                "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.2.0/"
+            }
+        }
+    </script>
+    <script type="module" th:src="@{/js/ckeditor.js}"></script>
+    <script type="text/javascript" th:src="@{/js/product.js}"></script>
+
+
+</section>
+
+</body>
+</html>

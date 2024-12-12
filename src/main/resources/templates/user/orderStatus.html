@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="Description" content="Enter your description here"/>
+
+
+    <title>Title</title>
+</head>
+<body>
+<section>
+    <div class="body py-5">
+        <div class="container">
+            <div class="w-50 m-auto">
+                <th:block th:if="${ordersuccess == 1}">
+                    <h1 class="my-3 text-success text-center">Thanh toán thành công</h1>
+                </th:block>
+                <th:block th:unless="${ordersuccess == 1}">
+                    <h1 class="my-3 text-danger text-center">Thanh toán thất bại</h1>
+                </th:block>
+
+                <h2 class="my-2">Chi tiết đơn hàng</h2>
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <td>Mã đơn hàng:</td>
+                        <td><span th:text="${orderId}">[order ID]</span></td>
+                    </tr>
+                    <tr>
+                        <td>Tổng tiền:</td>
+                        <td><span th:text="${totalPrice}">[total price]</span></td>
+                    </tr>
+                    <tr>
+                        <td>Thời gian thanh toán:</td>
+                        <td><span th:text="${paymentTime}">[payment time]</span></td>
+                    </tr>
+                    <tr>
+                        <td>Mã giao dịch:</td>
+                        <td><span th:text="${transactionId}">[transaction ID]</span></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <th:block th:if="${ordersuccess == 1}">
+                    <a href="/" class="btn btn-primary">Về trang chủ</a>
+                    <a href="/user/don-hang" class="btn btn-success">Xem đơn hàng</a>
+                </th:block>
+                <th:block th:unless="${ordersuccess == 1}">
+                    <a href="/" class="btn btn-primary">Về trang chủ</a>
+                </th:block>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
+</body>
+</html>

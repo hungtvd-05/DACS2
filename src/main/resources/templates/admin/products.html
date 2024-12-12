@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/base::layout(~{::section})}">>
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+</head>
+<body>
+<section>
+  <link rel="stylesheet" th:href="@{/css/table.css}">
+
+  <div class=" content1 pb-4">
+    <h4 class="text-center">Sản phẩm</h4>
+    <hr>
+    <div class="mb-2">
+      <a href="/admin" class="text-decoration-none"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
+    </div>
+    <th:block th:if="${session.succMsg}">
+      <p class="text-success fw-bold text-center">[[${session.succMsg}]]</p>
+      <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+    </th:block>
+
+    <th:block th:if="${session.errorMsg}">
+      <p class="text-danger fw-bold  text-center">[[${session.errorMsg}]]</p>
+      <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+    </th:block>
+    <div class="col-xxl-5 pb-3">
+      <form action="/admin/search-san-pham" method="get">
+        <div class="row">
+          <div class="col">
+            <input type="text" class="form-control " name="ch" placeholder="Nhập id, tên, danh mục sản phẩm" th:value="${searchProduct}">
+          </div>
+          <div class="col p-0 inline">
+            <button class="btn btn-primary col mb-2">Tìm kiếm</button>
+            <a href="/admin/them-san-pham" class="btn btn-success col mb-2">Thêm sản phẩm</a>
+          </div>
+
+        </div>
+      </form>
+    </div>
+    <input type="hidden" th:value="${searchProduct}" id="searchProduct" name="searchProduct">
+    <th:block th:if="${search == true && searchResult == false}">
+      <p class="fs-4 text-center">Không có sản phẩm nào phù hợp yêu cầu!</p>
+    </th:block>
+    <th:block th:if="${search == false && products.size() == 0}">
+      <p class="fs-4 text-center">Không có sản phẩm nào!</p>
+    </th:block>
+    <th:block th:if="${products.size() > 0}">
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">Tên</th>
+          <th scope="col">Ảnh</th>
+          <th scope="col">Danh mục</th>
+          <th scope="col">Thương hiệu</th>
+          <th scope="col">Giá</th>
+          <th scope="col">Số lượng</th>
+          <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody class="danhsach">
+        <tr th:each="pro, p:${products}">
+          <td data-label="STT" scope="row" class="fs-5 dulieu">[[${pro.id}]]</td>
+          <td data-label="Tên" th:utext="${pro.getTen()}" class="fs-5 ten dulieu"></td>
+          <td data-label="Ảnh" class="fs-5">
+            <img th:src="@{'/img/product_img/' + ${pro.getArrayAnh()[0]}}" width="70px" height="70px">
+          </td>
+          <td data-label="Danh mục" th:utext="${pro.getDanhmuc().name}" class="fs-5 dulieu"></td>
+          <td data-label="Thương hiệu" th:utext="${pro.getBrand().name}" class="fs-5 dulieu"></td>
+          <td data-label="Giá" th:utext="${pro.getGiaFormatted()}" class="fs-5 dulieu"></td>
+          <td data-label="Số lượng" th:utext="${pro.getSoluong()}" class="fs-5 dulieu"></td>
+          <td class="text-end">
+            <a th:href="@{'/admin/sua-san-pham/' + ${pro.id}}" class="btn btn-primary btn-sm"><i class="fa-solid fa-pen-to-square"></i>Sửa</a>
+            <a href="javascript:void(0)"
+               class="btn btn-danger btn-sm delete-btn"
+               th:data-id="${pro.id}">
+              <i class="fa-solid fa-trash"></i>Xóa
+            </a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <nav aria-label="Page navigation example" class="d-flex justify-content-center" th:if="${search == false}">
+        <ul class="pagination">
+          <li class="page-item" th:unless="${isFirst}">
+            <a class="page-link" th:href="@{'/admin/san-pham?trang=' + ${trang}}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li th:each="i:${#numbers.sequence(1, totalPages)}" class="page-item" th:classappend="${trang + 1 == i ? 'active':''}">
+            <a class="page-link" th:href="@{'/admin/san-pham?trang=' + ${i}}">[[${i}]]</a>
+          </li>
+          <li class="page-item" th:unless="${isLast}">
+            <a class="page-link" aria-label="Next" th:href="@{'/admin/san-pham?trang=' + ${trang + 2}}">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <nav aria-label="Page navigation example" class="d-flex justify-content-center" th:if="${search == true}">
+        <ul class="pagination">
+          <li class="page-item" th:unless="${isFirst}">
+            <a class="page-link" th:href="@{'/admin/search-san-pham?ch=' + ${searchProduct} + '&trang=' + ${trang}}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li th:each="i:${#numbers.sequence(1, totalPages)}" class="page-item" th:classappend="${trang + 1 == i ? 'active':''}">
+            <a class="page-link" th:href="@{'/admin/search-san-pham?ch=' + ${searchProduct} + '&trang=' + ${i}}">[[${i}]]</a>
+          </li>
+          <li class="page-item" th:unless="${isLast}">
+            <a class="page-link" aria-label="Next" th:href="@{'/admin/search-san-pham?ch=' + ${searchProduct} + '&trang=' + ${trang + 2}}">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <script>
+        $(document).ready(function() {
+
+          $('.delete-btn').click(function() {
+            var btn = $(this);
+            var id = btn.data('id');
+            var row = btn.closest('tr');
+
+            $.ajax({
+              url: '/api/xoa-san-pham',
+              method: 'GET',
+              data: {
+                id: id
+              },
+              success: function(response) {
+                if (response && response.isDelete) {
+                  row.fadeOut(200, function() {
+                    $(this).remove();
+                  });
+                }
+
+              },
+              error: function(xhr, status, error) {
+                console.error('Error loading revenue data:', error);
+                $("#error-message").show().text('Không thể tải dữ liệu. Vui lòng thử lại sau.');
+              }
+            });
+
+          });
+        })
+      </script>
+    </th:block>
+  </div>
+</section>
+</body>
+</html>

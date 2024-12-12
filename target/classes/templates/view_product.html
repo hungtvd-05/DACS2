@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base::layout(~{::section})}">>
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+</head>
+<body>
+<section>
+  <link rel="stylesheet" th:href="@{/css/view_product.css}">
+
+  <style>
+    .carousel-image-container {
+      width: 100%;
+      height: 0;
+      padding-top: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .carousel-image-container img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: translate(-50%, -50%);
+    }
+
+    .image-container {
+      width: 100%;
+      height: 0;
+      padding-top: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .image-container img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: translate(-50%, -50%);
+    }
+
+    .carousel-inner {
+      transition: none !important;
+    }
+
+    .carousel-item {
+      transition: none !important;
+    }
+
+    .carousel-control-prev, .carousel-control-next {
+      font-size: 30px;
+      color: white;
+    }
+
+    .card-style {
+      padding: 6px;
+    }
+
+    .card-list-img-top {
+      width: 100%;
+      height: 0;
+      padding-top: 100%;
+      object-fit: cover;
+      position: relative;
+    }
+
+    .card-list-img-top img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .text-ellipsis {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .star .selected {
+      font-weight: 900;
+    }
+
+    .star {
+      color: #ffc107;
+    }
+
+
+
+
+    .rating-box {
+      width: 130px;
+      height: 130px;
+      margin-right: auto;
+      margin-left: auto;
+      background-color: #FBC02D;
+      color: #fff;
+    }
+
+    .rating-label {
+      font-weight: bold;
+    }
+
+    /* Rating bar width */
+    .rating-bar {
+      width: 300px;
+      padding: 8px;
+      border-radius: 5px;
+    }
+
+    /* The bar container */
+    .bar-container {
+      width: 100%;
+      background-color: #f1f1f1;
+      text-align: center;
+      color: white;
+      border-radius: 20px;
+      cursor: pointer;
+      margin-bottom: 5px;
+    }
+
+    /* Individual bars */
+    .bar-5 {
+      height: 13px;
+      background-color: #FBC02D;
+      border-radius: 20px;
+
+    }
+    .bar-4 {
+      height: 13px;
+      background-color: #FBC02D;
+      border-radius: 20px;
+
+    }
+    .bar-3 {
+      height: 13px;
+      background-color: #FBC02D;
+      border-radius: 20px;
+
+    }
+    .bar-2 {
+      height: 13px;
+      background-color: #FBC02D;
+      border-radius: 20px;
+
+    }
+    .bar-1 {
+      height: 13px;
+      background-color: #FBC02D;
+      border-radius: 20px;
+
+    }
+
+  </style>
+  <div class="container-fluid mt-3">
+    <div class="row">
+      <div class="col-lg-3 col-md-2 col-sm-0"></div>
+      <div class="col-lg-3 col-md-4 col-sm-6 col-sm">
+        <p class="fs-4 m-1">
+          <a style="color: black" href="/">Trang chủ</a> /
+          <a style="color: black" href="/san-pham">Sản phẩm</a> /
+          <span class="fs-5" style="color: black">[[${product.ten}]]</span>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid mt-2 mb-4">
+    <div class="row" >
+      <th:block th:if="${session.succMsg}">
+        <p class="text-success alert alert-success text-center" role="alert">[[${session.succMsg}]]</p>
+        <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+      </th:block>
+
+      <th:block th:if="${session.errorMsg}">
+        <p class="text-danger text-center  alert alert-danger">[[${session.errorMsg}]]</p>
+        <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+
+      </th:block>
+      <div class="col-lg-3 col-md-2 col-sm-0"></div>
+      <div class="col-lg-3 col-md-4 col-sm-6 col-sm">
+        <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner p-1" style="border-radius: 25px">
+            <div th:each="image, iterStat : ${product.getArrayAnh()}"
+                 th:class="'carousel-item ' + (${iterStat.first} ? 'active position-relative card-img-top' : 'position-relative card-img-top')">
+              <div class="carousel-image-container">
+                <img th:src="@{'/img/product_img/' + ${image}}" class="d-block w-100" style="border-radius: 25px" alt="...">
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+              <i class="fa-solid fa-circle-chevron-left"></i>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+              <i class="fa-solid fa-circle-chevron-right"></i>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+
+          <div class="indicators">
+            <div class="carousel-indicators row">
+              <div th:each="image, iterStat : ${product.getArrayAnh()}"
+                   class="col-3 item p-1 py-0">
+                <a th:data-bs-target="'#carouselExample'"
+                   th:data-bs-slide-to="${iterStat.index}"
+                   th:class="${iterStat.first} ? 'active' : ''"
+                   th:aria-current="${iterStat.first} ? 'true' : 'false'"
+                   th:aria-label="'Slide ' + ${iterStat.count}">
+                  <div class="image-container">
+                    <img th:src="@{'/img/product_img/' + ${image}}"
+                         class="d-block w-100"
+                         th:alt="'Slide ' + ${iterStat.count}" style="border-radius: 15px">
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <h1 class="mt-1">[[${product.ten}]]</h1>
+        <p class="mt-3">
+          <span class="fw-bold"> Thông tin sản phẩm: </span>
+          <br> Trạng thái:
+          <th:block th:if="${product.soluong>0}">
+            <span class="badge bg-success">Còn hàng</span>
+          </th:block>
+
+          <th:block th:unless="${product.soluong>0}">
+            <span class="badge bg-warning">Hết hàng</span>
+          </th:block>
+
+
+          <br> Danh mục: <a th:href="@{'/san-pham?danh-muc=' + ${category.name}}"
+                            class="text-black text-decoration-none">[[${category.name}]]</a>
+          <br> Chính sách: Đổi trả miễn phí trong 7 ngày
+        </p>
+
+        <p class="m-0">
+          <b class="fs-6">[[${product.getGiaSaleFormatted()}]]</b>
+          <span th:if="${product.sale>0}" class="fs-4 p-2 py-1" style="color: orangered; background: #FFEDE0"><b>[[${product.sale}]]%</b></span>
+        </p>
+
+        <b th:if="${product.sale>0}" class="fs-4 text-decoration-line-through" style="color: #B6BCCB">[[${product.getGiaFormatted()}]]</b>
+
+        <div class="row mt-2">
+          <div class="col-4 text-success text-center p-2">
+            <i class="fas fa-money-bill-wave fa-2x"></i>
+            <p>Thanh toán khi nhận hàng</p>
+          </div>
+          <div class="col-4 text-danger text-center p-2">
+            <i class="fas fa-undo-alt fa-2x"></i>
+            <p>Sẵn sàng đổi trả</p>
+          </div>
+          <div class="col-4 text-primary text-center p-2">
+            <i class="fas fa-truck-moving fa-2x"></i>
+            <p>Miễn phí vận chuyển</p>
+          </div>
+        </div>
+
+        <th:block th:if="${product.getSoluong() > 0}">
+          <th:block th:if="${user==null}">
+            <a href="/dang-nhap" class="btn btn-danger col-md-12 form-control">Thêm vào giỏ hàng</a>
+          </th:block>
+
+          <th:block th:unless="${user==null}">
+            <a th:href="@{'/user/addCart?pid='+${product.id}+'&uid='+${user.id}}" class="btn btn-danger col-md-12 form-control">Thêm vào giỏ hàng</a>
+          </th:block>
+        </th:block>
+
+        <th:block th:unless="${product.getSoluong() > 0}">
+          <a class="btn text-white btn-warning col-md-12">Sản phẩm tạm hết hàng</a>
+        </th:block>
+
+        <div th:if="${!product.mota.isEmpty()}" class="mt-4 mb-5">
+          <h5>Thông tin sản phẩm</h5>
+          <p th:utext="${product.mota}">
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" th:if="${product.soluongDanhgia != 0}">
+      <div class="col-lg-3 col-md-2 col-sm-0"></div>
+      <div class="col-lg-6 col-md-8 col-sm-12 col-sm">
+        <h4 class="mb-3">Đánh giá sản phẩm</h4>
+        <div class="card">
+          <div class="text-center card-body">
+            <div class="row align-items-center">
+              <div class="col-md-4">
+                <div class="rating-box my-2">
+                  <h1 class="pt-4" th:text="${rate_number}"></h1>
+                  <p class="">trên 5 <i class="far fa-star fa-sm" style="font-weight: 900"></i></p>
+                </div>
+              </div>
+              <div class="col-md-8">
+                <div class="rating-bar0 justify-content-center">
+                  <table class="text-left mx-auto">
+                    <tr>
+                      <td class="rating-label">Cực tốt</td>
+                      <td class="rating-bar">
+                        <div class="bar-container">
+                          <div class="bar-5" th:style="'width:' + ${star5 * 100 / product.soluongDanhgia} + '%'"></div>
+                        </div>
+                      </td>
+                      <td class="text-right">[[${star5}]]</td>
+                    </tr>
+                    <tr>
+                      <td class="rating-label">Tốt</td>
+                      <td class="rating-bar">
+                        <div class="bar-container">
+                          <div class="bar-4" th:style="'width:' + ${star4 * 100 / product.soluongDanhgia} + '%'"></div>
+                        </div>
+                      </td>
+                      <td class="text-right">[[${star4}]]</td>
+                    </tr>
+                    <tr>
+                      <td class="rating-label">Bình thường</td>
+                      <td class="rating-bar">
+                        <div class="bar-container">
+                          <div class="bar-3" th:style="'width:' + ${star3 * 100 / product.soluongDanhgia} + '%'"></div>
+                        </div>
+                      </td>
+                      <td class="text-right">[[${star3}]]</td>
+                    </tr>
+                    <tr>
+                      <td class="rating-label">Tạm được</td>
+                      <td class="rating-bar">
+                        <div class="bar-container">
+                          <div class="bar-2" th:style="'width:' + ${star2 * 100 / product.soluongDanhgia} + '%'"></div>
+                        </div>
+                      </td>
+                      <td class="text-right">[[${star2}]]</td>
+                    </tr>
+                    <tr>
+                      <td class="rating-label">Tệ</td>
+                      <td class="rating-bar">
+                        <div class="bar-container">
+                          <div class="bar-1" th:style="'width:' + ${star1 * 100 / product.soluongDanhgia} + '%'"></div>
+                        </div>
+                      </td>
+                      <td class="text-right">[[${star1}]]</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="d-flex flex-start mt-3" th:each="rating:${ratings}">
+          <img class="rounded-circle shadow-1-strong me-3"
+               th:src="@{'/img/profile_img/' + ${rating.comment.user.profileImage}}" alt="avatar" width="65"
+               height="65" />
+          <div class="flex-grow-1 flex-shrink-1">
+            <div>
+              <p class="mb-1">
+                [[${rating.comment.user.name}]]
+              </p>
+              <div class="star">
+                <i class="far fa-star fa-sm selected"></i>
+                <i th:class="${rating.rating >= 2 ? 'far fa-star fa-sm selected' : 'far fa-star fa-sm'}"></i>
+                <i th:class="${rating.rating >= 3 ? 'far fa-star fa-sm selected' : 'far fa-star fa-sm'}"></i>
+                <i th:class="${rating.rating >= 4 ? 'far fa-star fa-sm selected' : 'far fa-star fa-sm'}"></i>
+                <i th:class="${rating.rating >= 5 ? 'far fa-star fa-sm selected' : 'far fa-star fa-sm'}"></i>
+              </div>
+              <p class="small mb-0">
+                [[${rating.comment.content}]]
+              </p>
+            </div>
+
+            <div class="d-flex flex-start mt-4" th:each="comment:${replies.get(rating.comment.id)}" th:if="${comment != null}">
+              <img class="rounded-circle shadow-1-strong me-3"
+                   th:src="@{'/img/logos/' + ${webInfo.logo}}" alt="avatar"
+                   width="65" height="65" />
+              <div class="flex-grow-1 flex-shrink-1">
+                <div>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <p class="mb-1">
+                      [[${webInfo.name}]]
+                    </p>
+                  </div>
+                  <p class="small mb-0">
+                    [[${comment.content}]]
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <hr>
+  <div class="text-center fs-5">
+    Sản phẩm khác
+  </div>
+  <div class="container-fluid mt-3">
+    <div class="row">
+      <div class="col-lg-3 col-md-2 col-sm-0"></div>
+      <div class="col-lg-6 col-md-8 col-sm-12 col-sm">
+        <div class="row p-1">
+          <div class="col-xxl-2 col-md-3 col-6 card-style" th:each="p:${listProduct}">
+            <div class="card overflow-hidden rounded-2">
+               <a th:href="@{'/san-pham/san-pham-id=' + ${p.id}}">
+                <div class="position-relative card-list-img-top">
+                  <img th:src="@{'/img/product_img/' + ${p.getArrayAnh()[0]}}" alt="...">
+                </div>
+                <div class="card-body p-2" style="height: 77.58px">
+                  <h6 class="fw-semibold fs-4 text-ellipsis mb-1">[[${p.ten}]]</h6>
+                  <div th:if="${p.sale > 0}">
+                    <h6 class=" fs-3 mb-0">
+                      <b>[[${p.getGiaSaleFormatted()}]]</b>
+                      <span class="fs-2 p-1" style="color: orangered; background: #FFEDE0"><b>[[${p.sale}]]%</b></span>
+                    </h6>
+                    <span class="fw-normal text-muted fs-2"><del>[[${p.getGiaFormatted()}]]</del></span>
+                  </div>
+                  <div th:unless="${p.sale > 0}">
+                    <h6 class="fs-3 mb-0">
+                      <b>[[${p.getGiaSaleFormatted()}]]</b>
+                    </h6>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+</body>
+</html>

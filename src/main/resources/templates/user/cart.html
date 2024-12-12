@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="Description" content="Enter your description here"/>
+
+    <title>Title</title>
+</head>
+<body>
+<section>
+<!--    <link rel="stylesheet" th:href="@{/css/table.css}">-->
+    <style>
+        .input-group, input.test-value-input {
+            max-width: 130px;
+        }
+
+        .cart-page {
+            margin: 50px 0px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .cart-info {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        th {
+            text-align: left;
+            padding: 5px;
+            color: #fff;
+            background: #ff523b;
+            font-weight: normal;
+        }
+
+        td {
+            padding: 5px 5px;
+            text-align: left;
+        }
+
+        td a {
+            color: #ff523b;
+            text-decoration: none;
+        }
+
+        td p {
+            margin: 0;
+        }
+
+        .total-price {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .total-price table {
+            border-top: 3px solid #ff532b;
+            width: 100%;
+            max-width: 350px;
+        }
+
+    </style>
+    <div class="container-fluid mt-5 ">
+        <div class="text-center">
+            <h4 class="m-0">Giỏ hàng</h4>
+            <th:block th:if="${session.succMsg}">
+                <p class="text-success fw-bold">[[${session.succMsg}]]</p>
+                <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+            </th:block>
+
+            <th:block th:if="${session.errorMsg}">
+                <p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+                <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+            </th:block>
+        </div>
+        <div th:if="${carts.size() == 0}" class="text-center">Giỏ hàng rỗng!</div>
+        <div class="text-center empty-cart-message" hidden="hidden">Giỏ hàng rỗng!</div>
+        <div th:if="${carts.size() > 0}" class="text-center not-empty-card container-xxl">
+            <input type="hidden" id="id" name="id" th:value="${user.id}">
+            <table class=" cart-page">
+                <thead>
+                <tr>
+                    <th width="85px">Sản phẩm</th>
+                    <th class="text-end">Số lượng</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="cart:${carts}">
+                    <td>
+                        <div class="cart-info">
+                            <img th:src="@{'/img/product_img/' + ${cart.getProduct().getArrayAnh()[0]}}" width="100px" height="100px">
+
+                        </div>
+                    </td>
+                    <td>
+                        <p>[[${cart.getProduct().getTen()}]]</p>
+                        <small>Giá: [[${cart.getProduct().getGiaSaleFormatted()}]]</small>
+                        <br>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <a href="javascript:void(0)"
+                               class="delete-btn"
+                               th:data-id="${cart.id}">Xóa
+                            </a>
+                            <input type="number" class="input-quantity" th:data-id="${cart.id}"
+                                   th:value="${cart.getQuantity()}" min="1" step="1" th:max="${cart.getProduct().getSoluong()}">
+                        </div>
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="total-price">
+                <table>
+                    <tr>
+                        <td>Tổng: </td>
+                        <td class="totalPrice" th:data-id="${user.id}">[[${totalPrice}]]</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="text-center">
+                <a th:href="@{/user/orders}" href="" class="btn btn-warning">Thanh toán</a>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script type="module">
+        import {InputSpinner} from "/js/InputSpinner.js"
+
+        const inputSpinnerElements = document.querySelectorAll("input[type='number']")
+        for (const inputSpinnerElement of inputSpinnerElements) {
+            new InputSpinner(inputSpinnerElement)
+        }
+    </script>
+    <script>
+        $(document).ready(function() {
+            var userId = "[[${user.id}]]";
+            var totalPrice = $(`td.totalPrice[data-id="${userId}"]`);
+            $('.delete-btn').click(function() {
+                var btn = $(this);
+                var id = btn.data('id');
+                var row = btn.closest('tr');
+
+                $.ajax({
+                    url: '/api/deleteCart',
+                    method: 'GET',
+                    data: {
+                        id: id,
+                        userId: userId
+                    },
+                    success: function(response) {
+                        if (response && response.isDelete) {
+                            row.fadeOut(100, function() {
+                                $(this).remove();
+                            });
+                            if (response.totalPrice == 0) {
+                                $('.not-empty-card').hide();
+                                $('.empty-cart-message').prop('hidden', false);
+                            } else {
+                                totalPrice.fadeOut(100, function() {
+                                    $(this).text(response.totalPrice).fadeIn(100);
+                                });
+                            }
+                        }
+
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error loading revenue data:', error);
+                        $("#error-message").show().text('Không thể tải dữ liệu. Vui lòng thử lại sau.');
+                    }
+                });
+
+            });
+            $('.input-quantity').change(function() {
+                var input = $(this);
+                var id = input.data('id');
+                var quantity = input.val();
+
+                $.ajax({
+                    url: '/api/updateQuantity',
+                    method: 'GET',
+                    data: {
+                        id: id,
+                        quantity: quantity,
+                        userId: userId
+                    },
+                    success: function(response) {
+                        if (response && response.isUpdate && response.totalPrice) {
+                            totalPrice.fadeOut(100, function() {
+                                $(this).text(response.totalPrice).fadeIn(200);
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error loading revenue data:', error);
+                        $("#error-message").show().text('Không thể tải dữ liệu. Vui lòng thử lại sau.');
+                    }
+                });
+            });
+        })
+    </script>
+</section>
+
+</body>
+</html>

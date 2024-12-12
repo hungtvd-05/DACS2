@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="Description" content="Enter your description here"/>
+
+    <title>Title</title>
+</head>
+<body>
+<section>
+    <div class="container-xl">
+        <div class="card overflow-hidden col-12 mt-5 mb-3 p-3">
+            <h3 class="text-center my-5">Blog của chúng tôi</h3>
+            <div class="offset-sm-1 col-sm-10 mb-5">
+                <div class="row">
+                    <a th:href="@{'blogs/blog-id=' + ${blog.id}}" class="col-12 d-flex align-items-center mt-3" th:each="blog:${blogs}">
+                        <img th:src="@{'/img/news/' + ${blog.imageName}}" style="width: 100px; height: 100px; margin-right: 10px">
+                        <div>
+                            <h6 class="fw-semibold" th:utext="${blog.title}"></h6>
+                            <span style="color: #5A6A85" th:text="${blog.getDateFormatted()}"></span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav aria-label="Page navigation example" class="d-flex justify-content-center" th:if="${blogs.size() > 0}">
+        <ul class="pagination">
+            <li class="page-item" th:unless="${isFirst}">
+                <a class="page-link" th:href="@{'/blogs?trang=' + ${trang}}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li th:each="i:${#numbers.sequence(1, totalPages)}" class="page-item" th:classappend="${trang + 1 == i ? 'active':''}">
+                <a class="page-link" th:href="@{'/blogs?trang=' + ${i}}">[[${i}]]</a>
+            </li>
+            <li class="page-item" th:unless="${isLast}">
+                <a class="page-link" aria-label="Next" th:href="@{'/blogs?trang=' + ${trang + 2}}">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
+</body>
+</html>

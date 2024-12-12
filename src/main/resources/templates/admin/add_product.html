@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/base::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <section>
+    <link rel="stylesheet" th:href="@{/css/dropzone.min.css}">
+    <script type="text/javascript" th:src="@{/js/dropzone.min.js}"></script>
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.2.0/ckeditor5.css">
+    <div class="container-sm mt-5 content1 fs-5">
+      <div class="mb-2">
+        <a href="/admin/san-pham" class="text-decoration-none"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
+      </div>
+      <div class="card card-sh">
+        <div class="card-header text-center">
+          <p class="fs-4 m-0">Thêm sản phẩm</p>
+          <th:block th:if="${session.succMsg}">
+            <p class="text-success fw-bold">[[${session.succMsg}]]</p>
+            <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+          </th:block>
+
+          <th:block th:if="${session.errorMsg}">
+            <p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+            <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+          </th:block>
+        </div>
+        <div class="card-body">
+          <form action="/admin/luu-san-pham" method="post" enctype="multipart/form-data" id="productForm">
+
+            <div class="row">
+              <div class="mb-3 col">
+                <label for="ten">Nhập tên sản phẩm</label>
+                <input type="text" name="ten" id="ten" class="form-control" required>
+              </div>
+              <div class="mb-3 col">
+                <label for="brand">Chọn danh mục</label>
+                <select id="brand" class="form-control" name="brand">
+                  <option th:each="brand:${brands}" th:value="${brand.id}">[[${brand.name}]]</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="mb-3 col">
+                <label for="category">Chọn danh mục</label>
+                <select id="category" class="form-control" name="category">
+                  <option th:each="c:${categories}" th:value="${c.id}">[[${c.name}]]</option>
+                </select>
+              </div>
+              <div class="mb-3 col">
+                <label for="active">Trạng thái</label>
+                <div class="d-flex">
+                  <div class="form-check" style="margin-right: 20px">
+                    <input class="form-check-input" type="radio" name="trangthai" id="active" value="true" checked>
+                    <label class="form-check-label" for="active">
+                      Hiện
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="trangthai" id="inactive" value="false">
+                    <label class="form-check-label" for="inactive">
+                      Ẩn
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="mb-3 col">
+                <label for="gia">Nhập giá sản phẩm (&#8363)</label>
+                <input id="gia" name="gia" class="form-control" type="number" min="0" value="0">
+              </div>
+              <div class="mb-3 col">
+                <label for="soluong">Nhập số lượng</label>
+                <input id="soluong" name="soluong" class="form-control" type="number" min="1" value="1">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="mb-3 col">
+                <label for="sale">Sale (%)</label>
+                <input id="sale" name="sale" class="form-control" type="number" min="0" max="100" value="0">
+              </div>
+              <div class="mb-3 col">
+                <label for="giasale">Giá sale (&#8363)</label>
+                <input id="giasale" name="giasale" class="form-control" type="number" disabled>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="imageUpload">Upload hình ảnh</label>
+              <div class="mb-3">
+                <div id="imageUpload" name="imageUpload" class="dropzone dz-clickable">
+                  <div class="dz-message needsclick">
+                    <br>Chọn ảnh hoặc thả ảnh vào đây<br><br>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="editor">Nhập mô tả sản phẩm</label>
+              <textarea id="editor" name="mota" class="form-control">
+                </textarea>
+
+            </div>
+
+            <div class="row">
+              <div class="col-8">
+                <button class="btn btn-primary w-100">Thêm</button>
+              </div>
+              <div class="col-4">
+                <a href="/admin" class="btn btn-success w-100">Quay lại</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script type="importmap">
+      {
+          "imports": {
+              "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.2.0/ckeditor5.js",
+              "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.2.0/"
+          }
+      }
+    </script>
+    <script type="module" th:src="@{/js/ckeditor.js}"></script>
+    <script type="text/javascript" th:src="@{/js/product.js}"></script>
+
+  </section>
+
+</body>
+</html>

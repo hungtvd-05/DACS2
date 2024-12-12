@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/base::layout(~{::section})}">>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<section>
+    <link rel="stylesheet" th:href="@{/css/table.css}">
+
+    <div class="content1 pb-4">
+        <h4 class="text-center">Sản phẩm</h4>
+        <hr>
+        <div class="mb-2">
+            <a href="/admin" class="text-decoration-none"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
+        </div>
+        <th:block th:if="${session.succMsg}">
+            <p class="text-success fw-bold text-center">[[${session.succMsg}]]</p>
+            <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+        </th:block>
+
+        <th:block th:if="${session.errorMsg}">
+            <p class="text-danger fw-bold  text-center">[[${session.errorMsg}]]</p>
+            <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+        </th:block>
+        <div class="col-xxl-5 pb-3">
+            <form action="/admin/search-bai-viet" method="get">
+                <div class="row">
+                    <div class="col">
+                        <input type="text" class="form-control " name="ch" placeholder="Nhập id, tên, danh mục sản phẩm" th:value="${searchCh}">
+                    </div>
+                    <div class="col p-0 inline">
+                        <button class="btn btn-primary col mb-2">Tìm kiếm</button>
+                        <a href="/admin/them-bai-viet" class="btn btn-success col mb-2">Thêm bài viết</a>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+        <input type="hidden" th:value="${searchCh}" id="searchProduct" name="searchProduct">
+        <th:block th:if="${search == true && newsList.size() == 0}">
+            <p class="fs-4 text-center">Không có bài viết nào phù hợp yêu cầu!</p>
+        </th:block>
+        <th:block th:if="${search == false && newsList.size() == 0}">
+            <p class="fs-4 text-center">Không có bài viết nào!</p>
+        </th:block>
+        <th:block th:if="${newsList.size() > 0}">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Tiêu đề</th>
+                    <th scope="col">Ngày tạo</th>
+                    <th scope="col">Trạng thái</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody class="danhsach">
+                <tr th:each="news:${newsList}">
+                    <td data-label="STT" scope="row" class="fs-5 dulieu" th:utext="${news.id}"></td>
+                    <td data-label="Tên" th:utext="${news.title}" class="fs-5 dulieu"></td>
+                    <td data-label="Ngày tạo" th:text="${news.getDateFormatted()}" class="fs-5 dulieu"></td>
+                    <td data-label="Trạng thái" th:text="${news.status ? 'Hiện' : 'Ẩn'}" class="fs-5 dulieu"></td>
+                    <td class="text-end">
+                        <a th:href="@{'/admin/cap-nhat-bai-viet/' + ${news.id}}" class="btn btn-primary btn-sm"><i class="fa-solid fa-pen-to-square"></i> Sửa</a>
+                        <a href="javascript:void(0)"
+                           class="btn btn-danger btn-sm delete-btn"
+                           th:data-id="${news.id}">
+                            <i class="fa-solid fa-trash"></i>Xóa
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <nav aria-label="Page navigation example" class="d-flex justify-content-center" th:if="${search == false}">
+                <ul class="pagination">
+                    <li class="page-item" th:unless="${isFirst}">
+                        <a class="page-link" th:href="@{'/admin/bai-viet?trang=' + ${trang}}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li th:each="i:${#numbers.sequence(1, totalPages)}" class="page-item" th:classappend="${trang + 1 == i ? 'active':''}">
+                        <a class="page-link" th:href="@{'/admin/bai-viet?trang=' + ${i}}">[[${i}]]</a>
+                    </li>
+                    <li class="page-item" th:unless="${isLast}">
+                        <a class="page-link" aria-label="Next" th:href="@{'/admin/bai-viet?trang=' + ${trang + 2}}">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <nav aria-label="Page navigation example" class="d-flex justify-content-center" th:if="${search == true}">
+                <ul class="pagination">
+                    <li class="page-item" th:unless="${isFirst}">
+                        <a class="page-link" th:href="@{'/admin/search-bai-viet?ch=' + ${searchProduct} + '&trang=' + ${trang}}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li th:each="i:${#numbers.sequence(1, totalPages)}" class="page-item" th:classappend="${trang + 1 == i ? 'active':''}">
+                        <a class="page-link" th:href="@{'/admin/search-bai-viet?ch=' + ${searchProduct} + '&trang=' + ${i}}">[[${i}]]</a>
+                    </li>
+                    <li class="page-item" th:unless="${isLast}">
+                        <a class="page-link" aria-label="Next" th:href="@{'/admin/search-bai-viet?ch=' + ${searchProduct} + '&trang=' + ${trang + 2}}">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <script>
+                $(document).ready(function() {
+
+                    $('.delete-btn').click(function() {
+                        var btn = $(this);
+                        var id = btn.data('id');
+                        var row = btn.closest('tr');
+
+                        $.ajax({
+                            url: '/api/delete-news',
+                            method: 'GET',
+                            data: {
+                                id: id
+                            },
+                            success: function(response) {
+                                if (response && response.isDelete) {
+                                    row.fadeOut(200, function() {
+                                        $(this).remove();
+                                    });
+                                }
+
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('Error loading revenue data:', error);
+                                $("#error-message").show().text('Không thể tải dữ liệu. Vui lòng thử lại sau.');
+                            }
+                        });
+
+                    });
+                })
+            </script>
+        </th:block>
+    </div>
+</section>
+</body>
+</html>

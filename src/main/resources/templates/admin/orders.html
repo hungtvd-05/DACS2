@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/base::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<section>
+    <link rel="stylesheet" th:href="@{/css/table.css}">
+
+    <div class="container-fluid content1 mt-5">
+        <h4 class="text-center">Đơn hàng của tôi</h4>
+        <div class="mb-2">
+            <a href="/admin" class="text-decoration-none"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
+        </div>
+        <th:block th:if="${session.succMsg}">
+            <p class="text-success fw-bold text-center">[[${session.succMsg}]]</p>
+            <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+        </th:block>
+
+        <th:block th:if="${session.errorMsg}">
+            <p class="text-danger fw-bold text-center">[[${session.errorMsg}]]</p>
+            <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+        </th:block>
+        <div class="col-xxl-5 pb-3">
+            <form action="/admin/search-don-hang" method="get">
+                <div class="row">
+                    <div class="col">
+                        <input type="text" class="form-control " name="orderId" placeholder="Nhập mã đơn hàng" th:value="${searchOrderId}">
+                    </div>
+                    <div class="col p-0">
+                        <button class="btn btn-primary col">Tìm kiếm</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            <div th:if="${search == true && orders.size() == 0}" class="text-center">
+                Không có đơn hàng nào có mã như vậy!
+            </div>
+            <div th:if="${orders.size() == 0}" class="text-center">Không có đơn hàng nào ở đây!</div>
+            <div th:if="${orders.size() > 0}">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col">Mã đơn hàng</th>
+                        <th scope="col">Thông tin</th>
+                        <th scope="col">Ngày tạo</th>
+                        <th scope="col">Tên sản phẩm</th>
+                        <th scope="col">Giá</th>
+                        <th scope="col">Trạng thái</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody class="danhsach">
+                    <tr th:each="order:${orders}">
+                        <td scope="row" ><b>[[${order.orderId}]]</b></td>
+                        <td>
+                            Tên: [[${order.orderAddress.fullName}]] <br>
+                            Số điện thoại: [[${order.orderAddress.phoneNumber}]] <br>
+                            Địa chỉ: [[${order.getFullAdressFormatted()}]]
+                        </td>
+                        <td th:text="${order.getDateFormatted()}"></td>
+                        <td th:text="${order.orderName}" style="white-space: pre-wrap; word-wrap: break-word;"></td>
+                        <td th:text="${order.getTotalPriceFormatted()}"></td>
+                        <td>
+                            <span class="orderStatus" th:data-order-id="${order.id}">[[${order.getStatus()}]]</span>
+                            <select class="custom-select form-control" name="st" th:data-order-id="${order.id}">
+                                <option value="1">Đơn hàng đang được xử lí!</option>
+                                <option value="2">Đã xác nhận đơn hàng!</option>
+                                <option value="3">Đơn hàng đã đóng gói!</option>
+                                <option value="4">Đã giao cho bên vận chuyển!</option>
+                                <option value="5">Đã vận chuyển thành công!</option>
+                                <option value="6">Đã hủy!</option>
+                            </select>
+                        </td>
+                        <td class="text-end">
+                            <th:block th:if="${order.status!='Đã hủy!' && order.status != 'Đã vận chuyển thành công!'}">
+                                <button class="btn btn-primary update-status-btn"
+                                        th:data-order-id="${order.id}">
+                                    Cập nhật
+                                </button>
+                            </th:block>
+                            <th:block th:unless="${order.status!='Đã hủy!' && order.status != 'Đã vận chuyển thành công!'}">
+                                <button class="btn btn-primary disabled" type="button">Cập nhật</button>
+                            </th:block>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <nav aria-label="Page navigation example" class="d-flex justify-content-center" th:if="${search == false}">
+                    <ul class="pagination">
+                        <li class="page-item" th:unless="${isFirst}">
+                            <a class="page-link" th:href="@{'/admin/don-hang?trang=' + ${trang}}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li th:each="i:${#numbers.sequence(1, totalPages)}" class="page-item" th:classappend="${trang + 1 == i ? 'active':''}">
+                            <a class="page-link" th:href="@{'/admin/don-hang?trang=' + ${i}}">[[${i}]]</a>
+                        </li>
+                        <li class="page-item" th:unless="${isLast}">
+                            <a class="page-link" aria-label="Next" th:href="@{'/admin/don-hang?trang=' + ${trang + 2}}">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <nav aria-label="Page navigation example" class="d-flex justify-content-center" th:if="${search == true}">
+                    <ul class="pagination">
+                        <li class="page-item" th:unless="${isFirst}">
+                            <a class="page-link" th:href="@{'/admin/search-don-hang?orderId=' + ${searchOrderId} + '&trang=' + ${trang}}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li th:each="i:${#numbers.sequence(1, totalPages)}" class="page-item" th:classappend="${trang + 1 == i ? 'active':''}">
+                            <a class="page-link" th:href="@{'/admin/search-don-hang?orderId=' + ${searchOrderId} + '&' + 'trang=' + ${i}}">[[${i}]]</a>
+                        </li>
+                        <li class="page-item" th:unless="${isLast}">
+                            <a class="page-link" aria-label="Next" th:href="@{'/admin/search-don-hang?orderId=' + ${searchOrderId} + '&trang=' + ${trang + 2}}">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>-->
+    <script>
+        $(document).ready(function() {
+
+            $('.update-status-btn').click(function() {
+                var btn = $(this);
+                var orderId = btn.data('order-id');
+                var selectedValue = $(`select[data-order-id="${orderId}"]`).val();
+                var statusSpan = $(`span.orderStatus[data-order-id="${orderId}"]`);
+                $.ajax({
+                    url: '/api/update-order-status',
+                    method: 'GET',
+                    data: {
+                        id: orderId,
+                        st: selectedValue
+                    },
+                    success: function(response) {
+                        if (response && response.statusName) {
+                            statusSpan.fadeOut(200, function() {
+                                $(this).text(response.statusName).fadeIn(200);
+                            });
+                            if (response.statusName == 'Đã vận chuyển thành công!' || response.statusName == 'Đã hủy!') {
+                                btn.prop('disabled', true);
+                            }
+                        }
+
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error loading revenue data:', error);
+                        $("#error-message").show().text('Không thể tải dữ liệu. Vui lòng thử lại sau.');
+                    }
+                });
+
+            });
+        })
+
+    </script>
+</section>
+</body>
+</html>

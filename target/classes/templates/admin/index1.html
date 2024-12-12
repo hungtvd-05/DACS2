@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/base::layout(~{::section})}">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" th:href="@{css/style.css}">
+</head>
+<body>
+    <section>
+      <br>
+      <div class="container p-5 mt-2">
+        <p class="text-center fs-3">Admin Dashboard</p>
+        <th:block th:if="${session.succMsg}">
+          <p class="text-success fw-bold">[[${session.succMsg}]]</p>
+          <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+        </th:block>
+
+        <th:block th:if="${session.errorMsg}">
+          <p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+          <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+        </th:block>
+        <div class="row p-5">
+          <div class="col-md-4 mt-4">
+            <a href="/admin/them-san-pham" class="text-decoration-none">
+              <div class="card card-sh">
+                <div class="card-body text-center text-primary">
+                  <i class="fa-solid fa-square-plus fa-3x"></i>
+                  <h4>Thêm sản phẩm</h4>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <div class="col-md-4 mt-4">
+            <a href="/admin/danh-muc" class="text-decoration-none">
+              <div class="card card-sh">
+                <div class="card-body text-center text-warning">
+                  <i class="fa-solid fa-list-ul fa-3x"></i>
+                  <h4>Thêm danh mục</h4>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <div class="col-md-4 mt-4">
+            <a href="/admin/san-pham" class="text-decoration-none">
+              <div class="card card-sh">
+                <div class="card-body text-center text-success">
+                  <i class="fa-solid fa-table-list fa-3x"></i>
+                  <h4>Xem sản phẩm</h4>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <div class="col-md-4 mt-4">
+            <a href="/admin/them-bai-viet" class="text-decoration-none">
+              <div class="card card-sh">
+                <div class="card-body text-center text-success">
+                  <i class="fa-regular fa-file-lines fa-3x"></i>
+                  <h4>Thêm bài viết</h4>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <div class="col-md-4 mt-4">
+            <a href="/admin/bai-viet" class="text-decoration-none">
+              <div class="card card-sh">
+                <div class="card-body text-center text-success">
+                  <i class="fa-solid fa-envelope-open-text fa-3x"></i>
+                  <h4>Xem bài viết</h4>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <div class="col-md-4 mt-4">
+            <a href="/admin/don-hang" class="text-decoration-none">
+              <div class="card card-sh">
+                <div class="card-body text-center text-warning">
+                  <i class="fa-solid fa-box-open fa-3x"></i>
+                  <h4>Đơn hàng</h4>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <div class="col-md-4 mt-4">
+            <a href="/admin/users" class="text-decoration-none">
+              <div class="card card-sh">
+                <div class="card-body text-center text-primary">
+                  <i class="fa-solid fa-circle-user fa-3x"></i>
+                  <h4>Tài khoản</h4>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <div class="col-md-4 mt-4">
+            <a href="/admin/them-admin" class="text-decoration-none">
+              <div class="card card-sh">
+                <div class="card-body text-center text-danger">
+                  <i class="fa-solid fa-user-plus fa-3x"></i>
+                  <h4>Thêm admin</h4>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <div class="col-md-4 mt-4">
+            <a href="/admin/admin" class="text-decoration-none">
+              <div class="card card-sh">
+                <div class="card-body text-center text-danger">
+                  <i class="fa-solid fa-user-tie fa-3x"></i>
+                  <h4>Admin</h4>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+</body>
+</html>

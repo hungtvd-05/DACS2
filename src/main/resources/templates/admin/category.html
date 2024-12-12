@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/base::layout(~{::section})}">>
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<section>
+  <link rel="stylesheet" th:href="@{/css/table.css}">
+
+  <div class="content1">
+    <div class="row">
+      <div class="col-md-9">
+        <p class="text-center fs-4">Danh mục</p>
+        <hr>
+        <div class="mb-2">
+          <a href="/admin" class="text-decoration-none"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
+        </div>
+        <table class="table table-bordered">
+          <thead>
+          <tr>
+            <th scope="col">STT</th>
+            <th scope="col">Tên</th>
+            <th scope="col">Ảnh</th>
+            <th scope="col">Trạng thái</th>
+            <th scope="col"></th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <tr th:each="cat, c:${categorys}">
+            <td data-label="STT" scope="row">[[${c.count}]]</td>
+            <td data-label="Tên">[[${cat.name}]]</td>
+            <td data-label="Ảnh">
+              <img th:src="@{'/img/category_img/' + ${cat.imageName}}" width="50px" height="50px">
+            </td>
+            <td data-label="Trạng thái" th:text="${cat.isActive ? 'Hiện' : 'Ẩn'}"></td>
+            <td class="text-end">
+              <a th:href="@{'/admin/sua-danh-muc/' + ${cat.id}}" class="btn btn-primary btn-sm"><i class="fa-solid fa-pen-to-square"></i>Sửa</a>
+              <a href="javascript:void(0)"
+                 class="btn btn-danger btn-sm delete-btn"
+                 th:data-id="${cat.id}">
+                <i class="fa-solid fa-trash"></i>Xóa
+              </a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col-md-3 mb-5">
+        <p class="fs-4 text-center">Thêm danh mục</p>
+        <th:block th:if="${session.succMsg}">
+          <p class="text-success fw-bold text-center">[[${session.succMsg}]]</p>
+          <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+        </th:block>
+        <th:block th:if="${session.errorMsg}">
+          <p class="text-danger fw-bold text-center">[[${session.errorMsg}]]</p>
+          <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+        </th:block>
+        <hr>
+        <div class="card card-sh">
+          <div class="card-body">
+            <form action="/admin/luu-danh-muc" method="post" enctype="multipart/form-data">
+              <div class="mb-3">
+                <label for="category">Nhập danh mục</label>
+                <input type="text" id="category" class="form-control" name="name" placeholder="Nhập tên danh mục">
+              </div>
+
+              <div class="mb-3">
+                <label for="active">Trạng thái</label>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="isActive" id="active" value="true" checked>
+                  <label class="form-check-label" for="active">
+                    Hiện
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="isActive" id="inactive" value="false">
+                  <label class="form-check-label" for="inactive">
+                    Ẩn
+                  </label>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="image">Upload ảnh</label>
+                <input type="file" id="image" name="file" accept="image/*" class="form-control">
+              </div>
+
+              <button class="btn btn-primary col-md-12 mt-2">Thêm</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $(document).ready(function() {
+
+      $('.delete-btn').click(function() {
+        var btn = $(this);
+        var id = btn.data('id');
+        var row = btn.closest('tr');
+
+        $.ajax({
+          url: '/api/xoa-danh-muc',
+          method: 'GET',
+          data: {
+            id: id
+          },
+          success: function(response) {
+            if (response && response.isDelete) {
+              row.fadeOut(200, function() {
+                $(this).remove();
+              });
+            }
+
+          },
+          error: function(xhr, status, error) {
+            console.error('Error loading revenue data:', error);
+            $("#error-message").show().text('Không thể tải dữ liệu. Vui lòng thử lại sau.');
+          }
+        });
+
+      });
+    })
+  </script>
+</section>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="Description" content="Enter your description here"/>
+
+    <title>Title</title>
+</head>
+<body>
+<section>
+    <div class="container-xl mt-5 ">
+        <form action="/user/save-order" method="post">
+            <div class="row">
+                <div class="col-md-6 mt-3">
+                    <div class="mb-3 row">
+                        <p class="text-center fs-4">Địa chỉ giao hàng</p>
+                        <hr>
+                        <div class="col p-1">
+                            <input type="text" name="fullName" required class="form-control mt-1" placeholder="Họ và tên">
+                        </div>
+                        <div class="col p-1">
+                            <input type="tel" name="phoneNumber" required class="form-control mt-1" placeholder="Số điện thoại">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <div class="col p-1">
+                            <select class="form-select m-0" id="city" aria-label=".form-select-sm" name="city">
+                                <option selected>Chọn tỉnh thành</option>
+                            </select>
+                        </div>
+                        <div class="col p-1">
+                            <select class="form-select m-0" id="district" aria-label=".form-select-sm" name="prefecture">
+                                <option selected>Chọn quận huyện</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <div class="col p-1">
+                            <select class="form-select m-0" id="ward" aria-label=".form-select-sm" name="ward">
+                                <option selected>Chọn phường xã</option>
+                            </select>
+                        </div>
+                        <div class="col p-1">
+                            <input type="text" name="address" required class="form-control" placeholder="Tên đường, tòa nhà, số nhà">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mt-3">
+                    <p class="text-center fs-4">Hóa đơn thanh toán</p>
+                    <hr>
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table table-borderless">
+                                <tbody>
+                                <tr>
+                                    <td>Tổng tiền hàng</td>
+                                    <td>:</td>
+                                    <td>[[${totalPrice}]]</td>
+                                </tr>
+                                <tr>
+                                    <td>Phí vận chuyển</td>
+                                    <td>:</td>
+                                    <td id="shipPrice"></td>
+                                </tr>
+                                <tr class="border-top">
+                                    <td>Tổng đơn</td>
+                                    <td>:</td>
+                                    <td id="totalPrice"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card shadow p-3 mb-5 mt-2 bg-body-tertiary rounded">
+
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Chọn phương thức thanh toán</label>
+                                <select required name="paymentType" class="form-control">
+                                    <option value="COD">Thanh toán khi nhận hàng</option>
+                                    <option value="ONLINE">Thanh toán bằng thẻ ngân hàng</option>
+                                </select>
+
+                            </div>
+
+                            <button class="btn bg-primary text-white col-md-12">Thanh toán</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script>
+        var citis = document.getElementById("city");
+        var districts = document.getElementById("district");
+        var wards = document.getElementById("ward");
+        var shipPrice = document.getElementById("shipPrice");
+        var totalPrice = document.getElementById("totalPrice");
+        var Parameter = {
+            url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
+            method: "GET",
+            responseType: "application/json",
+        };
+        var promise = axios(Parameter);
+        promise.then(function (result) {
+            renderCity(result.data);
+        });
+
+        function renderCity(data) {
+            for (const x of data) {
+                citis.options[citis.options.length] = new Option(x.Name, x.Name);
+            }
+            citis.onchange = function () {
+                if (this.value === "Thành phố Đà Nẵng") {
+                    shipPrice.innerHTML = "[[${shipPrice0}]]";
+                    totalPrice.innerHTML = "[[${totalPrice}]]";
+                } else {
+                    shipPrice.innerHTML = "[[${shipPrice50k}]]";
+                    totalPrice.innerHTML = "[[${totalPrice50k}]]";
+                }
+                district.length = 1;
+                ward.length = 1;
+                if(this.value != ""){
+                    const result = data.filter(n => n.Name === this.value);
+
+                    for (const k of result[0].Districts) {
+                        district.options[district.options.length] = new Option(k.Name, k.Name);
+                    }
+                }
+            };
+            district.onchange = function () {
+                ward.length = 1;
+                const dataCity = data.filter((n) => n.Name === citis.value);
+                if (this.value != "") {
+                    const dataWards = dataCity[0].Districts.filter(n => n.Name === this.value)[0].Wards;
+
+                    for (const w of dataWards) {
+                        wards.options[wards.options.length] = new Option(w.Name, w.Name);
+                    }
+                }
+            };
+        }
+    </script>
+</section>
+
+</body>
+</html>

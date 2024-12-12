@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/base::layout(~{::section})}">>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<section>
+    <link rel="stylesheet" th:href="@{/css/table.css}">
+
+    <style>
+
+        .star {
+            cursor: pointer;
+        }
+
+        .star.selected i {
+            font-weight: 900;
+            color: #ffc107;
+        }
+
+    </style>
+
+    <div class=" content1 pb-4">
+        <h4 class="text-center">Sản phẩm</h4>
+        <hr>
+        <div class="mb-2">
+            <a href="/admin" class="text-decoration-none"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
+        </div>
+        <th:block th:if="${session.succMsg}">
+            <p class="text-success fw-bold text-center">[[${session.succMsg}]]</p>
+            <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+        </th:block>
+
+        <th:block th:if="${session.errorMsg}">
+            <p class="text-danger fw-bold  text-center">[[${session.errorMsg}]]</p>
+            <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+        </th:block>
+
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">Đơn hàng</th>
+                <th scope="col">Sản phẩm</th>
+                <th scope="col">Đánh giá</th>
+                <th scope="col">Phản hổi</th>
+            </tr>
+            </thead>
+            <tbody class="danhsach" id="comments">
+
+            </tbody>
+
+        </table>
+
+        <div class="modal fade bd-example-modal-lg" id="reply-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="container py-3 text-body">
+                        <div class="w-100">
+                            <h5>Phản hồi</h5>
+                            <div class="d-flex cart-info-modal">
+                                <img src="" width="80px" height="80px" alt="Product Image" style="margin-right: 10px">
+                                <div>
+                                    <span class="fs-3"></span>
+                                    <h5 class="mb-0"></h5>
+                                    <p></p>
+                                </div>
+                            </div>
+
+                            <div class="rating my-2">
+                                <label class="star">
+                                    <i class="far fa-star fa-sm"></i>
+                                </label>
+                                <label class="star">
+                                    <i class="far fa-star fa-sm"></i>
+                                </label>
+                                <label class="star">
+                                    <i class="far fa-star fa-sm"></i>
+                                </label>
+                                <label class="star">
+                                    <i class="far fa-star fa-sm"></i>
+                                </label>
+                                <label class="star">
+                                    <i class="far fa-star fa-sm"></i>
+                                </label>
+                            </div>
+
+                            <div data-mdb-input-init class="form-outline">
+                                <textarea class="form-control text-comment" id="check-comment" style="pointer-events: none;"></textarea>
+                            </div>
+
+                            <div data-mdb-input-init class="form-outline mt-3">
+                                <textarea class="form-control reply-comment" rows="4"></textarea>
+                            </div>
+
+                            <div class="text-end mt-3">
+                                <input type="hidden" id="commentId">
+                                <a href="javascript:void(0)"
+                                   class="post-comment-btn btn btn-danger"
+                                   data-mdb-button-init data-mdb-ripple-init
+                                   data-bs-dismiss="modal"
+                                   data-bs-target="#sent-modal">Phản hồi
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function fetchComments() {
+                $.ajax({
+                    url: '/api/getComments',
+                    method: 'GET',
+                    success: function (data) {
+                        $('#comments').empty();
+                        data.productOrders.forEach(function (productOrder) {
+                            $('#comments').append(
+                                '<tr>' +
+                                '<td>' + productOrder.orderId + '</td>' +
+                                '<td>' + productOrder.productName + '</td>' +
+                                '<td>' +
+                                    '<span>' + productOrder.rating + ' <i class="ti ti-star"></i></span>' +
+                                    '<p class="m-0">' + productOrder.comment + '</p>' +
+                                '</td>' +
+
+                                '<td>' +
+                                    (data.replyComments[productOrder.parentId] ?
+                                        '<p>' +
+                                            data.replyComments[productOrder.parentId].content +
+                                        '</p>' :
+                                            '<a href="javascript:void(0)"' +
+                                                'class="reply-btn"\n' +
+                                                'data-id="' + productOrder.id + '"' +
+                                                'data-bs-toggle="modal"' +
+                                                'data-bs-target="#reply-modal" data-target=".bd-example-modal-lg">Phản hồi' +
+                                            '</a>'
+                                    )  +
+                                '</td>' +
+                                '</tr>'
+                            );
+                        })
+                    }
+                });
+            }
+
+            fetchComments();
+            setInterval(fetchComments, 5000);
+
+            var commentId = document.getElementById("commentId").value;
+
+            $(document).ready(function() {
+                $('#comments').on('click', '.reply-btn', function() {
+                    var productOrderId = $(this).data('id');
+
+                    $.ajax({
+                        url: '/api/getProductOrder',
+                        method: 'GET',
+                        data: {
+                            productOrderId: productOrderId
+                        },
+                        success: function(response) {
+                            if (response && response.productImage && response.productName &&
+                                response.productPrice && response.quantity && response.productTotalPrice &&
+                                response.email && response.commentId) {
+                                const labels = document.querySelectorAll(`#reply-modal .rating label`);
+                                labels.forEach(label => {
+                                    label.classList.remove('selected');
+                                });
+                                for (let i = 0; i < response.rating; i++) {
+                                    labels[i].classList.add('selected');
+                                }
+
+                                commentId = response.commentId;
+                                $('#reply-modal .cart-info-modal img').attr('src', '/img/product_img/' + response.productImage);
+                                $('#reply-modal .cart-info-modal span').text(response.email);
+                                $('#reply-modal .cart-info-modal h5').text(response.productName);
+                                $('#reply-modal .cart-info-modal p').text('Giá: ' + response.productPrice + ' x ' + response.quantity + ' = ' + response.productTotalPrice);
+                                document.getElementById("check-comment").value = response.textContent;
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error loading revenue data:', error);
+                            $("#error-message").show().text('Không thể tải dữ liệu. Vui lòng thử lại sau.');
+                        }
+                    });
+
+                });
+
+                $('.post-comment-btn').click(function() {
+                    var replyComment = $('.reply-comment').val();
+
+                    $.ajax({
+                        url: '/api/postComment',
+                        method: 'GET',
+                        data: {
+                            commentId: commentId,
+                            replyComment: replyComment
+                        },
+                        success: function(response) {
+                            fetchComments()
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error loading revenue data:', error);
+                            $("#error-message").show().text('Không thể tải dữ liệu. Vui lòng thử lại sau.');
+                        }
+                    });
+                });
+
+            });
+        </script>
+    </div>
+</section>
+</body>
+</html>

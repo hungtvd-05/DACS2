@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/base::layout(~{::section})}">>
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+</head>
+<body>
+<section>
+  <link rel="stylesheet" th:href="@{/css/table.css}">
+
+  <div class="container-fluid pb-4 content1">
+    <h4 class="text-center">Users</h4>
+    <hr>
+    <div class="mb-2">
+      <a href="/admin" class="text-decoration-none"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
+    </div>
+    <th:block th:if="${session.succMsg}">
+      <p class="text-success fw-bold text-center">[[${session.succMsg}]]</p>
+      <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+    </th:block>
+
+    <th:block th:if="${session.errorMsg}">
+      <p class="text-danger fw-bold text-center">[[${session.errorMsg}]]</p>
+      <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+    </th:block>
+
+    <div class="col-xxl-5 pb-2">
+      <form action="/admin/search-users" method="get">
+        <div class="row">
+          <div class="col">
+            <input type="text" class="form-control " name="search" placeholder="Nhập id, tên, email, sđt" th:value="${searchCh}">
+          </div>
+          <div class="col p-0">
+            <button class="btn btn-primary col mb-2">Tìm kiếm</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <th:block th:if="${search == true && users.size() == 0}">
+      <p class="fs-4 text-center">Không có người dùng nào phù hợp yêu cầu tìm kiếm!</p>
+    </th:block>
+    <th:block th:if="${search == false && users.size() == 0}">
+      <p class="fs-4 text-center">Không có tài khoản nào!</p>
+    </th:block>
+    <th:block th:if="${users.size() > 0}">
+      <table class="table table-bordered mb-4">
+        <thead>
+        <tr>
+          <th scope="col">STT</th>
+          <th scope="col">Profile</th>
+          <th scope="col">Tên</th>
+          <th scope="col">Email</th>
+          <th scope="col">SĐT</th>
+          <th scope="col">Địa chỉ</th>
+          <th scope="col" class="text-end">Trạng thái</th>
+        </tr>
+        </thead>
+        <tbody class="danhsach">
+        <tr th:each="u,c:${users}">
+          <td data-label="STT" scope="row" class="fs-5 dulieu">[[${c.count}]]</td>
+          <td data-label="Profile" class="fs-5">
+            <img th:src="@{'/img/profile_img/'+${u.profileImage}}"
+                 width="70px" height="70px">
+          </td>
+          <td data-label="Tên" th:utext="${u.getName()}" class="fs-5 ten dulieu"></td>
+          <td data-label="Email" th:utext="${u.getEmail()}" class="fs-5 dulieu"></td>
+          <td data-label="SĐT" th:utext="${u.getMobileNumber()}" class="fs-5 dulieu"></td>
+          <td data-label="Địa chỉ" th:utext="${u.getAddress() + ', ' + u.getCity()}" class="fs-5 dulieu"></td>
+          <td data-label="Trạng thái" class="fs-5 dulieu text-end">
+            <span class="status" th:userId="${u.id}" th:text="${u.isEnable ? 'Bật' : 'Tắt'}"></span>
+            <a href="javascript:void(0)"
+               class="btn btn-primary btn-sm update-status-btn"
+               th:data-id="${u.id}"
+               data-status="true"
+               data-role="ROLE_USER">
+              Bật
+            </a>
+            <a href="javascript:void(0)"
+               class="btn btn-danger btn-sm update-status-btn"
+               th:data-id="${u.id}"
+               data-status="false"
+               data-role="ROLE_USER">
+              Tắt
+            </a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <nav aria-label="Page navigation example" class="d-flex justify-content-center" th:if="${search == false}">
+        <ul class="pagination">
+          <li class="page-item" th:unless="${isFirst}">
+            <a class="page-link" th:href="@{'/admin/users?trang=' + ${trang}}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li th:each="i:${#numbers.sequence(1, totalPages)}" class="page-item" th:classappend="${trang + 1 == i ? 'active':''}">
+            <a class="page-link" th:href="@{'/admin/users?trang=' + ${i}}">[[${i}]]</a>
+          </li>
+          <li class="page-item" th:unless="${isLast}">
+            <a class="page-link" aria-label="Next" th:href="@{'/admin/users?trang=' + ${trang + 2}}">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <nav aria-label="Page navigation example" class="d-flex justify-content-center" th:if="${search == true}">
+        <ul class="pagination">
+          <li class="page-item" th:unless="${isFirst}">
+            <a class="page-link" th:href="@{'/admin/search-users?search=' + ${searchCh} + '&trang=' + ${trang}}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li th:each="i:${#numbers.sequence(1, totalPages)}" class="page-item" th:classappend="${trang + 1 == i ? 'active':''}">
+            <a class="page-link" th:href="@{'/admin/search-users?search=' + ${searchCh} + '&trang=' + ${i}}">[[${i}]]</a>
+          </li>
+          <li class="page-item" th:unless="${isLast}">
+            <a class="page-link" aria-label="Next" th:href="@{'/admin/search-users?search=' + ${searchCh} + '&trang=' + ${trang + 2}}">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <script>
+        $(document).ready(function() {
+
+          $('.update-status-btn').click(function() {
+            var btn = $(this);
+            var userId = btn.data('id');
+            var status = btn.data('status');
+            var role = btn.data('role');
+
+            var statusSpan = $(`span.status[userId="${userId}"]`);
+            $.ajax({
+              url: '/api/updateSts',
+              method: 'GET',
+              data: {
+                id: userId,
+                status: status
+              },
+              success: function(response) {
+                if (response && response.statusName) {
+                  statusSpan.fadeOut(200, function() {
+                    $(this).text(response.statusName).fadeIn(200);
+                  });
+                }
+
+              },
+              error: function(xhr, status, error) {
+                console.error('Error loading revenue data:', error);
+                $("#error-message").show().text('Không thể tải dữ liệu. Vui lòng thử lại sau.');
+              }
+            });
+
+          });
+        })
+      </script>
+    </th:block>
+  </div>
+</section>
+</body>
+</html>

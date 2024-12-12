@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/base::layout(~{::section})}">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+<!--  <link rel="stylesheet" th:href="@{css/style.css}">-->
+</head>
+<body>
+    <section>
+      <div class="container-xxl">
+        <div class="row">
+          <div class="col-lg-4">
+            <!-- Monthly Earnings -->
+            <div class="card">
+              <div class="card-body">
+                <div class="row alig n-items-start">
+                  <div class="col-8">
+                    <h5 class="card-title mb-9 fw-semibold"> Doanh thu tháng này </h5>
+                    <h4 class="fw-semibold mb-3" id="totalSalesComplete"></h4>
+                    <div class="d-flex align-items-center pb-1">
+                      <p class="fs-3 mb-0" id="totalSales"></p>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="d-flex justify-content-end">
+                      <div
+                              class="text-white bg-secondary rounded-circle p-6 d-flex align-items-center justify-content-center">
+                        <i class="ti ti-currency-dollar fs-6"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <!-- Monthly Earnings -->
+            <div class="card">
+              <div class="card-body">
+                <div class="row alig n-items-start">
+                  <div class="col-8">
+                    <h5 class="card-title mb-9 fw-semibold"> Doanh thu tháng trước </h5>
+                    <h4 class="fw-semibold mb-3" id="totalSalesCompleteLastMonth"></h4>
+                    <div class="d-flex align-items-center pb-1">
+                      <p class="fs-3 mb-0" id="totalSalesLastMonth"></p>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="d-flex justify-content-end">
+                      <div
+                              class="text-white bg-secondary rounded-circle p-6 d-flex align-items-center justify-content-center">
+                        <i class="ti ti-currency-dollar fs-6"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <!-- Yearly Breakup -->
+            <div class="card overflow-hidden">
+              <div class="card-body p-4">
+                <div class="row align-items-center">
+                  <div class="col-4">
+                    <div class="d-flex justify-content-center">
+                      <div id="orderChart"></div>
+                    </div>
+                  </div>
+                  <div class="col-8">
+                    <h5 class="card-title mb-9 fw-semibold">Đơn hàng tháng này</h5>
+                    <h4 class="fw-semibold mb-3" id="orderComplete"></h4>
+                    <div class="d-flex align-items-center mb-3">
+                      <p class="fs-3 mb-0" id="countOrdersByMonth"></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card w-100">
+          <div class="card-body">
+            <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+              <div class="mb-3 mb-sm-0">
+                <h5 class="card-title fw-semibold">Doanh thu</h5>
+              </div>
+              <div>
+                <select class="form-select" id="salesType">
+                  <option value="last7days">7 ngày gần nhất</option>
+                  <option value="month">Tháng này</option>
+                  <option value="lastmonth">Tháng trước</option>
+                </select>
+              </div>
+            </div>
+            <div id="doanhthu"></div>
+          </div>
+        </div>
+        <div class="card w-100">
+          <div class="card-body">
+            <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+              <div class="mb-3 mb-sm-0">
+                <h5 class="card-title fw-semibold">Số lượng đơn hàng</h5>
+              </div>
+              <div>
+                <select class="form-select" id="ordersType">
+                  <option value="last7days">7 ngày gần nhất</option>
+                  <option value="month">Tháng này</option>
+                  <option value="lastmonth">Tháng trước</option>
+                </select>
+              </div>
+            </div>
+            <div id="ordersChart"></div>
+          </div>
+        </div>
+        <div class="card w-100">
+          <div class="card-body">
+            <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+              <div class="mb-3 mb-sm-0">
+                <h5 class="card-title fw-semibold">Doanh thu sản phẩm</h5>
+              </div>
+            </div>
+            <div id="productsChart"></div>
+          </div>
+        </div>
+      </div>
+<!--      <script th:src="@{/libs/jquery/dist/jquery.min.js}"></script>-->
+<!--      <script th:src="@{/libs/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>-->
+<!--      <script th:src="@{/js/sidebarmenu.js}"></script>-->
+<!--      <script th:src="@{/js/app.min.js}"></script>-->
+<!--      <script th:src="@{/libs/apexcharts/dist/apexcharts.min.js}"></script>-->
+<!--      <script th:src="@{/libs/simplebar/dist/simplebar.js}"></script>-->
+
+      <script>
+
+        $(document).ready(function() {
+          var chart = {
+            series: [
+              {
+                name: "Doanh thu dự kiến",
+                data: [],
+                type: 'line'
+              },
+              {
+                name: "Doanh thu đạt được",
+                data: [],
+                type: 'line'
+              },
+            ],
+
+            chart: {
+              // height: 345,
+              type: 'line',
+              zoom: {
+                enabled: false
+              },
+              toolbar: { show: true },
+              foreColor: "#adb0bb",
+              fontFamily: 'inherit',
+            },
+
+            colors: ["#5D87FF", "#49BEFF"],
+
+            dataLabels: {
+              enabled: false
+            },
+
+            stroke: {
+              width: [3, 3],
+              curve: 'smooth',
+              dashArray: [0, 0]
+            },
+
+            legend: {
+              show: true,
+              position: 'top',
+              horizontalAlign: 'right',
+              floating: true,
+              offsetY: -25,
+              offsetX: -5
+            },
+
+            markers: {
+              size: 4,
+              hover: {
+                size: 6
+              }
+            },
+
+            grid: {
+              borderColor: "rgba(0,0,0,0.1)",
+              strokeDashArray: 3,
+              xaxis: {
+                lines: {
+                  show: false
+                }
+              },
+              padding: {
+                top: 10
+              }
+            },
+
+            xaxis: {
+              type: "category",
+              categories: [],
+              labels: {
+                style: {
+                  cssClass: "grey--text lighten-2--text fill-color",
+                  colors: '#adb0bb'
+                },
+              },
+            },
+
+            yaxis: {
+              show: true,
+              min: 0,
+              // max: 0,
+              tickAmount: 4,
+              labels: {
+                style: {
+                  cssClass: "grey--text lighten-2--text fill-color",
+                  colors: '#adb0bb'
+                },
+              }
+            },
+
+            tooltip: {
+              theme: 'light',
+              shared: true,
+              intersect: false,
+              y: {
+                formatter: function (y) {
+                  if (typeof y !== "undefined") {
+                    return y.toFixed(0) + " &#8363";
+                  }
+                  return y;
+                }
+              }
+            },
+
+            responsive: [
+              {
+                breakpoint: 600,
+                options: {
+                  legend: {
+                    show: false
+                  },
+                }
+              }
+            ]
+          };
+
+          var chartInstance = new ApexCharts(document.querySelector("#doanhthu"), chart);
+          chartInstance.render();
+
+
+          function loadRevenueData(type) {
+            $("#doanhthu").addClass("loading");
+
+            $.ajax({
+              url: '/api/getSales',
+              method: 'GET',
+              data: { type: type },
+              success: function(response) {
+                if (response && response.sales && response.dates && response.salesComplete) {
+                  var nmax = Math.max(...response.sales);
+                  chartInstance.updateOptions({
+                    xaxis: {
+                      categories: response.dates
+                    },
+                    yaxis: {
+                      // tickAmount: 6,
+                      max: (Math.ceil(nmax / 100000) * 100000)
+                    }
+                  });
+
+                  chartInstance.updateSeries([
+                    {
+                      name: "Doanh thu dự kiến",
+                      data: response.sales,
+                      type: 'line'
+                    },
+                    {
+                      name: "Doanh thu đạt được",
+                      data: response.salesComplete,
+                      type: 'line'
+                    },
+
+                  ]);
+                }
+
+              },
+              error: function(xhr, status, error) {
+                console.error('Error loading revenue data:', error);
+                $("#error-message").show().text('Không thể tải dữ liệu. Vui lòng thử lại sau.');
+              },
+              complete: function() {
+                $("#doanhthu").removeClass("loading");
+              }
+            });
+          }
+
+          loadRevenueData("last7days");
+
+          $('#salesType').change(function() {
+            console.log($(this).val())
+            loadRevenueData($(this).val());
+          });
+
+          var ordersChart = {
+            series: [
+              { name: "Tổng đơn hàng", data: [] },
+              { name: "Đơn hàng đã giao", data: [] },
+            ],
+
+            chart: {
+              type: "bar",
+              // height: 345,
+              offsetX: -15,
+              toolbar: { show: true },
+              foreColor: "#adb0bb",
+              fontFamily: 'inherit',
+              sparkline: { enabled: false },
+            },
+
+
+            colors: ["#5D87FF", "#49BEFF"],
+
+
+            plotOptions: {
+              bar: {
+                horizontal: false,
+                columnWidth: "35%",
+                borderRadius: [6],
+                borderRadiusApplication: 'end',
+                borderRadiusWhenStacked: 'all'
+              },
+            },
+            markers: { size: 0 },
+
+            dataLabels: {
+              enabled: false,
+            },
+
+
+            legend: {
+              show: false,
+            },
+
+
+            grid: {
+              borderColor: "rgba(0,0,0,0.1)",
+              strokeDashArray: 3,
+              xaxis: {
+                lines: {
+                  show: false,
+                },
+              }
+            },
+
+            xaxis: {
+              type: "category",
+              categories: [],
+              labels: {
+                style: { cssClass: "grey--text lighten-2--text fill-color" },
+              },
+            },
+
+
+            yaxis: {
+
+              show: true,
+              min: 0,
+              tickAmount: 3,
+              // max: 7,
+              labels: {
+                style: {
+                  cssClass: "grey--text lighten-2--text fill-color",
+                },
+              },
+            },
+            stroke: {
+              show: true,
+              width: 3,
+              lineCap: "butt",
+              colors: ["transparent"],
+            },
+
+
+            // tooltip: { theme: "light" },
+
+            tooltip: {
+              theme: 'light',
+              shared: true,
+              intersect: false,
+              y: {
+                formatter: function (y) {
+                  if (typeof y !== "undefined") {
+                    return y.toFixed(0) + " đơn hàng";
+                  }
+                  return y;
+                }
+              }
+            },
+
+            responsive: [
+              {
+                breakpoint: 600,
+                options: {
+                  plotOptions: {
+                    bar: {
+                      borderRadius: 3,
+                    }
+                  },
+                }
+              }
+            ]
+
+
+          };
+
+          var ordersChartRender = new ApexCharts(document.querySelector("#ordersChart"), ordersChart);
+          ordersChartRender.render();
+
+          function loadOrdersData(type) {
+            $("#ordersChart").addClass("loading");
+
+            $.ajax({
+              url: '/api/getOrders',
+              method: 'GET',
+              data: { type: type },
+              success: function(response) {
+                if (response && response.orders && response.dates && response.ordersComplete) {
+                  ordersChartRender.updateOptions({
+                    xaxis: {
+                      categories: response.dates
+                    },
+                    yaxis: {
+                      min: 0,
+                      // max: maxValue,
+                      // tickAmount: 3,
+                      // forceNiceScale: true,
+                      // decimalsInFloat: 0,
+                      labels: {
+                        formatter: function(val) {
+                          return Math.floor(val);
+                        }
+                      }
+                      // max: (Math.max(...response.orders))
+                    }
+                  });
+
+                  ordersChartRender.updateSeries([
+                    {
+                      name: "Tổng đơn hàng",
+                      data: response.orders
+                    },
+                    {
+                      name: "Đơn hàng đã giao",
+                      data: response.ordersComplete
+                    },
+
+                  ]);
+                }
+
+              },
+              error: function(xhr, status, error) {
+                console.error('Error loading revenue data:', error);
+                $("#error-message").show().text('Không thể tải dữ liệu. Vui lòng thử lại sau.');
+              },
+              complete: function() {
+                $("#doanhthu").removeClass("loading");
+              }
+            });
+          }
+
+          loadOrdersData("last7days");
+
+          $('#ordersType').change(function() {
+            loadOrdersData($(this).val());
+          });
+
+          var totalSalesComplete = document.getElementById("totalSalesComplete");
+          var totalSales= document.getElementById("totalSales");
+          var totalSalesCompleteLastMonth = document.getElementById("totalSalesCompleteLastMonth");
+          var totalSalesLastMonth= document.getElementById("totalSalesLastMonth");
+
+          var breakup = {
+            series: [],
+            labels: [],
+            chart: {
+              width: 160,
+              type: "donut",
+              fontFamily: "Plus Jakarta Sans', sans-serif",
+              foreColor: "#adb0bb",
+            },
+            plotOptions: {
+              pie: {
+                startAngle: 0,
+                endAngle: 360,
+                // donut: {
+                //     size: '75%',
+                // },
+              },
+            },
+            stroke: {
+              show: false,
+            },
+
+            dataLabels: {
+              enabled: false,
+            },
+
+            legend: {
+              show: false,
+            },
+
+            responsive: [
+              {
+                breakpoint: 991,
+                options: {
+                  chart: {
+                    width: 150,
+                  },
+                },
+              },
+            ],
+            tooltip: {
+              theme: "dark",
+              fillSeriesColor: false,
+            },
+          };
+
+          var orderChartRender = new ApexCharts(document.querySelector("#orderChart"), breakup);
+          orderChartRender.render();
+
+          function loadOrderData() {
+            $("#orderChart").addClass("loading");
+
+            $.ajax({
+              url: '/api/getOrder',
+              method: 'GET',
+              success: function(response) {
+                if (response && response.countOrders && response.ordersStatus && response.totalSalesComplete && response.totalSales &&
+                        response.totalSalesCompleteLastMonth && response.totalSalesLastMonth) {
+                  orderComplete.innerHTML = response.ordersComplete + " đơn hoàn thành";
+                  countOrdersByMonth.innerHTML = "Tổng: " + response.countOrdersByMonth + " đơn";
+                  totalSalesComplete.innerHTML = response.totalSalesComplete;
+                  totalSales.innerHTML = "Doanh thu dự kiến: " + response.totalSales;
+                  totalSalesCompleteLastMonth.innerHTML = response.totalSalesCompleteLastMonth;
+                  totalSalesLastMonth.innerHTML = "Doanh thu dự kiến: " + response.totalSalesLastMonth;
+                  orderChartRender.updateOptions({
+                    labels: response.ordersStatus
+                  });
+
+                  orderChartRender.updateSeries(response.countOrders);
+                }
+
+              },
+              error: function(xhr, status, error) {
+                console.error('Error loading revenue data:', error);
+                $("#error-message").show().text('Không thể tải dữ liệu. Vui lòng thử lại sau.');
+              },
+              complete: function() {
+                $("#orderChart").removeClass("loading");
+              }
+            });
+          }
+
+          loadOrderData();
+
+          var productsChart = {
+            series: [
+              { name: "Doanh thu", data: [] }
+            ],
+
+            chart: {
+              type: "bar",
+              height: 345,
+              offsetX: -15,
+              toolbar: { show: true },
+              foreColor: "#adb0bb",
+              fontFamily: 'inherit',
+              sparkline: { enabled: false },
+            },
+
+
+            colors: ["#5D87FF", "#49BEFF"],
+
+
+            plotOptions: {
+              bar: {
+                horizontal: true,
+                // columnWidth: "35%",
+                // borderRadius: [6],
+                borderRadius: 4,
+                borderRadiusApplication: 'end',
+                // borderRadiusWhenStacked: 'all'
+              },
+            },
+            markers: { size: 0 },
+
+            dataLabels: {
+              enabled: false,
+            },
+
+
+            legend: {
+              show: false,
+            },
+
+
+            grid: {
+              borderColor: "rgba(0,0,0,0.1)",
+              strokeDashArray: 3,
+              yaxis: {
+                lines: {
+                  show: false,
+                },
+              }
+            },
+            xaxis: {
+              type: "category",
+              categories: [],
+              labels: {
+                style: { cssClass: "grey--text lighten-2--text fill-color" },
+              },
+            },
+            yaxis: {
+              show: true,
+              min: 0,
+              tickAmount: 4,
+              // max: 7,
+              labels: {
+                style: {
+                  cssClass: "grey--text lighten-2--text fill-color",
+                },
+              },
+            },
+
+
+
+            stroke: {
+              show: true,
+              width: 3,
+              lineCap: "butt",
+              colors: ["transparent"],
+            },
+
+
+            tooltip: { theme: "light" },
+
+            tooltip: {
+              theme: 'light',
+              // x: {
+              //     title: {
+              //         formatter: function() {
+              //             return 'Doanh thu:';
+              //         }
+              //     }
+              // },
+              y: {
+                formatter: function(val) {
+                  return new Intl.NumberFormat('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND'
+                  }).format(val);
+                }
+              }
+            },
+
+            responsive: [
+              {
+                breakpoint: 600,
+                options: {
+                  plotOptions: {
+                    bar: {
+                      borderRadius: 3,
+                    }
+                  },
+                }
+              }
+            ]
+
+
+          };
+          var productsChartRender = new ApexCharts(document.querySelector("#productsChart"), productsChart);
+          productsChartRender.render();
+
+          function loadProductsData() {
+            $("#productsChart").addClass("loading");
+
+            $.ajax({
+              url: '/api/getProducts',
+              method: 'GET',
+              success: function(response) {
+                if (response && response.productNames && response.sumProducts) {
+                  console.log(response.productNames)
+                  productsChartRender.updateOptions({
+
+                    xaxis: {
+                      categories: response.productNames
+                    },
+                    // xaxis: {
+                    //     min: 0,
+                    //     labels: {
+                    //         formatter: function(val) {
+                    //             return Math.floor(val);
+                    //         }
+                    //     }
+                    // }
+                  });
+
+                  productsChartRender.updateSeries([
+                    {
+                      name: "Doanh thu",
+                      data: response.sumProducts
+                    },
+                  ]);
+                }
+
+              },
+              error: function(xhr, status, error) {
+                console.error('Error loading revenue data:', error);
+                $("#error-message").show().text('Không thể tải dữ liệu. Vui lòng thử lại sau.');
+              },
+              complete: function() {
+                $("#productsChart").removeClass("loading");
+              }
+            });
+          }
+
+          loadProductsData();
+        });
+      </script>
+    </section>
+
+</body>
+</html>

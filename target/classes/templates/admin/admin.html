@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/base::layout(~{::section})}">>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<section>
+    <link rel="stylesheet" th:href="@{/css/table.css}">
+
+    <div class="container-fluid pb-4 content1">
+        <h4 class="text-center">Admin</h4>
+        <hr>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <a href="/admin" class="text-decoration-none">
+                <i class="fa-solid fa-arrow-left"></i> Quay lại
+            </a>
+            <a href="/admin/them-admin" class="btn btn-success">
+                Thêm tài khoản admin
+            </a>
+        </div>
+        <th:block th:if="${session.succMsg}">
+            <p class="text-success fw-bold text-center">[[${session.succMsg}]]</p>
+            <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+        </th:block>
+
+        <th:block th:if="${session.errorMsg}">
+            <p class="text-danger fw-bold text-center">[[${session.errorMsg}]]</p>
+            <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+        </th:block>
+
+        <th:block th:if="${admins.size() == 0}">
+            <p class="fs-4 text-center">Không có tài khoản nào!</p>
+        </th:block>
+        <th:block th:if="${admins.size() > 0}">
+            <table class="table table-bordered mb-4">
+                <thead>
+                <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">Profile</th>
+                    <th scope="col">Tên</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">SĐT</th>
+                    <th scope="col">Địa chỉ</th>
+                    <th scope="col" class="text-end">Trạng thái</th>
+                </tr>
+                </thead>
+                <tbody class="danhsach">
+                <tr th:each="u:${admins}">
+                    <td data-label="STT" scope="row" class="fs-5 dulieu">[[${u.id}]]</td>
+                    <td data-label="Profile" class="fs-5">
+                        <img th:src="@{'/img/profile_img/'+${u.profileImage}}"
+                             width="70px" height="70px">
+                    </td>
+                    <td data-label="Tên" th:utext="${u.getName()}" class="fs-5 ten dulieu"></td>
+                    <td data-label="Email" th:utext="${u.getEmail()}" class="fs-5 dulieu"></td>
+                    <td data-label="SĐT" th:utext="${u.getMobileNumber()}" class="fs-5 dulieu"></td>
+                    <td data-label="Địa chỉ" th:utext="${u.getAddress() + ', ' + u.getCity()}" class="fs-5 dulieu"></td>
+                    <td data-label="Trạng thái" class="fs-5 dulieu text-end">
+                        <span class="status" th:userId="${u.id}" th:text="${u.isEnable ? 'Bật' : 'Tắt'}"></span>
+                        <a href="javascript:void(0)"
+                           class="btn btn-primary btn-sm update-status-btn"
+                           th:data-id="${u.id}"
+                           data-status="true"
+                           data-role="ROLE_ADMIN">
+                            Bật
+                        </a>
+                        <a href="javascript:void(0)"
+                           class="btn btn-danger btn-sm update-status-btn"
+                           th:data-id="${u.id}"
+                           data-status="false"
+                           data-role="ROLE_ADMIN">
+                            Tắt
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <script>
+                $(document).ready(function() {
+
+                    $('.update-status-btn').click(function() {
+                        var btn = $(this);
+                        var userId = btn.data('id');
+                        var status = btn.data('status');
+
+                        var statusSpan = $(`span.status[userId="${userId}"]`);
+                        $.ajax({
+                            url: '/api/updateSts',
+                            method: 'GET',
+                            data: {
+                                id: userId,
+                                status: status
+                            },
+                            success: function(response) {
+                                if (response && response.statusName) {
+                                    statusSpan.fadeOut(200, function() {
+                                        $(this).text(response.statusName).fadeIn(200);
+                                    });
+                                }
+
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('Error loading revenue data:', error);
+                                $("#error-message").show().text('Không thể tải dữ liệu. Vui lòng thử lại sau.');
+                            }
+                        });
+
+                    });
+                })
+            </script>
+        </th:block>
+    </div>
+</section>
+</body>
+</html>

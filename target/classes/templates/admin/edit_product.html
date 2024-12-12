@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/base::layout(~{::section})}">>
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<section>
+
+  <link rel="stylesheet" th:href="@{/css/dropzone.min.css}">
+  <script type="text/javascript" th:src="@{/js/dropzone.min.js}"></script>
+  <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.2.0/ckeditor5.css">
+
+  <div class="container-sm content1 fs-5">
+    <div class="mb-2">
+      <a href="/admin/san-pham" class="text-decoration-none"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
+    </div>
+    <div class="">
+      <div class="card card-sh">
+        <div class="card-header text-center">
+          <p class="fs-4">Sửa sản phẩm</p>
+          <th:block th:if="${session.succMsg}">
+            <p class="text-success fw-bold">[[${session.succMsg}]]</p>
+            <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+          </th:block>
+
+          <th:block th:if="${session.errorMsg}">
+            <p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+            <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+          </th:block>
+        </div>
+        <div class="card-body">
+          <form action="/admin/cap-nhat-san-pham" method="post" enctype="multipart/form-data" id="productForm">
+            <input type="hidden" name="id" th:value="${product.id}">
+            <div class="row">
+              <div class="mb-3 col">
+                <label for="ten">Nhập tên sản phẩm</label>
+                <input type="text" name="ten" id="ten" class="form-control" th:value="${product.getTen()}" required>
+              </div>
+              <div class="mb-3 col">
+                <label for="brand">Chọn danh mục</label>
+                <select id="brand" class="form-control" name="brand">
+                  <option th:each="brand:${brands}" th:value="${brand.id}" th:selected="${brand == product.brand}">[[${brand.name}]]</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="mb-3 col">
+                <label for="category">Chọn danh mục</label>
+                <select id="category" class="form-control" name="category">
+                  <option th:each="c:${categories}" th:value="${c.id}" th:selected="${product.danhmuc == c}">[[${c.name}]]</option>
+                </select>
+              </div>
+              <div class="mb-3 col">
+                <label for="active">Trạng thái</label>
+                <div class="d-flex">
+                  <div class="form-check" style="margin-right: 20px">
+                    <input class="form-check-input" type="radio" name="trangthai" id="active" value="true" th:checked="${product.trangthai==true}">
+                    <label class="form-check-label" for="active">
+                      Hiện
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="trangthai" id="inactive" value="false" th:checked="${product.trangthai==false}">
+                    <label class="form-check-label" for="inactive">
+                      Ẩn
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="mb-3 col">
+                <label for="gia">Nhập giá sản phẩm (&#8363)</label>
+                <input id="gia" name="gia" class="form-control" type="number" min="0" th:value="${product.getGia()}">
+              </div>
+              <div class="mb-3 col">
+                <label for="soluong">Nhập số lượng</label>
+                <input id="soluong" name="soluong" class="form-control" type="number" min="1" th:value="${product.getSoluong()}">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="mb-3 col">
+                <label for="sale">Sale (%)</label>
+                <input id="sale" name="sale" class="form-control" type="number" min="0" max="100" th:value="${product.getSale()}">
+              </div>
+              <div class="mb-3 col">
+                <label for="giasale">Giá sale (&#8363)</label>
+                <input id="giasale" name="giasale" class="form-control" type="number" min="0" th:value="${product.getGiasale()}" disabled>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="imageUpload">Upload hình ảnh</label>
+              <div class="mb-3">
+                <div id="imageUpload" name="imageUpload" class="dropzone dz-clickable">
+                  <div class="dz-message needsclick">
+                    <br>Chọn ảnh hoặc thả ảnh vào đây<br><br>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <script type="importmap">
+              {
+                  "imports": {
+                      "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.2.0/ckeditor5.js",
+                      "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.2.0/"
+                  }
+              }
+            </script>
+
+            <script type="module" th:src="@{/js/ckeditor.js}"></script>
+
+            <script th:inline="javascript">
+
+              document.getElementById("sale").onchange = function() {giasale()};
+              document.getElementById("gia").onchange = function() {giasale()};
+
+              function giasale() {
+                var sale = document.getElementById("sale").value;
+                var gia = document.getElementById("gia").value;
+                var giasale = document.getElementById("giasale");
+
+                giasale.value = gia * (100 - sale) / 100;
+              }
+
+              let imageNames = [];
+              Dropzone.autoDiscover = false;
+              const dropzone = new Dropzone("#imageUpload", {
+                url: "/admin/luu-anh",
+                maxFiles: 5,
+                paramName: 'file1',
+                acceptedFiles: "image/*",
+                addRemoveLinks: true,
+                init: function() {
+                  imageNames = /*[[${product.getArrayAnh}]]*/ [];
+                  console.log(imageNames);
+                  if (imageNames.length > 0) {
+                    imageNames.forEach(fileName =>{
+                      let fileGiaDinh = {name: fileName, size: 12345};
+                      this.emit("addedfile", fileGiaDinh);
+                      this.emit("thumbnail", fileGiaDinh, `/img/product_img/${fileName}`);
+                      this.emit("complete", fileGiaDinh);
+                      this.files.push(fileGiaDinh);
+                    });
+                    this.options.maxFiles = this.options.maxFiles - imageNames.length;
+                  }
+
+                  this.on("addedfile", function(file) {
+                    if (this.files.length > 5) {
+                      this.removeFile(file);
+                      alert("Không thể upload thêm! Số lượng file tối đa là 5");
+                      return;
+                    }
+                  });
+                },
+                success: function(file, response) {
+                  imageNames.push(file.name);
+                },
+                error: function(file, response) {
+                  console.error(response);
+                },
+                removedfile: function(file) {
+                  const fileName = file.name;
+                  const index = imageNames.indexOf(fileName);
+                  imageNames.splice(index, 1);
+
+                  // Tạo FormData object
+                  const formData = new FormData();
+                  formData.append('fileName', fileName);
+
+                  // Gọi API xóa file
+                  fetch('/admin/xoa-anh', {
+                    method: 'POST',
+                    body: formData
+                  })
+
+                  // Xóa preview
+                  if (file.previewElement != null && file.previewElement.parentNode != null) {
+                    file.previewElement.parentNode.removeChild(file.previewElement);
+                  }
+
+                  return this._updateMaxFilesReachedClass();
+                }
+              });
+
+              document.getElementById('productForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Tạo input hidden để chứa danh sách tên file
+                const imageNamesInput = document.createElement('input');
+                imageNamesInput.type = 'hidden';
+                imageNamesInput.name = 'imageNames';
+
+                imageNamesInput.value = JSON.stringify(imageNames.toString());
+
+                // Thêm input vào form
+                this.appendChild(imageNamesInput);
+
+                // Submit form
+                this.submit();
+              });
+
+            </script>
+
+            <script >
+
+            </script>
+
+            <div class="mb-3">
+              <label for="editor">Nhập mô tả sản phẩm</label>
+              <textarea id="editor" name="mota" class="form-control">
+                [[${product.mota}]]
+              </textarea>
+
+            </div>
+
+            <div class="row">
+              <div class="col-8">
+                <button class="btn btn-primary w-100">Cập nhật</button>
+              </div>
+              <div class="col-4">
+                <button type="button" class="btn btn-success w-100" onclick="history.go(-1)">
+                  Quay lại
+                </button>
+<!--                <a href="/admin/san-pham" class="btn btn-success w-100">Quay lại</a>-->
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--    end script-->
+</section>
+</body>
+</html>
