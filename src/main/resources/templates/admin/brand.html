@@ -12,7 +12,7 @@
   <div class="content1">
     <div class="row">
       <div class="col-md-9">
-        <p class="text-center fs-4">Danh mục</p>
+        <h4 class="text-center">Thương hiệu</h4>
         <hr>
         <div class="mb-2">
           <a href="/admin" class="text-decoration-none"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
@@ -44,7 +44,7 @@
       </div>
 
       <div class="col-md-3 mb-5">
-        <p class="fs-4 text-center">Thêm thương hiệu</p>
+        <h4 class="text-center">Thêm thương hiệu</h4>
         <th:block th:if="${session.succMsg}">
           <p class="text-success fw-bold text-center">[[${session.succMsg}]]</p>
           <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>

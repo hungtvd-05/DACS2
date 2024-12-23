@@ -26,6 +26,8 @@ public class Orders {
 
     private String orderId;
 
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String orderName;
 
     private Date orderDate;

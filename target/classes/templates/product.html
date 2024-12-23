@@ -25,10 +25,22 @@
                 object-fit: cover;
             }
 
+            /*.text-ellipsis {*/
+            /*    white-space: nowrap;*/
+            /*    overflow: hidden;*/
+            /*    text-overflow: ellipsis;*/
+            /*}*/
+
             .text-ellipsis {
-                white-space: nowrap;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
                 overflow: hidden;
                 text-overflow: ellipsis;
+            }
+
+            .card-sh {
+                box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.3) !important;
             }
         </style>
         <div class="container-fluid p-5">
@@ -48,7 +60,7 @@
         </div>
 
         <div class="col-xxl-8 offset-xxl-2 col-xl-8 offset-xl-2 col-12">
-            <div class="card">
+            <div class="card card-sh">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-6 d-flex align-items-center">
@@ -72,16 +84,16 @@
                     </div>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-body p-4 pb-0">
+            <div class="card card-sh">
+                <div class="card-body p-4 py-3">
                     <div class="row">
-                        <div class="col-xxl-2 col-lg-3 col-md-3 col-sm-3 col-6" th:each="product:${products}">
-                            <div class="card overflow-hidden rounded-2">
+                        <div class="col-xxl-2 col-lg-3 col-md-3 col-sm-3 col-6 p-2" th:each="product:${products}">
+                            <div class="card card-sh overflow-hidden rounded-2 m-0">
                                 <a th:href="@{'/san-pham/san-pham-id=' + ${product.id}}">
                                     <div class="position-relative card-img-top">
                                         <img th:src="@{'/img/product_img/' + ${product.getArrayAnh()[0]}}" alt="...">
                                     </div>
-                                    <div class="card-body p-2" style="height: 77.58px">
+                                    <div class="card-body p-2" style="height: 97px">
                                         <h6 class="fw-semibold fs-4 text-ellipsis mb-1">[[${product.ten}]]</h6>
                                         <div th:if="${product.sale > 0}">
                                             <h6 class=" fs-3 mb-0">
@@ -103,31 +115,39 @@
                 </div>
             </div>
         </div>
-        <nav aria-label="Page navigation example" class="d-flex justify-content-center" th:if="${search == false && products.size() > 0}">
+        <nav aria-label="Page navigation example" class="d-flex justify-content-center mb-3" th:if="${search == false && products.size() > 0}">
             <ul class="pagination">
                 <li class="page-item" th:unless="${isFirst}">
-                    <a class="page-link" th:if="${paramValue == ''}" th:href="@{'/san-pham?trang=' + ${trang}}" aria-label="Previous">
+                    <a class="page-link"
+                       th:if="${danhMuc == '' && thuongHieu == ''}"
+                       th:href="@{'/san-pham?trang=' + ${trang}}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
-                    <a class="page-link" th:unless="${paramValue == ''}" th:href="@{'/san-pham?danh-muc=' + ${paramValue} + '&trang=' + ${trang}}" aria-label="Previous">
+                    <a class="page-link"
+                       th:unless="${danhMuc == '' && thuongHieu == ''}"
+                       th:href="@{'/san-pham?danh-muc=' + ${danhMuc} + '&' + 'thuong-hieu=' + ${thuongHieu} + '&trang=' + ${trang}}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
                 <li th:each="i:${#numbers.sequence(1, totalPages)}" class="page-item" th:classappend="${trang + 1 == i ? 'active':''}">
-                    <a class="page-link" th:unless="${paramValue == ''}" th:href="@{'/san-pham?danh-muc=' + ${paramValue} + '&' + 'trang=' + ${i}}">[[${i}]]</a>
-                    <a class="page-link" th:if="${paramValue == ''}" th:href="@{'/san-pham?trang=' + ${i}}">[[${i}]]</a>
+                    <a class="page-link"
+                       th:unless="${danhMuc == '' && thuongHieu == ''}"
+                       th:href="@{'/san-pham?danh-muc=' + ${danhMuc} + '&' + 'thuong-hieu=' + ${thuongHieu} + '&' + 'trang=' + ${i}}">[[${i}]]</a>
+                    <a class="page-link" th:if="${danhMuc == '' && thuongHieu == ''}" th:href="@{'/san-pham?trang=' + ${i}}">[[${i}]]</a>
                 </li>
                 <li class="page-item" th:unless="${isLast}">
-                    <a class="page-link" aria-label="Next" th:if="${paramValue == ''}" th:href="@{'/san-pham?trang=' + ${trang + 2}}">
+                    <a class="page-link" aria-label="Next" th:if="${danhMuc == '' && thuongHieu == ''}" th:href="@{'/san-pham?trang=' + ${trang + 2}}">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
-                    <a class="page-link" aria-label="Next" th:unless="${paramValue == ''}" th:href="@{'/san-pham?danh-muc=' + ${paramValue} + '&trang=' + ${trang + 2}}">
+                    <a class="page-link" aria-label="Next"
+                       th:unless="${danhMuc == '' && thuongHieu == ''}"
+                       th:href="@{'/san-pham?danh-muc=' + ${danhMuc} + '&' + 'thuong-hieu=' + ${thuongHieu} + '&trang=' + ${trang + 2}}">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
             </ul>
         </nav>
-        <nav aria-label="Page navigation example" class="d-flex justify-content-center" th:if="${search == true && searchResult == true && products.size() > 0}">
+        <nav aria-label="Page navigation example" class="d-flex justify-content-center mb-3" th:if="${search == true && searchResult == true && products.size() > 0}">
             <ul class="pagination">
                 <li class="page-item" th:unless="${isFirst}">
                     <a class="page-link" th:href="@{'/search?ch=' + ${searchCh} + '&trang=' + ${trang}}" aria-label="Previous">
@@ -150,23 +170,7 @@
                 var category = document.getElementById('categorySelect').value;
                 var brand = document.getElementById('brandSelect').value;
 
-                var newUrl = '/san-pham';
-
-                var listParams = [];
-
-                if (category !== '') {
-                    listParams.push('danh-muc=' + category);
-                }
-
-                if (brand !== '') {
-                    listParams.push('thuong-hieu=' + brand);
-                }
-
-                if (listParams.length > 0) {
-                    newUrl += '?' + listParams.join('&');
-                }
-
-                console.log(newUrl);
+                var newUrl = '/san-pham?danh-muc=' + category + '&' + 'thuong-hieu=' + brand;
 
                 window.location.href = newUrl;
             }

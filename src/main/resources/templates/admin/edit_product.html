@@ -12,34 +12,47 @@
   <script type="text/javascript" th:src="@{/js/dropzone.min.js}"></script>
   <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.2.0/ckeditor5.css">
 
+  <style>
+    .dropzone .dz-preview .dz-image {
+      width: 300px;
+      height: 300px;
+    }
+
+    .dropzone .dz-preview .dz-image img {
+      width: 100%;
+      height: 100% !important;
+      object-fit: cover !important;
+    }
+  </style>
+
   <div class="container-sm content1 fs-5">
     <div class="mb-2">
       <a href="/admin/san-pham" class="text-decoration-none"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
     </div>
     <div class="">
       <div class="card card-sh">
-        <div class="card-header text-center">
-          <p class="fs-4">Sửa sản phẩm</p>
-          <th:block th:if="${session.succMsg}">
-            <p class="text-success fw-bold">[[${session.succMsg}]]</p>
-            <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
-          </th:block>
-
-          <th:block th:if="${session.errorMsg}">
-            <p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
-            <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
-          </th:block>
-        </div>
         <div class="card-body">
+          <div class="text-center">
+            <h4>Chỉnh sửa sản phẩm</h4>
+            <th:block th:if="${session.succMsg}">
+              <p class="text-success fw-bold">[[${session.succMsg}]]</p>
+              <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+            </th:block>
+
+            <th:block th:if="${session.errorMsg}">
+              <p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+              <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+            </th:block>
+          </div>
           <form action="/admin/cap-nhat-san-pham" method="post" enctype="multipart/form-data" id="productForm">
             <input type="hidden" name="id" th:value="${product.id}">
             <div class="row">
               <div class="mb-3 col">
-                <label for="ten">Nhập tên sản phẩm</label>
+                <label for="ten">Tên sản phẩm</label>
                 <input type="text" name="ten" id="ten" class="form-control" th:value="${product.getTen()}" required>
               </div>
               <div class="mb-3 col">
-                <label for="brand">Chọn danh mục</label>
+                <label for="brand">Thương hiệu</label>
                 <select id="brand" class="form-control" name="brand">
                   <option th:each="brand:${brands}" th:value="${brand.id}" th:selected="${brand == product.brand}">[[${brand.name}]]</option>
                 </select>
@@ -48,7 +61,7 @@
 
             <div class="row">
               <div class="mb-3 col">
-                <label for="category">Chọn danh mục</label>
+                <label for="category">Danh mục</label>
                 <select id="category" class="form-control" name="category">
                   <option th:each="c:${categories}" th:value="${c.id}" th:selected="${product.danhmuc == c}">[[${c.name}]]</option>
                 </select>
@@ -74,11 +87,11 @@
 
             <div class="row">
               <div class="mb-3 col">
-                <label for="gia">Nhập giá sản phẩm (&#8363)</label>
+                <label for="gia">Giá sản phẩm (&#8363)</label>
                 <input id="gia" name="gia" class="form-control" type="number" min="0" th:value="${product.getGia()}">
               </div>
               <div class="mb-3 col">
-                <label for="soluong">Nhập số lượng</label>
+                <label for="soluong">Số lượng</label>
                 <input id="soluong" name="soluong" class="form-control" type="number" min="1" th:value="${product.getSoluong()}">
               </div>
             </div>
@@ -133,9 +146,9 @@
               Dropzone.autoDiscover = false;
               const dropzone = new Dropzone("#imageUpload", {
                 url: "/admin/luu-anh",
-                maxFiles: 5,
+                maxFiles: 8,
                 paramName: 'file1',
-                acceptedFiles: "image/*",
+                acceptedFiles: "image/*, .webp",
                 addRemoveLinks: true,
                 init: function() {
                   imageNames = /*[[${product.getArrayAnh}]]*/ [];
@@ -152,9 +165,9 @@
                   }
 
                   this.on("addedfile", function(file) {
-                    if (this.files.length > 5) {
+                    if (this.files.length > 8) {
                       this.removeFile(file);
-                      alert("Không thể upload thêm! Số lượng file tối đa là 5");
+                      alert("Không thể upload thêm! Số lượng file tối đa là 8");
                       return;
                     }
                   });
@@ -212,7 +225,7 @@
             </script>
 
             <div class="mb-3">
-              <label for="editor">Nhập mô tả sản phẩm</label>
+              <label for="editor">Mô tả</label>
               <textarea id="editor" name="mota" class="form-control">
                 [[${product.mota}]]
               </textarea>

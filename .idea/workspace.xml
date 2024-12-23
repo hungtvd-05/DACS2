@@ -5,86 +5,355 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9b3322af-4599-4ffc-b17b-7698d37508af" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/020120fd73ae622517a3e4f07fd61e1d_eab5331b1e8f4abda907ab228237c667_master (1).jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/07CAT-STRIPES-mediumSquareAt3X-v2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/103d1fb4cafc87e9a18dd6c65365eac0_dbfe44dd81f74e8e91828fe5572f802c_master.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/169623fdc87cca849c216c7b4ebca4a5_d57f3c7b7be64d71917e6056a2fc012a_master (3).webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/201edd8db5e4c15d6c3c100156ce5817_23644fcd3d3d4b49ac5d9f0e57c81199_master.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/64a414948de21cc092f96335896ef041_6b19df14831f40f69403cc665ac55606_master.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/6a9166cef438ace8672187acf3a03e1f_cd9e52a18b6645ad93f16485b3813b60_master (1).webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/790f63123a746e24777ec7709b3cc3f3_5c67ca96c4a94dbba66d4b067dcbab2c_master.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/89a799367800a2ca82de6a3e3657650b_887d7bae2f374ed9897d4af4a0e7c88e_master.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/9ab83ee32f6f0f9c551096897e6327db_3aaaff455a8a4a40b1657aa2d2f7ce0b_master (1).jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/Sua-tam-kho-cho-cho-meo-Joyce-Dolls-Waterless-Cleansing-Foam0.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/Xit-bo-tat-xau-cho-meo-joyce-dolls-pet-repellent-Spray-400x400.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/b288e3be3d80e82f391b29275b4c9cbf_41201056fe1148518d4840a2d0cc2726_master (1).jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/banh-thuong-cho-cho-vi-thit-bo-jerhigh-beef-stick-400x400.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/banh-thuong-cho-cho-vi-thit-bo-vegebrand-orgo-freshening-biscuit-bacon-beef-400x400.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/banh-thuong-cho-cho-vi-xuc-xich-ga-jerhigh-salami-400x400.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/binh-sua-cho-cho-meo-so-sinh-bobo-pet-milk-bottle-400x400.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/ca-ngu-plus-ca-bao-1_0544cf643682408296d7a0def176b0a2_master.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/cat-ve-sinh-cho-meo-iris-kfag100.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/cat-ve-sinh-cho-meo-iris-kfag100a.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/cat-ve-sinh-cho-meo-iris-kfag100b.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/cat-ve-sinh-cho-meo-iris-kfag100c.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/cat-ve-sinh-cho-meo-trixiesilikatstreu-400x400.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/cats-best-original-400x400.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/df6f123dd6c920201159f3a1ef0cc66e_2b17543c10294247822e1a04b8e7f449_master.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/do-choi-cho-cho-meo-dang-bong-thung-bobo-1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/do-choi-cho-cho-meo-dang-bong-thung-bobo-2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/do-choi-cho-cho-meo-dang-bong-thung-bobo-3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/do-choi-cho-cho-meo-dang-bong-thung-bobo.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/keo-cho-cho-nhai-lam-sach-rang-vi-sua-vegebrand-7-dental-effects-milk-400x400.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/nuoc-sot-cho-meo-vi-ca-ngu-whiskas-tuna-flavour-in-sauce2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/nuoc-sot-cho-meo-vi-thit-bo-whiskas-beef-flavour-in-sauce2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/nuoc-sot-cho-meo-vi-thit-ga-whiskas-chicken-flavour-in-sauce-1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/nuoc-sot-cho-meo-vi-thit-ga-whiskas-chicken-flavour-in-sauce2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-cho-cham-soc-rang-mieng-iris-benefit-for-teeth-400x400.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-cho-giam-rung-long-iris-benefit-for-fur-400x400.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-cho-ho-tro-chuc-nang-gan-va-sang-mat-iris-benefit-for-eyes-liver-400x400.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-cho-ho-tro-he-tieu-hoa-iris-benefit-for-enteric-canal-400x400.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-cho-nuoc-sot-pedigree-400x400.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-cho-nuoc-sot-pedigree.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-cho-nuoc-sot-vi-thit-bo-pedigree-pouch-beef-400x400.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-cho-nuoc-sot-vi-thit-bo-pedigree-pouch-beef1-400x400.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-cho-nuoc-sot-vi-thit-ga-pedigree-pouch-chicken.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-cho-nuoc-sot-vi-thit-ga-pedigree-pouch-chicken2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-cho-vi-bo-ga-nuong-sot-ca-rot-jerhigh-chicken-beef-grilled-chunks-carrot-in-gravy.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-cho-vi-ca-iris-one-care-fish100g-400x400.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-cho-vi-ga-vien-sot-rau-cu-jerhigh-chicken-chunks-vegetable-in-gravy.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-cho-vi-gan-ga-ham-nuoc-sot-jerhigh-chicken-liver-chunks-in-gravy.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-cho-vi-gan-va-thit-ga-jerhigh-chicken-liver-gravy.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-cho-vi-thit-bo-ca-rot-jerhigh-beef-grilled-carrot-gravy.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-cho-vi-thit-bo-iris-one-care-beef100g-400x400.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-cho-vi-thit-bo-tron-com-iris-beef-rice-400x400.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-cho-vi-thit-bo-tron-rau-cu-iris-chicken-beef-vegetable-400x400.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-cho-vi-thit-ga-iris-one-care-chicken-meat100g-400x400.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-cho-vi-thit-ga-va-rau-cu-jerhigh-chicken-vegetable-gravy.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-cho-vi-thit-vit-jerhigh-roasted-duck-gravy.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-cho-vi-vit-quay-sot-nuoc-thit-jerhigh-roasted-duck-gravy.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-meo-cat-sea-fish1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-meo-cat-sea-fish2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-meo-cat-sea-fish3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-meo-ciao-tuna-salmon-vi-ca-ngu-va-ca-hoi-400x400.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-meo-ciao-tuna-whitebait-ca-ngu-va-ca-chach-trang-400x400.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-meo-me-va-meo-con-catidea-mother-baby-cat.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-meo-me-va-meo-con-catidea-mother-baby-cat2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-meo-me-va-meo-con-catidea-mother-baby-cat3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-meo-vi-ca-com-cat-sea-fish-tuna-anchovy.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-meo-vi-ca-ngu-ca-com-cat-sea-fish-tuna-anchovy.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-meo-vi-ca-ngu-ca-thu-cat-sea-fish-tuna-mackerel.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-meo-vi-ca-ngu-ca-thu-cat-sea-fish-tuna-mackerel2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-meo-vi-ca-ngu-nguyen-chat-cat-sea-fish-pure-tuna-meat.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-meo-vi-ca-ngu-nguyen-chat-cat-sea-fish-pure-tuna-meat1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-meo-vi-ca-ngu-thit-cua-cat-sea-fish-tuna-surimi.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-meo-vi-ca-ngu-thit-cua-cat-sea-fish-tuna-surimi2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-meo-vi-nuoc-sot-ca-ngu-whiskas-tuna-flavour-sauce1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-meo-vi-nuoc-sot-thit-bo-whiskas-beef-flavour-sauce.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-meo-vi-nuoc-sot-whiskas.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/pate-cho-meo-vi-nuoc-sot-whiskas2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/screencapture-localhost-8080-admin-2024-12-01-05_40_14.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/screencapture-localhost-8080-admin-sua-danh-muc-2-2024-12-01-05_49_02.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/sua-bot-cho-bbn-goats-milk-new-zealand.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/sua-bot-cho-cho-bbn-goats-milk-new-zealand2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/sua-bot-cho-cho-bbn-goats-milk-new-zealand3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/sua-tam-kho-cho-cho-meo-joyce-dolls-waterless-cleansing-foam1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/sua-tam-tri-nam-joyce-dolls-dung-thu-cho-cho-meo-400x400.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuc-an-cho-cho-con-co-nho-royal-canin-mini-puppy1-400x400.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuc-an-cho-cho-con-co-nho-royal-canin-mini-puppy2-400x400.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuc-an-cho-cho-hat-mem-vi-thit-bo-jerhigh-meat-as-meals-beef-recipe1-400x400.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuc-an-cho-cho-poodle-con-royal-canin-poodle-puppy1-400x400.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuc-an-cho-cho-poodle-con-royal-canin-poodle-puppy2-400x400.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuc-an-cho-cho-poodle-mkb-all-life-stages-formula-nutrition-400x400.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuc-an-cho-cho-poodle-truong-thanh-royal-canin-poodle-adult1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuc-an-cho-cho-poodle-truong-thanh-royal-canin-poodle-adult2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuc-an-cho-cho-truong-thanh-co-nho-royal-canin-mini-adult1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuc-an-cho-cho-truong-thanh-co-nho-royal-canin-mini-adult2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuc-an-cho-cho-truong-thanh-royal-canin-maxi-adult1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuc-an-cho-cho-truong-thanh-royal-canin-maxi-adult2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuc-an-cho-meo-con-royal-canin-kitten.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuc-an-cho-meo-con-royal-canin-kitten1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuc-an-cho-meo-con-royal-canin-kitten2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuc-an-cho-meo-con-va-meo-me-royal-canin-mother-babycat.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuc-an-cho-meo-con-va-meo-me-royal-canin-mother-babycat1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuc-an-cho-meo-con-va-meo-me-royal-canin-mother-babycat2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuc-an-cho-meo-truong-thanh-royal-canin-indoor-27.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuc-an-cho-meo-truong-thanh-royal-canin-indoor-271.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuc-an-cho-meo-truong-thanh-royal-canin-indoor-272.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuc-an-cho-meo-truong-thanh-royal-canin-regular-fit-321.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuc-an-cho-meo-truong-thanh-royal-canin-regular-fit-322.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuoc-bo-sung-vitamin-tong-hop-cho-cho-vegebrand-fruit-vitamin.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuoc-bo-sung-vitamin-tong-hop-cho-cho-vegebrand-fruit-vitamin2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuoc-bo-sung-vitamin-tong-hop-cho-cho-vegebrand-fruit-vitamin3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuoc-bo-sung-vitamin-tong-hop-cho-cho-vegebrand-fruit-vitamin6.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuoc-tri-ghe-nam-demodex-cho-cho-meo-alkin-mitecyn-spray-400x400.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuoc-xo-giun-cho-meo-bayer-drontal-cat1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/thuoc-xo-giun-cho-meo-bayer-drontal-cat2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/tui-don-phan-va-chat-thai-cho-meo-aupet-poop-bags.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/tui-don-phan-va-chat-thai-cho-meo-aupet-poop-bags1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/tui-don-phan-va-chat-thai-cho-meo-aupet-poop-bags2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/tui-don-phan-va-chat-thai-cho-meo-aupet-poop-bags3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/tui-don-phan-va-chat-thai-cho-meo-aupet-poop-bags4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/vong-co-tri-ve-ran-cho-meo-bioline-flea-and-tick-collar-for-cats-400x400.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/xuong-canxi-cho-cho-vegebrand-orgo-high-calcium-cheese-400x400.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/xuong-cho-cho-gam-sach-rang-vegebrand-360-bone-prevent-tartar-400x400.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/xuong-cho-cho-gam-vi-pho-mai-co-lon-vegebrand-7-dental-effects-large-cheese-bone-400x400.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/xuong-cho-cho-gam-vi-sua-vegebrand-360-calcium-milk-bone-400x400.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/xuong-cho-cho-gam-vi-thit-bo-vegebrand-360-delicious-beef-bone-400x400.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/xuong-cho-cho-vi-sua-bo-vegebrand-orgo-high-calcium-oat-milk.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/xuong-cho-cho-vi-thit-bo-le-vegebrand-orgo-nutrients-beef-400x400.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/xuong-gam-cho-cho-poodle-vegebrand-360-for-poodles-bone-400x400.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/xuong-gam-sach-rang-cho-cho-vegebrand-orgo-freshening-peppermint-400x400.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/xuong-gam-sach-rang-cho-cho-vegebrand-orgo-freshening-peppermint2-400x400.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/xuong-gam-sach-rang-cho-cho-vi-bac-ha-vegebrand-orgo-breath-freshening-peppermint-400x400.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/product_img/zenith-puppy-chicken-potato-400x400.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/profile_img/default.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/pages.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/api/ApiController$UploadResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/api/ApiController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/config/AuthFailureHandlerImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/config/AuthSucessHandlerImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/config/CustomUser.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/config/SecurityConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/config/UserDetailsServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/config/VNPayConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/controller/AdminController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/controller/HomeController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/controller/UserController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/ecom/EcomApplication.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/Brand.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/Cart.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/Category.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/Comment.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/ContactUrl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/ImageTemp.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/News.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/OrderAddress.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/OrderRequest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/Orders.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/Product.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/ProductOrder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/Rating.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/Slider.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/SupportUrl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/UserDtls.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/WebInfo.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/BrandRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/CartRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/CategoryRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/CommentRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/ContactUrlRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/NewsRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/OrderRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/ProductOrderRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/ProductRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/RatingRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/SliderRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/SupportUrlRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/UserRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/WebInfoRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/BrandService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/CartService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/CategoryService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/CheckOutService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/CommentService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/CommonService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/ContactUrlService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/NewsService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/OrderService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/ProductOrderService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/ProductService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/RatingService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/SliderService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/SupportUrlService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/UserService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/WebInfoService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/BrandServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/CartServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/CategoryServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/CheckOutServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/CommentServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/CommonServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/ContactUrlServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/NewsServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/OrderServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/ProductOrderServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/ProductServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/RatingServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/SliderServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/SupportUrlServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/UserServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/WebInfoServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/util/AppConstant.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/util/CommonUtil.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/util/OrderStatus.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/dacs2/api/ApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dacs2/api/ApiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/dacs2/controller/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dacs2/controller/AdminController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/dacs2/controller/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dacs2/controller/HomeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/dacs2/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dacs2/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/dacs2/model/Orders.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dacs2/model/Orders.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/dacs2/model/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dacs2/model/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/dacs2/repository/CartRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dacs2/repository/CartRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/dacs2/repository/CommentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dacs2/repository/CommentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/dacs2/repository/NewsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dacs2/repository/NewsRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/dacs2/repository/OrderRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dacs2/repository/OrderRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/dacs2/repository/ProductRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dacs2/repository/ProductRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/dacs2/service/CategoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dacs2/service/CategoryService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/dacs2/service/NewsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dacs2/service/NewsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/dacs2/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dacs2/service/ProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/dacs2/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dacs2/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/dacs2/service/impl/BrandServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dacs2/service/impl/BrandServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/dacs2/service/impl/CategoryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dacs2/service/impl/CategoryServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/dacs2/service/impl/NewsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dacs2/service/impl/NewsServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/dacs2/service/impl/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dacs2/service/impl/OrderServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/dacs2/service/impl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dacs2/service/impl/ProductServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/dacs2/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dacs2/service/impl/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/15_cursor.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/16_wave.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/17_9vW73mux_400x400.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/17_cursor.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/17_istockphoto-486869012-612x612.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/18_cursor.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/1_9vW73mux_400x400.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/1_cursor.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/1_vn-11134207-7ras8-m0pl74tkp2p96a@resize_w450_nl.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/2_cursor.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/2_istockphoto-486869012-612x612.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/3_cursor.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/4_vn-11134207-7ras8-m0pl74tkqhlb9f@resize_w450_nl.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/9vW73mux_400x400.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/appli.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/beuty.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/blue shirt.jfif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/book.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/canvas.jfif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/cursor.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/ecom.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/ecom1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/ecom3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/groccery.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/laptop.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/mobile.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/monitor.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/pant.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/vn-11134207-7r98o-ltah5dscu4yhb6@resize_w450_nl.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/vn-11134207-7ras8-m0pl74tkqhlb9f@resize_w450_nl.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/category_img/wave.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/ckeditor_img/9vW73mux_400x400.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/ckeditor_img/image-Photoroom.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/ckeditor_img/istockphoto-486869012-612x612.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/ckeditor_img/messi-goat-daily-mail-16727461321721310312997.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/ckeditor_img/vn-11134207-7r98o-ltah5dscsqe158@resize_w450_nl.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/11_image-Photoroom.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/11_wave.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/12_/image-Photoroom.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/12_/wave.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/12_12_image-Photoroom.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/12_wave.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/13_vn-11134207-7r98o-ltah5dscsqe158@resize_w450_nl.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/13_vn-11134207-7r98o-ltah5dscu4yhb6@resize_w450_nl.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/13_vn-11134207-7ras8-m0pl74tkp2p96a@resize_w450_nl.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/13_vn-11134207-7ras8-m0pl74tkqhlb9f@resize_w450_nl.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/14_istockphoto-486869012-612x612.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/15_9vW73mux_400x400.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/15_wave.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/1_9vW73mux_400x400.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/1_image-Photoroom.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/2_9vW73mux_400x400.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/2_image-Photoroom.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/2_istockphoto-486869012-612x612.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/2_wave.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/3_9vW73mux_400x400.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/4_istockphoto-486869012-612x612.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/5_istockphoto-486869012-612x612.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/6_9vW73mux_400x400.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/6_cursor.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/6_istockphoto-486869012-612x612.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/6_messi-goat-daily-mail-16727461321721310312997.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/7_istockphoto-486869012-612x612.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/8_9vW73mux_400x400.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/9vW73mux_400x400.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/blue shirt.jfif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/canvas.jfif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/cross.jfif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/fridge.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/grinder.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/hp laptop.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/iphone 14.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/istockphoto-486869012-612x612.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/jeans blue.jfif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/kruti.jfif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/laptop.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/lehenga.jfif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/lofer.jfif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/mobile.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/monitor.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/official shoe.jfif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/oneplus mobile.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/printed short.jfif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/washing_machine.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/product_img/white shoe.jfif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/products/s1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/products/s11.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/products/s4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/products/s5.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/products/s7.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/product.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/product.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/add_admin.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/add_admin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/add_news.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/add_news.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/add_product.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/add_product.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/add_product1.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/admin.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/admin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/brand.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/brand.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/category.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/category.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/dashboard.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/edit_brand.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/edit_brand.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/edit_category.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/edit_category.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/edit_news.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/edit_news.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/edit_product.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/edit_product.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/index1.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/news.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/news.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/orders.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/orders.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/other.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/other.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/products.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/products.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/rating.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/rating.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/test.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/users.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/users.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/blog.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/blog.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/blogs.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/blogs.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/error.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/error.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/forgot_password.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/forgot_password.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/product.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/product.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/register.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/reset_password.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/reset_password.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/test.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/test.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/user/cart.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/user/cart.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/user/my_orders.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/user/my_orders.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/user/order.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/user/order.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/user/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/user/profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/user/view_my_order.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/user/view_my_order.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/view_product.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/view_product.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/api/ApiController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/dacs2/api/ApiController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/controller/AdminController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/dacs2/controller/AdminController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/controller/HomeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/dacs2/controller/HomeController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/dacs2/controller/UserController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/Orders.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/dacs2/model/Orders.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/model/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/dacs2/model/Product.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/CartRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/dacs2/repository/CartRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/CommentRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/dacs2/repository/CommentRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/NewsRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/dacs2/repository/NewsRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/OrderRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/dacs2/repository/OrderRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/repository/ProductRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/dacs2/repository/ProductRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/CategoryService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/dacs2/service/CategoryService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/NewsService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/dacs2/service/NewsService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/ProductService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/dacs2/service/ProductService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/dacs2/service/UserService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/BrandServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/BrandServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/CategoryServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/CategoryServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/NewsServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/NewsServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/OrderServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/OrderServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/ProductServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/ProductServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/dacs2/service/impl/UserServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/product.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/js/product.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/admin/add_admin.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/admin/add_admin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/admin/add_news.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/admin/add_news.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/admin/add_product.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/admin/add_product.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/admin/add_product1.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/admin/admin.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/admin/admin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/admin/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/admin/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/admin/brand.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/admin/brand.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/admin/category.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/admin/category.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/admin/dashboard.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/admin/edit_brand.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/admin/edit_brand.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/admin/edit_category.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/admin/edit_category.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/admin/edit_news.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/admin/edit_news.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/admin/edit_product.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/admin/edit_product.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/admin/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/admin/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/admin/index1.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/admin/news.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/admin/news.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/admin/orders.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/admin/orders.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/admin/other.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/admin/other.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/admin/products.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/admin/products.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/admin/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/admin/profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/admin/rating.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/admin/rating.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/admin/test.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/admin/users.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/admin/users.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/blog.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/blog.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/blogs.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/blogs.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/error.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/error.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/forgot_password.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/forgot_password.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/product.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/product.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/register.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/reset_password.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/reset_password.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/test.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/test.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/user/cart.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/user/cart.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/user/my_orders.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/user/my_orders.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/user/order.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/user/order.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/user/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/user/profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/user/view_my_order.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/user/view_my_order.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/view_product.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/view_product.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,33 +391,41 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Maven.ecom [clean].executor": "Run",
-    "Notification.DisplayName-DoNotAsk-Vcs Important Messages": "VCS important messages",
-    "Notification.DoNotAsk-Vcs Important Messages": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "Spring Boot.EcomApplication.executor": "Run",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/vien/Desktop/test",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Artifacts",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Maven.ecom [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.ecom [compile].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.ecom [install].executor&quot;: &quot;Run&quot;,
+    &quot;Notification.DisplayName-DoNotAsk-Vcs Important Messages&quot;: &quot;VCS important messages&quot;,
+    &quot;Notification.DoNotAsk-Vcs Important Messages&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.EcomApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/vien/Desktop/ecom/src/main/resources/static/img/profile_img&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.annotationProcessors&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources/templates" />
+      <recent name="$PROJECT_DIR$/src/main/resources/static/img/profile_img" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="EcomApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
@@ -180,6 +457,17 @@
       <workItem from="1734017156709" duration="3564000" />
       <workItem from="1734021691681" duration="29000" />
       <workItem from="1734023764496" duration="137000" />
+      <workItem from="1734025194748" duration="2982000" />
+      <workItem from="1734046011078" duration="2055000" />
+      <workItem from="1734612099589" duration="38000" />
+      <workItem from="1734620120763" duration="12155000" />
+      <workItem from="1734684458990" duration="1805000" />
+      <workItem from="1734702328459" duration="4276000" />
+      <workItem from="1734759943228" duration="22005000" />
+      <workItem from="1734797491340" duration="7254000" />
+      <workItem from="1734847308627" duration="21443000" />
+      <workItem from="1734927398275" duration="29756000" />
+      <workItem from="1734966101131" duration="13000" />
     </task>
     <servers />
   </component>

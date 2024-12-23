@@ -161,33 +161,31 @@
 
     }
 
+    .card-sh {
+      box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.3) !important;
+    }
+
   </style>
-  <div class="container-fluid mt-3">
-    <div class="row">
-      <div class="col-lg-3 col-md-2 col-sm-0"></div>
-      <div class="col-lg-3 col-md-4 col-sm-6 col-sm">
-        <p class="fs-4 m-1">
-          <a style="color: black" href="/">Trang chủ</a> /
-          <a style="color: black" href="/san-pham">Sản phẩm</a> /
-          <span class="fs-5" style="color: black">[[${product.ten}]]</span>
-        </p>
-      </div>
-    </div>
+  <div class="container-xl mt-3">
+    <p class="fs-3 m-1">
+      <a style="color: black" href="/">Trang chủ</a> /
+      <a style="color: black" href="/san-pham">Sản phẩm</a> /
+      <span class="fs-3" style="color: black">[[${product.ten}]]</span>
+    </p>
   </div>
-  <div class="container-fluid mt-2 mb-4">
+  <div class="container-xl mt-2 mb-4">
     <div class="row" >
       <th:block th:if="${session.succMsg}">
-        <p class="text-success alert alert-success text-center" role="alert">[[${session.succMsg}]]</p>
+        <p class="text-success text-center fs-4">[[${session.succMsg}]]</p>
         <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
       </th:block>
 
       <th:block th:if="${session.errorMsg}">
-        <p class="text-danger text-center  alert alert-danger">[[${session.errorMsg}]]</p>
+        <p class="text-danger text-center fs-4">[[${session.errorMsg}]]</p>
         <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
 
       </th:block>
-      <div class="col-lg-3 col-md-2 col-sm-0"></div>
-      <div class="col-lg-3 col-md-4 col-sm-6 col-sm">
+      <div class="col-lg-5 p-0">
         <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-inner p-1" style="border-radius: 25px">
             <div th:each="image, iterStat : ${product.getArrayAnh()}"
@@ -226,7 +224,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-3 col-md-4 col-sm-6">
+      <div class="col-lg-7">
         <h1 class="mt-1">[[${product.ten}]]</h1>
         <p class="mt-3">
           <span class="fw-bold"> Thông tin sản phẩm: </span>
@@ -242,6 +240,10 @@
 
           <br> Danh mục: <a th:href="@{'/san-pham?danh-muc=' + ${category.name}}"
                             class="text-black text-decoration-none">[[${category.name}]]</a>
+
+          <br> Thương hiệu: <a th:href="@{'/san-pham?thuong-hieu=' + ${brand.name}}"
+                            class="text-black text-decoration-none">[[${brand.name}]]</a>
+
           <br> Chính sách: Đổi trả miễn phí trong 7 ngày
         </p>
 
@@ -289,111 +291,108 @@
       </div>
     </div>
 
-    <div class="row" th:if="${product.soluongDanhgia != 0}">
-      <div class="col-lg-3 col-md-2 col-sm-0"></div>
-      <div class="col-lg-6 col-md-8 col-sm-12 col-sm">
-        <h4 class="mb-3">Đánh giá sản phẩm</h4>
-        <div class="card">
-          <div class="text-center card-body">
-            <div class="row align-items-center">
-              <div class="col-md-4">
-                <div class="rating-box my-2">
-                  <h1 class="pt-4" th:text="${rate_number}"></h1>
-                  <p class="">trên 5 <i class="far fa-star fa-sm" style="font-weight: 900"></i></p>
-                </div>
+    <div th:if="${product.soluongDanhgia != 0}">
+      <h4 class="mb-3">Đánh giá sản phẩm</h4>
+      <div class="card card-sh">
+        <div class="text-center card-body">
+          <div class="row align-items-center">
+            <div class="col-md-4">
+              <div class="rating-box my-2">
+                <h1 class="pt-4" th:text="${rate_number}"></h1>
+                <p class="">trên 5 <i class="far fa-star fa-sm" style="font-weight: 900"></i></p>
               </div>
-              <div class="col-md-8">
-                <div class="rating-bar0 justify-content-center">
-                  <table class="text-left mx-auto">
-                    <tr>
-                      <td class="rating-label">Cực tốt</td>
-                      <td class="rating-bar">
-                        <div class="bar-container">
-                          <div class="bar-5" th:style="'width:' + ${star5 * 100 / product.soluongDanhgia} + '%'"></div>
-                        </div>
-                      </td>
-                      <td class="text-right">[[${star5}]]</td>
-                    </tr>
-                    <tr>
-                      <td class="rating-label">Tốt</td>
-                      <td class="rating-bar">
-                        <div class="bar-container">
-                          <div class="bar-4" th:style="'width:' + ${star4 * 100 / product.soluongDanhgia} + '%'"></div>
-                        </div>
-                      </td>
-                      <td class="text-right">[[${star4}]]</td>
-                    </tr>
-                    <tr>
-                      <td class="rating-label">Bình thường</td>
-                      <td class="rating-bar">
-                        <div class="bar-container">
-                          <div class="bar-3" th:style="'width:' + ${star3 * 100 / product.soluongDanhgia} + '%'"></div>
-                        </div>
-                      </td>
-                      <td class="text-right">[[${star3}]]</td>
-                    </tr>
-                    <tr>
-                      <td class="rating-label">Tạm được</td>
-                      <td class="rating-bar">
-                        <div class="bar-container">
-                          <div class="bar-2" th:style="'width:' + ${star2 * 100 / product.soluongDanhgia} + '%'"></div>
-                        </div>
-                      </td>
-                      <td class="text-right">[[${star2}]]</td>
-                    </tr>
-                    <tr>
-                      <td class="rating-label">Tệ</td>
-                      <td class="rating-bar">
-                        <div class="bar-container">
-                          <div class="bar-1" th:style="'width:' + ${star1 * 100 / product.soluongDanhgia} + '%'"></div>
-                        </div>
-                      </td>
-                      <td class="text-right">[[${star1}]]</td>
-                    </tr>
-                  </table>
-                </div>
+            </div>
+            <div class="col-md-8">
+              <div class="rating-bar0 justify-content-center">
+                <table class="text-left mx-auto">
+                  <tr>
+                    <td class="rating-label">Cực tốt</td>
+                    <td class="rating-bar">
+                      <div class="bar-container">
+                        <div class="bar-5" th:style="'width:' + ${star5 * 100 / product.soluongDanhgia} + '%'"></div>
+                      </div>
+                    </td>
+                    <td class="text-right">[[${star5}]]</td>
+                  </tr>
+                  <tr>
+                    <td class="rating-label">Tốt</td>
+                    <td class="rating-bar">
+                      <div class="bar-container">
+                        <div class="bar-4" th:style="'width:' + ${star4 * 100 / product.soluongDanhgia} + '%'"></div>
+                      </div>
+                    </td>
+                    <td class="text-right">[[${star4}]]</td>
+                  </tr>
+                  <tr>
+                    <td class="rating-label">Bình thường</td>
+                    <td class="rating-bar">
+                      <div class="bar-container">
+                        <div class="bar-3" th:style="'width:' + ${star3 * 100 / product.soluongDanhgia} + '%'"></div>
+                      </div>
+                    </td>
+                    <td class="text-right">[[${star3}]]</td>
+                  </tr>
+                  <tr>
+                    <td class="rating-label">Tạm được</td>
+                    <td class="rating-bar">
+                      <div class="bar-container">
+                        <div class="bar-2" th:style="'width:' + ${star2 * 100 / product.soluongDanhgia} + '%'"></div>
+                      </div>
+                    </td>
+                    <td class="text-right">[[${star2}]]</td>
+                  </tr>
+                  <tr>
+                    <td class="rating-label">Tệ</td>
+                    <td class="rating-bar">
+                      <div class="bar-container">
+                        <div class="bar-1" th:style="'width:' + ${star1 * 100 / product.soluongDanhgia} + '%'"></div>
+                      </div>
+                    </td>
+                    <td class="text-right">[[${star1}]]</td>
+                  </tr>
+                </table>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
 
-        <div class="d-flex flex-start mt-3" th:each="rating:${ratings}">
-          <img class="rounded-circle shadow-1-strong me-3"
-               th:src="@{'/img/profile_img/' + ${rating.comment.user.profileImage}}" alt="avatar" width="65"
-               height="65" />
-          <div class="flex-grow-1 flex-shrink-1">
-            <div>
-              <p class="mb-1">
-                [[${rating.comment.user.name}]]
-              </p>
-              <div class="star">
-                <i class="far fa-star fa-sm selected"></i>
-                <i th:class="${rating.rating >= 2 ? 'far fa-star fa-sm selected' : 'far fa-star fa-sm'}"></i>
-                <i th:class="${rating.rating >= 3 ? 'far fa-star fa-sm selected' : 'far fa-star fa-sm'}"></i>
-                <i th:class="${rating.rating >= 4 ? 'far fa-star fa-sm selected' : 'far fa-star fa-sm'}"></i>
-                <i th:class="${rating.rating >= 5 ? 'far fa-star fa-sm selected' : 'far fa-star fa-sm'}"></i>
-              </div>
-              <p class="small mb-0">
-                [[${rating.comment.content}]]
-              </p>
+      <div class="d-flex flex-start mt-4" th:each="rating:${ratings}">
+        <img class="rounded-circle shadow-1-strong me-3"
+             th:src="@{'/img/profile_img/' + ${rating.comment.user.profileImage}}" alt="avatar" width="65"
+             height="65" />
+        <div class="flex-grow-1 flex-shrink-1">
+          <div>
+            <p class="mb-1">
+              [[${rating.comment.user.name}]]
+            </p>
+            <div class="star">
+              <i class="far fa-star fa-sm selected"></i>
+              <i th:class="${rating.rating >= 2 ? 'far fa-star fa-sm selected' : 'far fa-star fa-sm'}"></i>
+              <i th:class="${rating.rating >= 3 ? 'far fa-star fa-sm selected' : 'far fa-star fa-sm'}"></i>
+              <i th:class="${rating.rating >= 4 ? 'far fa-star fa-sm selected' : 'far fa-star fa-sm'}"></i>
+              <i th:class="${rating.rating >= 5 ? 'far fa-star fa-sm selected' : 'far fa-star fa-sm'}"></i>
             </div>
+            <p class="small mb-0">
+              [[${rating.comment.content}]]
+            </p>
+          </div>
 
-            <div class="d-flex flex-start mt-4" th:each="comment:${replies.get(rating.comment.id)}" th:if="${comment != null}">
-              <img class="rounded-circle shadow-1-strong me-3"
-                   th:src="@{'/img/logos/' + ${webInfo.logo}}" alt="avatar"
-                   width="65" height="65" />
-              <div class="flex-grow-1 flex-shrink-1">
-                <div>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <p class="mb-1">
-                      [[${webInfo.name}]]
-                    </p>
-                  </div>
-                  <p class="small mb-0">
-                    [[${comment.content}]]
+          <div class="d-flex flex-start mt-4" th:each="comment:${replies.get(rating.comment.id)}" th:if="${comment != null}">
+            <img class="rounded-circle shadow-1-strong me-3"
+                 th:src="@{'/img/logos/' + ${webInfo.logo}}" alt="avatar"
+                 width="65" height="65" />
+            <div class="flex-grow-1 flex-shrink-1">
+              <div>
+                <div class="d-flex justify-content-between align-items-center">
+                  <p class="mb-1">
+                    [[${webInfo.name}]]
                   </p>
                 </div>
+                <p class="small mb-0">
+                  [[${comment.content}]]
+                </p>
               </div>
             </div>
           </div>
@@ -407,35 +406,30 @@
   <div class="text-center fs-5">
     Sản phẩm khác
   </div>
-  <div class="container-fluid mt-3">
-    <div class="row">
-      <div class="col-lg-3 col-md-2 col-sm-0"></div>
-      <div class="col-lg-6 col-md-8 col-sm-12 col-sm">
-        <div class="row p-1">
-          <div class="col-xxl-2 col-md-3 col-6 card-style" th:each="p:${listProduct}">
-            <div class="card overflow-hidden rounded-2">
-               <a th:href="@{'/san-pham/san-pham-id=' + ${p.id}}">
-                <div class="position-relative card-list-img-top">
-                  <img th:src="@{'/img/product_img/' + ${p.getArrayAnh()[0]}}" alt="...">
-                </div>
-                <div class="card-body p-2" style="height: 77.58px">
-                  <h6 class="fw-semibold fs-4 text-ellipsis mb-1">[[${p.ten}]]</h6>
-                  <div th:if="${p.sale > 0}">
-                    <h6 class=" fs-3 mb-0">
-                      <b>[[${p.getGiaSaleFormatted()}]]</b>
-                      <span class="fs-2 p-1" style="color: orangered; background: #FFEDE0"><b>[[${p.sale}]]%</b></span>
-                    </h6>
-                    <span class="fw-normal text-muted fs-2"><del>[[${p.getGiaFormatted()}]]</del></span>
-                  </div>
-                  <div th:unless="${p.sale > 0}">
-                    <h6 class="fs-3 mb-0">
-                      <b>[[${p.getGiaSaleFormatted()}]]</b>
-                    </h6>
-                  </div>
-                </div>
-              </a>
+  <div class="container-xl mt-3 mb-4">
+    <div class="row p-1">
+      <div class="col-xxl-2 col-md-3 col-6 card-style" th:each="p:${listProduct}">
+        <div class="card overflow-hidden rounded-2 card-sh m-0">
+          <a th:href="@{'/san-pham/san-pham-id=' + ${p.id}}">
+            <div class="position-relative card-list-img-top">
+              <img th:src="@{'/img/product_img/' + ${p.getArrayAnh()[0]}}" alt="...">
             </div>
-          </div>
+            <div class="card-body p-2" style="height: 77.58px">
+              <h6 class="fw-semibold fs-4 text-ellipsis mb-1">[[${p.ten}]]</h6>
+              <div th:if="${p.sale > 0}">
+                <h6 class=" fs-3 mb-0">
+                  <b>[[${p.getGiaSaleFormatted()}]]</b>
+                  <span class="fs-2 p-1" style="color: orangered; background: #FFEDE0"><b>[[${p.sale}]]%</b></span>
+                </h6>
+                <span class="fw-normal text-muted fs-2"><del>[[${p.getGiaFormatted()}]]</del></span>
+              </div>
+              <div th:unless="${p.sale > 0}">
+                <h6 class="fs-3 mb-0">
+                  <b>[[${p.getGiaSaleFormatted()}]]</b>
+                </h6>
+              </div>
+            </div>
+          </a>
         </div>
       </div>
     </div>

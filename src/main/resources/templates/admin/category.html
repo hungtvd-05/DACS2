@@ -12,7 +12,7 @@
   <div class="content1">
     <div class="row">
       <div class="col-md-9">
-        <p class="text-center fs-4">Danh mục</p>
+        <h4 class="text-center">Danh mục</h4>
         <hr>
         <div class="mb-2">
           <a href="/admin" class="text-decoration-none"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
@@ -20,7 +20,6 @@
         <table class="table table-bordered">
           <thead>
           <tr>
-            <th scope="col">STT</th>
             <th scope="col">Tên</th>
             <th scope="col">Ảnh</th>
             <th scope="col">Trạng thái</th>
@@ -30,7 +29,6 @@
 
           <tbody>
           <tr th:each="cat, c:${categorys}">
-            <td data-label="STT" scope="row">[[${c.count}]]</td>
             <td data-label="Tên">[[${cat.name}]]</td>
             <td data-label="Ảnh">
               <img th:src="@{'/img/category_img/' + ${cat.imageName}}" width="50px" height="50px">
@@ -50,7 +48,7 @@
       </div>
 
       <div class="col-md-3 mb-5">
-        <p class="fs-4 text-center">Thêm danh mục</p>
+        <h4 class="text-center">Thêm danh mục</h4>
         <th:block th:if="${session.succMsg}">
           <p class="text-success fw-bold text-center">[[${session.succMsg}]]</p>
           <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
@@ -112,8 +110,8 @@
             id: id
           },
           success: function(response) {
-            if (response && response.isDelete) {
-              row.fadeOut(200, function() {
+            if (response) {
+              row.fadeOut(100, function() {
                 $(this).remove();
               });
             }

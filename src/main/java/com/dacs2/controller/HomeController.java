@@ -13,15 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.security.Principal;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
@@ -97,7 +92,7 @@ public class HomeController {
         m.addAttribute("categorys", categoryService.getCategoryByIsActive());
         m.addAttribute("supportUrls", supportUrlService.getSupportUrl());
         m.addAttribute("contactUrls", contactUrlService.getContactUrls());
-
+        m.addAttribute("placeFreeShip", userService.getFirstAdmin().getCity());
     }
 
     @GetMapping("/")
@@ -107,8 +102,8 @@ public class HomeController {
 
         HashMap<String, List<Product>> map = new HashMap<>();
         for (Category category : categorys) {
-            List<Product> products = productService.getProductByDanhMuc(category.getName());
-            map.put(category.getName(), products.subList(0, Math.min(products.size(), 8)));
+            List<Product> products = productService.getProductByDanhMuc(category.getName()).reversed();
+            map.put(category.getName(), products.subList(0, Math.min(products.size(), 12)));
         }
         m.addAttribute("mapProduct", map);
         m.addAttribute("slides", sliderService.getSliderList());
@@ -131,7 +126,7 @@ public class HomeController {
                           @RequestParam(value = "danh-muc", defaultValue = "") String danhMuc,
                           @RequestParam(value = "thuong-hieu", defaultValue = "") String thuongHieu,
                           @RequestParam(name = "trang", defaultValue = "1") Integer pageNumber,
-                          @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize) {
+                          @RequestParam(name = "pageSize", defaultValue = "36") Integer pageSize) {
         m.addAttribute("searchCh", "");
         m.addAttribute("categories", categoryService.getCategoryByIsActive());
         m.addAttribute("brands", brandService.getAllBrandIsActive());
@@ -154,6 +149,7 @@ public class HomeController {
     public String viewProduct(@PathVariable int id, Model m) {
         Product product = productService.getProductById(id);
         m.addAttribute("category", product.getDanhmuc());
+        m.addAttribute("brand", product.getBrand());
         m.addAttribute("product", product);
         m.addAttribute("listProduct", productService.getProductForView(product.getId()));
         m.addAttribute("ratings", ratingService.getRatingsByProductId(product));
@@ -178,7 +174,6 @@ public class HomeController {
     @PostMapping("/luu-user")
     public String saveUser(@ModelAttribute UserDtls user,
                            HttpServletRequest request,
-                           @RequestParam("img") MultipartFile file,
                            HttpSession session) throws IOException, MessagingException {
 
         if (userService.existsEmail(user.getEmail())) {
@@ -186,8 +181,6 @@ public class HomeController {
             return "redirect:/dang-ky";
         }
 
-        String imageName = file.isEmpty() ? "default.jpg" : file.getOriginalFilename();
-        user.setProfileImage(imageName);
         UserDtls addUser = userService.addUser(user);
 
         if (!ObjectUtils.isEmpty(addUser)) {
@@ -198,13 +191,6 @@ public class HomeController {
             String url = CommonUtil.generateUrl(request) + "/xac-nhan-tai-khoan?token=" + confirmToken;
 
             Boolean sendMail = commonUtil.sendConfirmEmail(url, addUser.getEmail());
-
-            if (!file.isEmpty()) {
-
-                Path path = Paths.get(imgPath + File.separator + "profile_img" + File.separator + imageName);
-
-                Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-            }
 
             if (sendMail) {
                 session.setAttribute("succMsg", "Đã gửi xác nhận tài khoản qua mail của bạn!");
@@ -362,6 +348,28 @@ public class HomeController {
 
     @GetMapping("/blogs/blog-id={id}")
     public String blogsById(@PathVariable Integer id, Model m) {
+        News blog = newsService.getNewsById(id);
+        m.addAttribute("blog", blog);
+        return "blog";
+    }
+
+    @GetMapping("/chinhsach-dichvu")
+    public String pages(Model m,
+                        @RequestParam(name = "trang", defaultValue = "1") Integer pageNumber,
+                        @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize) {
+        Page<News> page = newsService.getAllServiceForHome(pageNumber - 1, pageSize);
+        m.addAttribute("blogs", page.getContent());
+        m.addAttribute("trang", page.getNumber());
+        m.addAttribute("pageSize", pageSize);
+        m.addAttribute("totalElements", page.getTotalElements());
+        m.addAttribute("totalPages", page.getTotalPages());
+        m.addAttribute("isFirst", page.isFirst());
+        m.addAttribute("isLast", page.isLast());
+        return "pages";
+    }
+
+    @GetMapping("/chinhsach-dichvu/id={id}")
+    public String page(@PathVariable Integer id, Model m) {
         News blog = newsService.getNewsById(id);
         m.addAttribute("blog", blog);
         return "blog";

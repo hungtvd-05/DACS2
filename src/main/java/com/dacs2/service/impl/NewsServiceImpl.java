@@ -52,7 +52,7 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public Page<News> getAllNewsForHome(Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
-        return newsRepository.findByStatusTrue(pageable);
+        return newsRepository.findByStatusAndStyle(true, "Blog", pageable);
     }
 
     @Override
@@ -68,6 +68,12 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public List<News> getNewsByStyle(String style) {
-        return newsRepository.findByStyle(style);
+        return newsRepository.findByStyleAndStatus(style, true).reversed();
+    }
+
+    @Override
+    public Page<News> getAllServiceForHome(Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+        return newsRepository.findByStatusAndStyle(true, "Support", pageable);
     }
 }

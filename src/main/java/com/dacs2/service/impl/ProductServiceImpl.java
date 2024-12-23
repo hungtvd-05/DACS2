@@ -1,6 +1,7 @@
 package com.dacs2.service.impl;
 
 import com.dacs2.model.Product;
+import com.dacs2.repository.CartRepository;
 import com.dacs2.repository.CategoryRepository;
 import com.dacs2.repository.ProductRepository;
 import com.dacs2.service.ProductService;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
@@ -23,21 +25,24 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private CartRepository cartRepository;
+
     @Override
     public Product saveProduct(Product product) {
         return productRepository.save(product);
     }
 
     @Override
-    public Boolean deleteProduct(int id) {
-        Product product = productRepository.findById(id).orElse(null);
+    @Transactional
+    public void deleteProduct(int id) {
+        Product product = productRepository.findById(id).get();
 
         if (!ObjectUtils.isEmpty(product)) {
+            cartRepository.deleteAllByProduct(product);
             productRepository.delete(product);
-            return true;
         }
 
-        return false;
     }
 
     @Override
@@ -67,7 +72,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<Product> getAllProductsForHomePagination(Integer pageNumber, Integer pageSize, String danhmuc, String thuonghieu) {
 
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "id"));
 
         if (!ObjectUtils.isEmpty(danhmuc) && !ObjectUtils.isEmpty(thuonghieu)) {
             return productRepository.findByDanhmuc_NameAndBrand_NameAndTrangthaiTrue(pageable, danhmuc, thuonghieu);
@@ -82,7 +87,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<Product> searchProductPagination(Integer pageNumber, Integer pageSize, String ch) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "id"));
         Page<Product> pageProduct = null;
         if (ObjectUtils.isEmpty(ch)) {
             pageProduct = productRepository.findByDanhmuc_IsActiveTrueAndTrangthaiTrue(pageable);

@@ -1,5 +1,6 @@
 package com.dacs2.repository;
 
+import com.dacs2.model.Brand;
 import com.dacs2.model.Category;
 import com.dacs2.model.Product;
 import org.springframework.data.domain.Page;
@@ -37,5 +38,9 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query(value = "SELECT * FROM product WHERE id != :keyword ORDER BY id DESC LIMIT 6", nativeQuery = true)
     List<Product> getProductForView(@Param("keyword") Integer keyword);
+
+    void deleteAllByBrand(Brand brand);
+
+    void deleteAllByDanhmuc(Category category);
 
 }

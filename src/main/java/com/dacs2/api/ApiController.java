@@ -148,9 +148,9 @@ public class ApiController {
     public Map<String, Object> getOrder() {
         Map<String, Object> result = new HashMap<>();
         result.put("totalSalesComplete", currencyFormat.format(orderRepository.getTotalSalesCompleteByMonth()));
-        result.put("totalSales", currencyFormat.format(orderRepository.getTotalSalesByMonth()));
-        result.put("totalSalesCompleteLastMonth", currencyFormat.format(orderRepository.getTotalSalesCompleteByLastMonth()));
-        result.put("totalSalesLastMonth", currencyFormat.format(orderRepository.getTotalSalesByLastMonth()));
+        result.put("totalSales", currencyFormat.format(orderRepository.getTotalSalesByMonth() != null ? orderRepository.getTotalSalesByMonth() : 0));
+        result.put("totalSalesCompleteLastMonth", currencyFormat.format(orderRepository.getTotalSalesCompleteByLastMonth() != null ? orderRepository.getTotalSalesCompleteByLastMonth() : 0));
+        result.put("totalSalesLastMonth", currencyFormat.format(orderRepository.getTotalSalesByLastMonth() != null ? orderRepository.getTotalSalesByLastMonth() : 0));
         result.put("ordersStatus", orderRepository.getOrdersGroupByStatus());
         result.put("countOrders", orderRepository.countOrdersGroupByStatus());
         result.put("ordersComplete", orderRepository.getOrdersComplete());
@@ -186,20 +186,6 @@ public class ApiController {
     public Map<String, Object> updateUserAccount(@RequestParam Boolean status, @RequestParam Integer id, HttpSession session) throws IOException {
         Map<String, Object> result = new HashMap<>();
         result.put("statusName", userService.updateAccountStatus(id, status).getIsEnable() ? "Bật" : "Tắt");
-        return result;
-    }
-
-    @GetMapping("/xoa-danh-muc")
-    public Map<String, Object> deleteCategory(@RequestParam long id) {
-        Map<String, Object> result = new HashMap<>();
-        result.put("isDelete", categoryService.deleteCategory(id));
-        return result;
-    }
-
-    @GetMapping("/xoa-san-pham")
-    public Map<String, Object> deleteProduct(@RequestParam int id) {
-        Map<String, Object> result = new HashMap<>();
-        result.put("isDelete", productService.deleteProduct(id));
         return result;
     }
 
@@ -254,9 +240,16 @@ public class ApiController {
         result.put("quantity", productOrder.getQuantity());
         result.put("productTotalPrice", productOrder.getTotalPriceFormatted());
         result.put("rating", productOrder.getRating().getRating());
-        result.put("textContent", productOrder.getRating().getComment().getContent());
+
+        Comment comment = productOrder.getRating().getComment();
+
+        result.put("textContent", comment.getContent());
         result.put("email", orderRepository.findByOrderId(productOrder.getOrderId()).getUser().getEmail());
         result.put("commentId", productOrder.getRating().getComment().getId());
+
+        Comment rep = commentRepository.findByParentComment(comment);
+
+        result.put("repComment", rep == null ? "" : rep.getContent());
 
         return result;
     }
@@ -354,7 +347,7 @@ public class ApiController {
 
     @GetMapping("getSupportUrl")
     public List<SupportUrl> getSupportUrl() {
-        return supportUrlService.getSupportUrl();
+        return supportUrlService.getSupportUrl().reversed();
     }
 
     @PostMapping("/addSupportUrl")
@@ -382,6 +375,18 @@ public class ApiController {
         brandService.deleteBrand(id);
 
         return ResponseEntity.ok("Brand deleted successfully");
+    }
+
+    @GetMapping("/xoa-danh-muc")
+    public ResponseEntity<String> deleteCategory(@RequestParam long id) {
+        categoryService.deleteCategory(id);
+        return ResponseEntity.ok("Category deleted successfully");
+    }
+
+    @GetMapping("/xoa-san-pham")
+    public ResponseEntity<String> deleteProduct(@RequestParam int id) {
+        productService.deleteProduct(id);
+        return ResponseEntity.ok("Product deleted successfully");
     }
 
 }

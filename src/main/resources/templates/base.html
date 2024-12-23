@@ -27,7 +27,7 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto fs-6 ms-3">
+        <ul class="navbar-nav mr-auto fs-5 ms-3">
             <li class="nav-item active">
                 <a class="nav-link" aria-current="page" href="/"><i class="fa-solid fa-house"></i> Trang chủ <span class="sr-only">(current)</span></a>
             </li>
@@ -50,7 +50,7 @@
                 </a>
             </li>
         </ul>
-        <ul class="navbar-nav ms-auto fs-6 me-3">
+        <ul class="navbar-nav ms-auto fs-5 me-3">
             <th:block th:if="${user == null}">
                 <li class="nav-item ms-3">
                     <a class="nav-link" aria-current="page" href="/dang-nhap"><i class="fa-solid fa-right-to-bracket"></i> Đăng nhập</a>
@@ -62,7 +62,10 @@
 
             <th:block th:if="${user != null}">
                 <th:block th:if="${user.role == 'ROLE_USER'}">
-                    <a class="nav-link dropdown-item" href="/user/gio-hang"><i class="fa-solid fa-cart-shopping"></i> Giỏ hàng [ [[${countCart}]] ]</a>
+                    <li class="nav-item ms-3">
+                        <a class="nav-link dropdown-item" href="/user/gio-hang"><i class="fa-solid fa-cart-shopping"></i> Giỏ hàng [ [[${countCart}]] ]</a>
+                    </li>
+
                     <li class="nav-item dropdown ms-3">
                         <a class="nav-link dropdown-toggle active" href="#" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -115,9 +118,7 @@
 <div th:replace="${content}"></div>
 
 <!--    footer-->
-<!--<div class="container-fluid p-1 bg-primary text-center text-white">-->
-<!--    <p>ecom.com</p>-->
-<!--</div>-->
+
 
 <!-- Footer -->
 <footer class="text-center text-lg-start bg-body-tertiary text-muted">
@@ -162,6 +163,7 @@
                             <p style="white-space: pre-wrap; word-wrap: break-word;">[[${webInfo.address}]]</p>
                             <b>Giờ làm việc cửa hàng:</b>
                             <p style="white-space: pre-wrap; word-wrap: break-word;">[[${webInfo.workingHours}]]</p>
+                            <p>Freeship tại: <b>[[${placeFreeShip}]]</b></p>
                         </div>
                     </div>
                 </div>
@@ -180,7 +182,9 @@
                             [[${support.title}]]
                         </a>
                     </p>
-
+                    <a class="text-reset"
+                       href="/chinhsach-dichvu">Chính sách - Dịch vụ
+                    </a>
                 </div>
                 <!-- Grid column -->
 
@@ -188,7 +192,7 @@
                 <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
                     <!-- Links -->
                     <h6 class="text-uppercase fw-bold mb-4">Chăm sóc khách hàng</h6>
-                    <p class="fs-6"><i class="ti ti-phone-call me-2"></i> [[${webInfo.phone}]]</p>
+                    <p class="fs-5"><i class="ti ti-phone-call me-2"></i> [[${webInfo.phone}]]</p>
                     <p class="fs-4">
                         <i class="ti ti-mail me-3"></i> <u>[[${webInfo.email}]]</u>
                     </p>
@@ -212,15 +216,6 @@
 
 <!--end footer-->
 
-<!--<script type="importmap">-->
-<!--    {-->
-<!--        "imports": {-->
-<!--            "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.2.0/ckeditor5.js",-->
-<!--            "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.2.0/"-->
-<!--        }-->
-<!--    }-->
-<!--</script>-->
-<!--<script type="module" th:src="@{/js/ckeditor.js}"></script>-->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>

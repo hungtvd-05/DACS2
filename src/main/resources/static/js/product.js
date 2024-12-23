@@ -13,9 +13,9 @@ let imageNames = [];
 Dropzone.autoDiscover = false;
 const dropzone = new Dropzone("#imageUpload", {
     url: "/admin/luu-anh",
-    maxFiles: 5,
+    maxFiles: 8,
     paramName: 'file1',
-    acceptedFiles: "image/jpeg,image/png,image/gif",
+    acceptedFiles: "image/*, .webp",
     addRemoveLinks: true,
     success: function(file, response) {
         imageNames.push(file.name);

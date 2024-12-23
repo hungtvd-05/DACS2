@@ -14,4 +14,10 @@ public interface NewsRepository extends JpaRepository<News, Integer> {
     List<News> findByStyle(String style);
 
     Page<News> findByStatusTrue(Pageable pageable);
+
+    Page<News> findByStatusTrueAndStyle(Boolean status, String style, Pageable pageable);
+
+    Page<News> findByStatusAndStyle(Boolean status, String style, Pageable pageable);
+
+    List<News> findByStyleAndStatus(String style, Boolean status);
 }

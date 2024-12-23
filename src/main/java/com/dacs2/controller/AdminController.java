@@ -79,13 +79,13 @@ public class AdminController {
 
     @GetMapping("/danh-muc")
     public String category(Model m) {
-        m.addAttribute("categorys", categoryService.getAllCategory());
+        m.addAttribute("categorys", categoryService.getAllCategory().reversed());
         return "admin/category";
     }
 
     @PostMapping("/luu-danh-muc")
     public String saveCategory(@ModelAttribute Category category, @RequestParam("file") MultipartFile file, HttpSession session) throws IOException {
-
+        category.setName(category.getName().trim());
         Boolean existCategory = categoryService.existCategory(category.getName());
 
         String imageName = file != null ? file.getOriginalFilename(): "default.jpg";
@@ -119,28 +119,47 @@ public class AdminController {
 
     @PostMapping("/cap-nhat-danh-muc")
     public String updateCategory(@ModelAttribute Category category, @RequestParam("file") MultipartFile file, HttpSession session) throws IOException {
+        category.setName(category.getName().trim());
 
-        Category category1 = categoryService.getCategoryById(category.getId());
-        String imageName = file.isEmpty() ? category1.getImageName():file.getOriginalFilename();
+        Category currentCategory = categoryService.getCategoryById(category.getId());
+        String imageName = file.isEmpty() ? currentCategory.getImageName():file.getOriginalFilename();
+        category.setImageName(imageName);
 
-        if (!ObjectUtils.isEmpty(category)) {
-            category1.setName(category.getName().trim());
-            category1.setIsActive(category.getIsActive());
-            category1.setImageName(imageName);
-        }
+        if (currentCategory.getName().equals(category.getName())) {
+            Category savedCategory = categoryService.saveCategory(category);
 
-        Category updateCategory = categoryService.saveCategory(category1);
+            if (ObjectUtils.isEmpty(savedCategory)) {
+                session.setAttribute("errorMsg", "Dữ liệu chưa được lưu!");
+            } else {
 
-        if (!ObjectUtils.isEmpty(updateCategory)) {
+                if (!file.isEmpty()) {
+                    Path path = Paths.get(imgPath + File.separator + "category_img" + File.separator + file.getOriginalFilename());
 
-            if (!file.isEmpty()) {
-                Path path = Paths.get(imgPath + File.separator + "category_img" + File.separator + file.getOriginalFilename());
-
-                Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+                    Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+                }
+                session.setAttribute("succMsg", "Danh mục đã được cập nhật");
             }
-            session.setAttribute("succMsg", "Danh mục đã được cập nhật");
         } else {
-            session.setAttribute("errorMsg", "Lỗi");
+            Boolean existCategory = categoryService.existCategory(category.getName());
+
+            if (existCategory) {
+                session.setAttribute("errorMsg", "Tên danh mục đã tồn tại.");
+            } else {
+
+                Category savedCategory = categoryService.saveCategory(category);
+
+                if (ObjectUtils.isEmpty(savedCategory)) {
+                    session.setAttribute("errorMsg", "Dữ liệu chưa được lưu!");
+                } else {
+
+                    if (!file.isEmpty()) {
+                        Path path = Paths.get(imgPath + File.separator + "category_img" + File.separator + file.getOriginalFilename());
+
+                        Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+                    }
+                    session.setAttribute("succMsg", "Danh mục đã được cập nhật");
+                }
+            }
         }
 
         return "redirect:/admin/sua-danh-muc/" + category.getId();
@@ -148,7 +167,7 @@ public class AdminController {
 
     @GetMapping("/thuong-hieu")
     public String brand(Model m) {
-        m.addAttribute("brands", brandService.getAllBrand());
+        m.addAttribute("brands", brandService.getAllBrand().reversed());
         return "admin/brand";
     }
 
@@ -186,12 +205,32 @@ public class AdminController {
 
         brand.setName(brand.getName().trim());
 
-        Brand savedBrand = brandService.save(brand);
+        Brand currentBrand = brandService.getBrandById(brand.getId());
 
-        if (!ObjectUtils.isEmpty(savedBrand)) {
-            session.setAttribute("succMsg", "Đã cập nhật thương hiệu");
+        if (currentBrand.getName().equals(brand.getName())) {
+            Brand savedBrand = brandService.save(brand);
+
+            if (!ObjectUtils.isEmpty(savedBrand)) {
+                session.setAttribute("succMsg", "Đã cập nhật thương hiệu");
+            } else {
+                session.setAttribute("errorMsg", "Lỗi");
+            }
         } else {
-            session.setAttribute("errorMsg", "Lỗi");
+            Boolean existBrand = brandService.existBrand(brand.getName());
+
+            if (existBrand) {
+                session.setAttribute("errorMsg", "Tên thương hiệu đã tồn tại.");
+            } else {
+
+                Brand savedBrand = brandService.save(brand);
+
+                if (!ObjectUtils.isEmpty(savedBrand)) {
+                    session.setAttribute("succMsg", "Đã cập nhật thương hiệu");
+                } else {
+                    session.setAttribute("errorMsg", "Lỗi");
+                }
+
+            }
         }
 
         return "redirect:/admin/sua-thuong-hieu/" + brand.getId();
@@ -283,14 +322,10 @@ public class AdminController {
                 index = listAnhCu.indexOf(imageName);
                 listAnhCu.remove(index);
             } else {
-                Files.move(Paths.get(sourcePath + imageName), Paths.get(targetPath + productId + "_" + imageName), StandardCopyOption.REPLACE_EXISTING);
-                newImageNames.add(productId + "_" + imageName);
+                Files.move(Paths.get(sourcePath + imageName), Paths.get(targetPath + imageName), StandardCopyOption.REPLACE_EXISTING);
+                newImageNames.add(imageName);
             }
 
-        }
-
-        for (String imageName : listAnhCu) {
-            Files.deleteIfExists(Paths.get(targetPath + imageName));
         }
 
         product1.setTen(product.getTen());
@@ -303,6 +338,7 @@ public class AdminController {
         product1.setTrangthai(product.getTrangthai());
         product1.setSale(product.getSale());
         product1.setGiasale(product.getGia() * (100 - product.getSale()) / 100);
+        System.out.println(newImageNames.toString().replace("[", "").replace("]",""));
         product1.setAnh(newImageNames.toString().replace("[", "").replace("]",""));
 
         Product updateProduct = productService.saveProduct(product1);

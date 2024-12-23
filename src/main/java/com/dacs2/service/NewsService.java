@@ -23,4 +23,6 @@ public interface NewsService {
 
     Page<News> getAllNewsForHome(Integer page, Integer size);
 
+    Page<News> getAllServiceForHome(Integer page, Integer size);
+
 }

@@ -11,11 +11,25 @@
 </head>
 <body>
 <section>
-  <div class="container-fluid mt-5 p-5 bg-light">
+  <style>
+    .password-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .show-button {
+      position: absolute;
+      right: 10px;
+      border: none;
+      background: none;
+      cursor: pointer;
+    }
+  </style>
+  <div class="container-fluid mt-4">
     <div class="row">
       <div class="col-md-10 offset-md-1 ">
-
-        <p class="fs-3 text-center">My Profile</p>
+        <h4 class="text-center">My Profile</h4>
         <th:block th:if="${session.succMsg}">
           <p class="text-success fw-bold  text-center">[[${session.succMsg}]]</p>
           <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
@@ -119,9 +133,10 @@
         </div>
 
       </div>
-      <hr>
+
       <div class="col-md-10 offset-md-1 mt-1">
-        <p class="text-center fs-3">Thay đổi mật khẩu</p>
+        <h4 class="text-center">Thay đổi mật khẩu</h4>
+        <hr>
         <div class="col-md-6 offset-md-3">
           <form action="/user/change-password" method="post">
             <table class="table table-borderless">
@@ -131,13 +146,26 @@
               <tr>
                 <th scope="row">Mật khẩu hiện tại</th>
 
-                <td><input type="password" id="currentPassword" name="currentPassword" class="form-control" placeholder="Nhập mật khẩu hiện tại"></td>
+                <td>
+                  <div class="password-container mb-3">
+                    <input type="password" id="currentPassword" name="currentPassword" class="form-control" placeholder="Nhập mật khẩu hiện tại">
+                    <button type="button" id="show-button-1" class="show-button">
+                      <i class="ti ti-eye"></i>
+                    </button>
+                  </div>
+                </td>
+
               </tr>
 
               <tr>
                 <th scope="row">Mật khẩu mới</th>
                 <td>
-                  <input type="password" id="newPassword" name="newPassword" class="form-control mb-3" placeholder="Nhập mật khẩu mới" oninput="validatePassword(this.value)" required>
+                  <div class="password-container mb-3">
+                    <input class="form-control" name="newPassword" type="password" id="newPassword" placeholder="Nhập mật khẩu mới" oninput="validatePassword(this.value)" required>
+                    <button type="button" id="show-button-2" class="show-button">
+                      <i class="ti ti-eye"></i>
+                    </button>
+                  </div>
                   <div class="form-group">
                     <ul>
                       <li id="minLength">
@@ -162,7 +190,14 @@
               <tr>
                 <th scope="row">Xác nhận mật khẩu</th>
 
-                <td><input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Nhập lại mật khẩu"></td>
+                <td>
+                  <div class="password-container mb-3">
+                    <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Nhập lại mật khẩu">
+                    <button type="button" id="show-button-3" class="show-button">
+                      <i class="ti ti-eye"></i>
+                    </button>
+                  </div>
+                </td>
               </tr>
 
 
@@ -182,6 +217,56 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
   <script>
+
+    document.getElementById('show-button-1').addEventListener('click',
+            function () {
+              const passwordInput = document.getElementById('currentPassword');
+              const icon = this.querySelector('i');
+
+              if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('ti-eye');
+                icon.classList.add('ti-eye-off');
+              } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('ti-eye-off');
+                icon.classList.add('ti-eye');
+              }
+            });
+
+    document.getElementById('show-button-2').addEventListener('click',
+            function () {
+              const passwordInput = document.getElementById('newPassword');
+              const icon = this.querySelector('i');
+
+              if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('ti-eye');
+                icon.classList.add('ti-eye-off');
+              } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('ti-eye-off');
+                icon.classList.add('ti-eye');
+              }
+            });
+
+    document.getElementById('show-button-3').addEventListener('click',
+            function () {
+              const passwordInput = document.getElementById('confirmPassword');
+              const icon = this.querySelector('i');
+
+              if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('ti-eye');
+                icon.classList.add('ti-eye-off');
+              } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('ti-eye-off');
+                icon.classList.add('ti-eye');
+              }
+            });
+
+
     var citis = document.getElementById("city");
     var districts = document.getElementById("district");
     var wards = document.getElementById("ward");

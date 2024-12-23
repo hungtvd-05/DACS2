@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -38,6 +40,10 @@ public class Product {
 
     private int soluong;
 
+    private int soluongDaBan;
+
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String anh;
 
     public String getGiaFormatted() {
@@ -45,6 +51,9 @@ public class Product {
     }
 
     public String[] getArrayAnh() {
+        if (anh == null || anh.trim().isEmpty()) {
+            return new String[0];
+        }
         return anh.split(", ");
     }
 

@@ -125,12 +125,6 @@
           </div>
         </div>
       </div>
-<!--      <script th:src="@{/libs/jquery/dist/jquery.min.js}"></script>-->
-<!--      <script th:src="@{/libs/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>-->
-<!--      <script th:src="@{/js/sidebarmenu.js}"></script>-->
-<!--      <script th:src="@{/js/app.min.js}"></script>-->
-<!--      <script th:src="@{/libs/apexcharts/dist/apexcharts.min.js}"></script>-->
-<!--      <script th:src="@{/libs/simplebar/dist/simplebar.js}"></script>-->
 
       <script>
 
@@ -478,7 +472,7 @@
           loadOrdersData("last7days");
 
           $('#ordersType').change(function() {
-            loadOrdersData($(this).val());
+              loadOrdersData($(this).val());
           });
 
           var totalSalesComplete = document.getElementById("totalSalesComplete");

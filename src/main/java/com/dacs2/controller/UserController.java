@@ -76,6 +76,7 @@ public class UserController {
         m.addAttribute("categorys", categoryService.getCategoryByIsActive());
         m.addAttribute("supportUrls", supportUrlService.getSupportUrl());
         m.addAttribute("contactUrls", contactUrlService.getContactUrls());
+        m.addAttribute("placeFreeShip", userService.getFirstAdmin().getCity());
 
     }
 

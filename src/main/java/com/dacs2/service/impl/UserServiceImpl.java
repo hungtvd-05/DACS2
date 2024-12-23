@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -58,6 +59,7 @@ public class UserServiceImpl implements UserService {
     public UserDtls addUser(UserDtls user) {
         UserDtls findUser = userRepository.findByEmail(user.getEmail());
         if (ObjectUtils.isEmpty(findUser)) {
+            user.setProfileImage("default.png");
             user.setRole("ROLE_USER");
             user.setIsEnable(true);
             user.setAccountNonLocked(true);
@@ -77,7 +79,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<UserDtls> getUsers(Integer pageNumber, Integer pageSize, String role) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "id"));
         return userRepository.findByRole(pageable, role);
     }
 
@@ -197,7 +199,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Page<UserDtls> searchUsers(Integer pageNumber, Integer pageSize, String role, String search) {
 
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "id"));
 
         return userRepository.findByRoleAndKeyword(
                 pageable, role, convertToNumber(search), search);
@@ -225,5 +227,10 @@ public class UserServiceImpl implements UserService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public UserDtls getFirstAdmin() {
+        return userRepository.getFirstAdmin();
     }
 }

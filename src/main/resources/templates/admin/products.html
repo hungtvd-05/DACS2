@@ -10,7 +10,7 @@
 <section>
   <link rel="stylesheet" th:href="@{/css/table.css}">
 
-  <div class=" content1 pb-4">
+  <div class=" content1">
     <h4 class="text-center">Sản phẩm</h4>
     <hr>
     <div class="mb-2">
@@ -50,7 +50,6 @@
       <table class="table table-bordered">
         <thead>
         <tr>
-          <th scope="col">Id</th>
           <th scope="col">Tên</th>
           <th scope="col">Ảnh</th>
           <th scope="col">Danh mục</th>
@@ -62,15 +61,31 @@
         </thead>
         <tbody class="danhsach">
         <tr th:each="pro, p:${products}">
-          <td data-label="STT" scope="row" class="fs-5 dulieu">[[${pro.id}]]</td>
-          <td data-label="Tên" th:utext="${pro.getTen()}" class="fs-5 ten dulieu"></td>
-          <td data-label="Ảnh" class="fs-5">
+          <td data-label="Tên" th:utext="${pro.getTen()}" class="fs-4 dulieu"></td>
+          <td data-label="Ảnh" class="fs-4">
             <img th:src="@{'/img/product_img/' + ${pro.getArrayAnh()[0]}}" width="70px" height="70px">
           </td>
-          <td data-label="Danh mục" th:utext="${pro.getDanhmuc().name}" class="fs-5 dulieu"></td>
-          <td data-label="Thương hiệu" th:utext="${pro.getBrand().name}" class="fs-5 dulieu"></td>
-          <td data-label="Giá" th:utext="${pro.getGiaFormatted()}" class="fs-5 dulieu"></td>
-          <td data-label="Số lượng" th:utext="${pro.getSoluong()}" class="fs-5 dulieu"></td>
+          <td data-label="Danh mục" th:utext="${pro.getDanhmuc().name}" class="fs-4 dulieu"></td>
+          <td data-label="Thương hiệu" th:utext="${pro.getBrand().name}" class="fs-4 dulieu"></td>
+          <td data-label="Giá" class="fs-4 dulieu">
+            <div th:if="${pro.sale > 0}">
+              <h6 class=" fs-3 mb-0">
+                <b>[[${pro.getGiaSaleFormatted()}]]</b>
+                <span class="fs-2 p-1" style="color: orangered; background: #FFEDE0"><b>[[${pro.sale}]]%</b></span>
+              </h6>
+              <span class="fw-normal text-muted fs-2"><del>[[${pro.getGiaFormatted()}]]</del></span>
+            </div>
+            <div th:unless="${pro.sale > 0}">
+              <h6 class="fs-3 mb-0">
+                <b>[[${pro.getGiaSaleFormatted()}]]</b>
+              </h6>
+            </div>
+          </td>
+          <td data-label="Số lượng" class="fs-4 dulieu">
+            [[${pro.getSoluong()}]]
+            <br>
+            Đã bán: [[${pro.getSoluongDaBan()}]]
+          </td>
           <td class="text-end">
             <a th:href="@{'/admin/sua-san-pham/' + ${pro.id}}" class="btn btn-primary btn-sm"><i class="fa-solid fa-pen-to-square"></i>Sửa</a>
             <a href="javascript:void(0)"
@@ -132,8 +147,8 @@
                 id: id
               },
               success: function(response) {
-                if (response && response.isDelete) {
-                  row.fadeOut(200, function() {
+                if (response) {
+                  row.fadeOut(100, function() {
                     $(this).remove();
                   });
                 }

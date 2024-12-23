@@ -11,7 +11,7 @@ public interface ProductService {
 
     public Page<Product> getAllProductsPagination(Integer pageNumber, Integer pageSize);
 
-    public Boolean deleteProduct(int id);
+    public void deleteProduct(int id);
 
     public Product getProductById(Integer id);
 

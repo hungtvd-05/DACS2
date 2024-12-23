@@ -9,26 +9,26 @@
 <section>
     <link rel="stylesheet" th:href="@{/css/table.css}">
 
-    <div class="container mt-5 content1 fs-5">
+    <div class="container content1 fs-5">
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <div class="mb-2">
                     <a href="/admin/thuong-hieu" class="text-decoration-none"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
                 </div>
                 <div class="card card-sh">
-                    <div class="card-header text-center">
-                        <p class="fs-4 m-0">Chỉnh sửa thương hiệu</p>
-                        <th:block th:if="${session.succMsg}">
-                            <p class="text-success fw-bold">[[${session.succMsg}]]</p>
-                            <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
-                        </th:block>
-
-                        <th:block th:if="${session.errorMsg}">
-                            <p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
-                            <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
-                        </th:block>
-                    </div>
                     <div class="card-body">
+                        <div class="text-center">
+                            <h4>Chỉnh sửa thương hiệu</h4>
+                            <th:block th:if="${session.succMsg}">
+                                <p class="text-success fw-bold">[[${session.succMsg}]]</p>
+                                <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+                            </th:block>
+
+                            <th:block th:if="${session.errorMsg}">
+                                <p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+                                <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+                            </th:block>
+                        </div>
                         <form action="/admin/cap-nhat-thuong-hieu" method="post" enctype="multipart/form-data">
                             <input type="hidden" name="id" th:value="${brand.id}">
                             <div class="mb-3">

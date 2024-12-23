@@ -119,7 +119,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Orders> getOrdersByUserId(Integer userId) {
-        return orderRepository.findByUserId(userId);
+        return orderRepository.findByUserIdAndProcessed(userId, true).reversed();
     }
 
     @Override
@@ -136,6 +136,7 @@ public class OrderServiceImpl implements OrderService {
                 for (ProductOrder productOrder : productOrders) {
                     Product product = productOrder.getProduct();
                     product.setSoluong(product.getSoluong() - productOrder.getQuantity());
+                    product.setSoluongDaBan(product.getSoluongDaBan() + productOrder.getQuantity());
                     products.add(product);
                 }
                 productRepository.saveAll(products);
@@ -150,13 +151,13 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Page<Orders> getAllOrdersPagination(Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "id"));
-        return orderRepository.findAll(pageable);
+        return orderRepository.findByProcessed(true, pageable);
     }
 
     @Override
     public Page<Orders> searchOrderByOrderIdPagination(Integer pageNumber, Integer pageSize, String orderId) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "id"));
-        return orderRepository.findByOrderIdContainingIgnoreCase(pageable, orderId);
+        return orderRepository.findByOrderIdContainingIgnoreCaseAndProcessed(orderId, true, pageable);
     }
 
     @Override

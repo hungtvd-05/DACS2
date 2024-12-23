@@ -2,9 +2,11 @@ package com.dacs2.service.impl;
 
 import com.dacs2.model.Category;
 import com.dacs2.repository.CategoryRepository;
+import com.dacs2.repository.ProductRepository;
 import com.dacs2.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 
@@ -15,6 +17,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private CategoryRepository categoryReposity;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @Override
     public Category saveCategory(Category category) {
@@ -32,14 +37,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Boolean deleteCategory(Long id) {
-        Category category = categoryReposity.findById(id).orElse(null);
+    @Transactional
+    public void deleteCategory(Long id) {
+        Category category = categoryReposity.findById(id).get();
 
-        if (!ObjectUtils.isEmpty(category)) {
-            categoryReposity.delete(category);
-            return true;
-        }
-        return false;
+        productRepository.deleteAllByDanhmuc(category);
+        categoryReposity.delete(category);
     }
 
     @Override

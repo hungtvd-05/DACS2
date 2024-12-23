@@ -142,7 +142,7 @@
                 <tbody>
                 <tr th:each="productOrder:${listProductOrders}">
                     <td>
-                        <div class="cart-info">
+                        <div class="cart-info my-2">
                             <img th:src="@{'/img/product_img/' + ${productOrder.getProduct().getArrayAnh()[0]}}" width="100px" height="100px">
 
                         </div>
@@ -152,7 +152,7 @@
                         <small>Giá: [[${productOrder.getProduct().getGiaSaleFormatted()}]] x [[${productOrder.quantity}]] = [[${productOrder.getTotalPriceFormatted()}]]</small>
                         <br>
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <a th:if="${productOrder.rating == null}"
+                            <a th:if="${productOrder.rating == null && order.status == 'Đã vận chuyển thành công!'}"
                                href="javascript:void(0)"
                                class="comment-btn"
                                th:data-product-id="${productOrder.id}"
@@ -317,6 +317,12 @@
                         <div data-mdb-input-init class="form-outline">
                             <textarea class="form-control text-comment" id="check-comment" rows="4" style="pointer-events: none;"></textarea>
                         </div>
+
+                        <p class="fs-3 m-0">Phản hồi của Shop:</p>
+
+                        <div data-mdb-input-init class="form-outline">
+                            <textarea class="form-control text-comment" id="rep-comment" rows="4" style="pointer-events: none;"></textarea>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -365,6 +371,7 @@
                             $('#check-modal .cart-info-modal h5').text(response.productName);
                             $('#check-modal .cart-info-modal p').text('Giá: ' + response.productPrice + ' x ' + response.quantity + ' = ' + response.productTotalPrice);
                             document.getElementById("check-comment").value = response.textContent;
+                            document.getElementById("rep-comment").value = response.repComment;
                         }
                     },
                     error: function(xhr, status, error) {

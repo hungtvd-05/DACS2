@@ -59,9 +59,29 @@
             .separator h2{
                 padding: 0 2rem;
             }
+
+
+            .blog-img {
+                width: 100px;
+                height: 75px;
+                margin-right: 5px;
+                display: flex;
+                align-items: center;
+            }
+
+            .blog-img img {
+                width: 100px;
+                height: 65px !important;
+                object-fit: cover !important;
+            }
+
+            .card-sh {
+                box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.3) !important;
+            }
+
         </style>
         <div class="mt-0 mb-5">
-            <div class="container-xl">
+            <div class="container-xl px-1">
                 <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner" >
                         <div th:class="${iterStat.first ? 'carousel-item active' : 'carousel-item'}" th:each="slide, iterStat:${slides}">
@@ -85,9 +105,12 @@
                         </a>
                         <div class="line"></div>
                     </div>
-                    <div class="row">
+                    <div class="mb-4">
+                        <img width="100%" th:src="@{'/img/category_img/' + ${category.imageName}}">
+                    </div>
+                    <div class="row px-2">
                         <div class="col-lg-2 col-md-3 col-sm-3 col-6 card-style" th:each="product:${mapProduct.get(category.name)}">
-                            <div class="card overflow-hidden rounded-2">
+                            <div class="card overflow-hidden rounded-2 m-0 card-sh">
                                 <a th:href="@{'/san-pham/san-pham-id=' + ${product.id}}">
                                     <div class="position-relative card-img-top">
                                         <img th:src="@{'/img/product_img/' + ${product.getArrayAnh()[0]}}" alt="...">
@@ -111,25 +134,28 @@
                             </div>
                         </div>
                     </div>
-                    <div class="text-center">
+                    <div class="text-center mt-4">
                         <a th:href="@{'/san-pham?danh-muc='+${category.name}}" class="category btn bg-dark text-light m-0">
                             Xem thêm sản phẩm dành cho [[${category.name}]]
                         </a>
                     </div>
                 </div>
-                <div class="card overflow-hidden col-12 mt-5 p-3">
-                    <h4 class="mb-0">Blog</h4>
+                <div class="card card-sh overflow-hidden col-12 mt-5 p-3">
+                    <h4 class="mb-2">Blog</h4>
                     <div class="row">
-                        <a href="#" class="col-lg-4 col-sm-6 col-12 d-flex align-items-center mt-3" th:each="blog:${blogs}">
-                            <img th:src="@{'/img/news/' + ${blog.imageName}}" style="width: 100px; height: 100px; margin-right: 10px">
+                        <a th:href="@{'blogs/blog-id=' + ${blog.id}}" class="col-lg-4 col-sm-6 col-12 d-flex align-items-center" th:each="blog:${blogs}">
+                            <div class="blog-img">
+                                <img th:src="@{'/img/news/' + ${blog.imageName}}">
+                            </div>
+
                             <div>
-                                <h6 class="fw-semibold" th:utext="${blog.title}"></h6>
+                                <h6 class="fw-semibold mb-1" th:utext="${blog.title}"></h6>
                                 <span style="color: #5A6A85" th:text="${blog.getDateFormatted()}"></span>
                             </div>
                         </a>
                     </div>
                     <div class="text-center">
-                        <a href="/blogs" class="category btn bg-dark text-light m-0 mt-3">
+                        <a href="/blogs" class="category btn bg-dark text-light m-0 mt-2">
                             Xem thêm các bài viết khác
                         </a>
                     </div>

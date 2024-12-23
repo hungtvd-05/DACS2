@@ -1,6 +1,7 @@
 package com.dacs2.repository;
 
 import com.dacs2.model.Cart;
+import com.dacs2.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -19,4 +20,5 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
     @Query("SELECT SUM(c.product.giasale * c.quantity) FROM Cart c WHERE c.user.id = :userId")
     public Double sumPriceByUserId(Integer userId);
 
+    void deleteAllByProduct(Product product);
 }

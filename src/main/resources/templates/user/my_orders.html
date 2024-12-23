@@ -7,59 +7,53 @@
 </head>
 <body>
 <section>
-    <div class="container-fluid content1 mt-5">
-        <div class="card card-sh">
-            <div class="card-header text-center">
-                <h4>Đơn hàng của tôi</h4>
-                <th:block th:if="${session.succMsg}">
-                    <p class="text-success fw-bold">[[${session.succMsg}]]</p>
-                    <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
-                </th:block>
+    <div class="container-fluid mt-5">
+        <div class="text-center">
+            <h4>Đơn hàng của tôi</h4>
+            <th:block th:if="${session.succMsg}">
+                <p class="text-success fw-bold">[[${session.succMsg}]]</p>
+                <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+            </th:block>
 
-                <th:block th:if="${session.errorMsg}">
-                    <p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
-                    <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
-                </th:block>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div th:if="${orders.size() == 0}" class="text-center">Không có đơn hàng nào ở đây!</div>
-                    <div th:if="${orders.size() > 0}">
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th scope="col">Mã đơn hàng</th>
-                                <th scope="col">Ngày tạo</th>
-                                <th scope="col">Tên sản phẩm</th>
-                                <th scope="col">Giá</th>
-                                <th scope="col">Trạng thái</th>
-                                <th scope="col"></th>
-                            </tr>
-                            </thead>
-                            <tbody class="danhsach">
-                            <tr th:each="order:${orders}">
-                                <td scope="row" ><b>[[${order.orderId}]]</b></td>
-                                <td th:text="${order.getDateFormatted()}"></td>
-                                <td th:text="${order.getOrderName()}" style="white-space: pre-wrap; word-wrap: break-word;"></td>
-                                <td th:text="${order.getTotalPriceFormatted()}"></td>
-                                <td><span class="orderStatus" th:data-order-id="${order.id}">[[${order.getStatus()}]]</span></td>
-                                <td>
-                                    <a class="btn btn-sm btn-primary" th:href="@{'/user/xem-don-hang/id=' + ${order.getOrderId()}}">Xem chi tiết</a>
-                                    <th:block th:if="${order.status!='Đã hủy!' && order.status!='Đã vận chuyển thành công!'}">
-                                        <button class="btn btn-sm btn-danger update-status-btn"
-                                                th:data-order-id="${order.id}">Hủy
-                                        </button>
-                                    </th:block>
-                                    <a class="btn btn-sm btn-danger cancelBtn disabled" th:data-order-id="${order.id}" hidden="hidden">Hủy</a>
-                                    <th:block th:unless="${order.status!='Đã hủy!' && order.status!='Đã vận chuyển thành công!'}">
-                                        <a class="btn btn-sm btn-danger disabled">Hủy</a>
-                                    </th:block>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <th:block th:if="${session.errorMsg}">
+                <p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+                <th:block th:text="${@commonServiceImpl.removeSessionMessage()}"></th:block>
+            </th:block>
+        </div>
+        <div class="my-5">
+            <div th:if="${orders.size() == 0}" class="text-center">Không có đơn hàng nào ở đây!</div>
+            <div th:if="${orders.size() > 0}">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col">Mã đơn hàng</th>
+                        <th scope="col">Ngày tạo</th>
+                        <th scope="col">Tên sản phẩm</th>
+                        <th scope="col">Trạng thái</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody class="danhsach">
+                    <tr th:each="order:${orders}">
+                        <td scope="row" ><b>[[${order.orderId}]]</b></td>
+                        <td th:text="${order.getDateFormatted()}"></td>
+                        <td th:text="${order.getOrderName() + 'Tổng: ' + order.getTotalPriceFormatted()}" style="white-space: pre-wrap; word-wrap: break-word;"></td>
+                        <td><span class="orderStatus" th:data-order-id="${order.id}">[[${order.getStatus()}]]</span></td>
+                        <td>
+                            <a class="btn btn-sm btn-primary" th:href="@{'/user/xem-don-hang/id=' + ${order.getOrderId()}}">Xem chi tiết</a>
+                            <th:block th:if="${order.status!='Đã hủy!' && order.status!='Đã vận chuyển thành công!'}">
+                                <button class="btn btn-sm btn-danger update-status-btn"
+                                        th:data-order-id="${order.id}">Hủy
+                                </button>
+                            </th:block>
+                            <a class="btn btn-sm btn-danger cancelBtn disabled" th:data-order-id="${order.id}" hidden="hidden">Hủy</a>
+                            <th:block th:unless="${order.status!='Đã hủy!' && order.status!='Đã vận chuyển thành công!'}">
+                                <a class="btn btn-sm btn-danger disabled">Hủy</a>
+                            </th:block>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

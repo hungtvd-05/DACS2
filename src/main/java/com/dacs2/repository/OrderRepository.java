@@ -11,11 +11,15 @@ import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Orders, Integer> {
 
-    public List<Orders> findByUserId(int userId);
+    public List<Orders> findByUserIdAndProcessed(int userId, boolean processed);
 
-    public Page<Orders> findByOrderIdContainingIgnoreCase(Pageable pageable, String orderId);
+//    public Page<Orders> findByOrderIdContainingIgnoreCase(Pageable pageable, String orderId);
+
+    Page<Orders> findByOrderIdContainingIgnoreCaseAndProcessed(String orderId, Boolean processed, Pageable pageable);
 
     public Orders findByOrderId(String orderId);
+
+//    public Orders findByOrderIdAndProcessed(String orderId, Boolean processed);
 
     @Query(value = """
     WITH date_range AS (
@@ -36,6 +40,7 @@ public interface OrderRepository extends JpaRepository<Orders, Integer> {
     SELECT 
         COUNT(*) as total_orders
     FROM orders
+        WHERE processed = 1
     GROUP BY DATE(order_date)
     LIMIT 7
     """, nativeQuery = true)
@@ -63,6 +68,7 @@ public interface OrderRepository extends JpaRepository<Orders, Integer> {
     FROM orders
         WHERE MONTH(order_date) = MONTH(CURRENT_DATE())
             AND YEAR(order_date) = YEAR(CURRENT_DATE())
+            AND processed = 1
     GROUP BY DATE(order_date)
     """, nativeQuery = true)
     public List<Integer> getOrdersMonth();
@@ -87,7 +93,7 @@ public interface OrderRepository extends JpaRepository<Orders, Integer> {
     SELECT 
         COUNT(*) as total_orders
     FROM orders
-        WHERE MONTH(order_date) = MONTH(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH))
+        WHERE MONTH(order_date) = MONTH(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH)) AND processed = 1
     GROUP BY DATE(order_date)
     """, nativeQuery = true)
     public List<Integer> getOrdersLastMonth();
@@ -96,6 +102,7 @@ public interface OrderRepository extends JpaRepository<Orders, Integer> {
     SELECT
         DATE_FORMAT(MIN(order_date), '%d/%m') as order_day
     FROM orders
+        WHERE processed = 1
     GROUP BY DATE(order_date)
     ORDER BY DATE(order_date) ASC
     LIMIT 7
@@ -124,6 +131,7 @@ public interface OrderRepository extends JpaRepository<Orders, Integer> {
     @Query(value = """
     SELECT SUM(total_price) AS total
     FROM orders
+        WHERE processed = 1
     GROUP BY DATE(order_date)
     LIMIT 7
     """, nativeQuery = true)
@@ -138,6 +146,7 @@ public interface OrderRepository extends JpaRepository<Orders, Integer> {
     FROM orders
         WHERE MONTH(order_date) = MONTH(CURRENT_DATE())
             AND YEAR(order_date) = YEAR(CURRENT_DATE())
+            AND processed = 1
     GROUP BY DATE(order_date)
     ORDER BY DATE(order_date) ASC
     """, nativeQuery = true)
@@ -149,6 +158,7 @@ public interface OrderRepository extends JpaRepository<Orders, Integer> {
         FROM orders
         WHERE MONTH(order_date) = MONTH(CURRENT_DATE())
         AND YEAR(order_date) = YEAR(CURRENT_DATE())
+            AND processed = 1
         ORDER BY date
     )
     SELECT
@@ -165,6 +175,7 @@ public interface OrderRepository extends JpaRepository<Orders, Integer> {
     FROM orders
         WHERE MONTH(order_date) = MONTH(CURRENT_DATE())
             AND YEAR(order_date) = YEAR(CURRENT_DATE())
+            AND processed = 1
     GROUP BY DATE(order_date)
     """, nativeQuery = true)
     public List<Double> getSalesByMonth();
@@ -176,7 +187,7 @@ public interface OrderRepository extends JpaRepository<Orders, Integer> {
     SELECT
         DATE_FORMAT(MIN(order_date), '%d/%m') as order_day
     FROM orders
-        WHERE MONTH(order_date) = MONTH(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH))
+        WHERE MONTH(order_date) = MONTH(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH)) AND processed = 1
     GROUP BY DATE(order_date)
     ORDER BY DATE(order_date) ASC
     """, nativeQuery = true)
@@ -201,13 +212,13 @@ public interface OrderRepository extends JpaRepository<Orders, Integer> {
     @Query(value = """
     SELECT SUM(total_price) AS total
     FROM orders
-        WHERE MONTH(order_date) = MONTH(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH))
+        WHERE MONTH(order_date) = MONTH(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH)) AND processed = 1
     GROUP BY DATE(order_date)
     """, nativeQuery = true)
     public List<Double> getSalesByLastMonth();
 
     @Query(value = """
-    SELECT SUM(total_price) AS total
+    SELECT COALESCE(SUM(total_price), 0) AS total
     FROM orders
         WHERE MONTH(order_date) = MONTH(CURRENT_DATE())
         AND status = 'Đã vận chuyển thành công!'
@@ -215,14 +226,14 @@ public interface OrderRepository extends JpaRepository<Orders, Integer> {
     public Double getTotalSalesCompleteByMonth();
 
     @Query(value = """
-    SELECT SUM(total_price) AS total
+    SELECT COALESCE(SUM(total_price), 0) AS total
     FROM orders
-        WHERE MONTH(order_date) = MONTH(CURRENT_DATE())
+        WHERE MONTH(order_date) = MONTH(CURRENT_DATE()) AND processed = 1
     """, nativeQuery = true)
     public Double getTotalSalesByMonth();
 
     @Query(value = """
-    SELECT SUM(total_price) AS total
+    SELECT COALESCE(SUM(total_price), 0) AS total
     FROM orders
         WHERE MONTH(order_date) = MONTH(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH))
         AND status = 'Đã vận chuyển thành công!'
@@ -230,9 +241,9 @@ public interface OrderRepository extends JpaRepository<Orders, Integer> {
     public Double getTotalSalesCompleteByLastMonth();
 
     @Query(value = """
-    SELECT SUM(total_price) AS total
+    SELECT COALESCE(SUM(total_price), 0) AS total
     FROM orders
-        WHERE MONTH(order_date) = MONTH(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH))
+        WHERE MONTH(order_date) = MONTH(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH)) AND processed = 1
     """, nativeQuery = true)
     public Double getTotalSalesByLastMonth();
 
@@ -241,6 +252,7 @@ public interface OrderRepository extends JpaRepository<Orders, Integer> {
     SELECT 
         status
     FROM orders
+        WHERE processed = 1
     GROUP BY status
     """, nativeQuery = true)
     public List<String> getOrdersGroupByStatus();
@@ -249,17 +261,17 @@ public interface OrderRepository extends JpaRepository<Orders, Integer> {
     SELECT 
         COUNT(*) as total_orders
     FROM orders
+        WHERE processed = 1
     GROUP BY status
     """, nativeQuery = true)
     public List<Integer> countOrdersGroupByStatus();
 
     @Query(value = """
-    SELECT 
-        COUNT(*) as total_orders
+    SELECT
+        COALESCE(COUNT(*), 0) as total_orders
     FROM orders
         WHERE MONTH(order_date) = MONTH(CURRENT_DATE())
         AND status = 'Đã vận chuyển thành công!'
-    GROUP BY status
     """, nativeQuery = true)
     public Integer getOrdersComplete();
 
@@ -267,7 +279,7 @@ public interface OrderRepository extends JpaRepository<Orders, Integer> {
     SELECT 
         COUNT(*) as total_orders
     FROM orders
-        WHERE MONTH(order_date) = MONTH(CURRENT_DATE())
+        WHERE MONTH(order_date) = MONTH(CURRENT_DATE()) AND processed = 1
     """, nativeQuery = true)
     public Integer countOrdersByMonth();
 
@@ -275,6 +287,8 @@ public interface OrderRepository extends JpaRepository<Orders, Integer> {
     SELECT 
         SUM(po.price * po.quantity)
     FROM ProductOrder po
+        JOIN Orders o ON po.orderId = o.orderId
+            where o.processed = true AND o.status = 'Đã vận chuyển thành công!'
     GROUP BY po.product
     ORDER BY SUM(po.price * po.quantity) DESC
     """)
@@ -284,9 +298,12 @@ public interface OrderRepository extends JpaRepository<Orders, Integer> {
     SELECT 
         po.product.ten
     FROM ProductOrder po
+        JOIN Orders o ON po.orderId = o.orderId
+            where o.processed = true AND o.status = 'Đã vận chuyển thành công!'
     GROUP BY po.product
     ORDER BY SUM(po.price * po.quantity) DESC
     """)
     public List<String> getProductsTop();
 
+    Page<Orders> findByProcessed(Boolean processed, Pageable pageable);
 }

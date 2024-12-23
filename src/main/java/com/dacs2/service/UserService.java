@@ -47,4 +47,6 @@ public interface UserService {
 
     public UserDtls confirmEmail(String confirmToken);
 
+    public UserDtls getFirstAdmin();
+
 }

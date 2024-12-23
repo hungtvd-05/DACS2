@@ -11,6 +11,7 @@
 </head>
 <body>
 <section>
+    <input type="hidden" id="placeFreeShip" th:value="${placeFreeShip}">
     <div class="container-xl mt-5 ">
         <form action="/user/save-order" method="post">
             <div class="row">
@@ -118,7 +119,9 @@
                 citis.options[citis.options.length] = new Option(x.Name, x.Name);
             }
             citis.onchange = function () {
-                if (this.value === "Thành phố Đà Nẵng") {
+                const placeFreeShip = document.getElementById('placeFreeShip').value
+
+                if (this.value === placeFreeShip) {
                     shipPrice.innerHTML = "[[${shipPrice0}]]";
                     totalPrice.innerHTML = "[[${totalPrice}]]";
                 } else {

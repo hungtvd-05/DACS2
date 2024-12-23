@@ -11,39 +11,77 @@
 </head>
 <body>
 <section>
-    <div class="container-xl">
-        <div class="card overflow-hidden col-12 mt-5 mb-3 p-3">
-            <h3 class="text-center my-5">Blog của chúng tôi</h3>
-            <div class="offset-sm-1 col-sm-10 mb-5">
+
+    <style>
+        .card-img-top {
+            width: 100%;
+            height: 0;
+            padding-top: 100%;
+            object-fit: cover;
+            position: relative;
+        }
+
+        .card-img-top img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-sh {
+            box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.3) !important;
+        }
+
+        .text-ellipsis {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+
+    <div class="container-xl p-0">
+        <div class="card mt-4 card-sh">
+            <div class="card-body p-4 pb-2">
+                <h3 class="text-center mb-3">Blog của chúng tôi</h3>
                 <div class="row">
-                    <a th:href="@{'blogs/blog-id=' + ${blog.id}}" class="col-12 d-flex align-items-center mt-3" th:each="blog:${blogs}">
-                        <img th:src="@{'/img/news/' + ${blog.imageName}}" style="width: 100px; height: 100px; margin-right: 10px">
-                        <div>
-                            <h6 class="fw-semibold" th:utext="${blog.title}"></h6>
-                            <span style="color: #5A6A85" th:text="${blog.getDateFormatted()}"></span>
+                    <div class="p-2 col-md-4 col-6" th:each="blog:${blogs}">
+                        <div class="card card-sh p-0 overflow-hidden rounded-2 m-0">
+                            <a th:href="@{'blogs/blog-id=' + ${blog.id}}">
+                                <div class="position-relative card-img-top">
+                                    <img th:src="@{'/img/news/' + ${blog.imageName}}">
+                                </div>
+                                <div class="card-body p-2" style="height: 77.58px">
+                                    <h6 class="fw-semibold fs-4 text-ellipsis mb-1" th:utext="${blog.title}"></h6>
+                                    <span style="color: #5A6A85" th:text="${blog.getDateFormatted()}"></span>
+                                </div>
+                            </a>
                         </div>
-                    </a>
+                    </div>
                 </div>
+                <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-3" th:if="${blogs.size() > 0}">
+                    <ul class="pagination">
+                        <li class="page-item" th:unless="${isFirst}">
+                            <a class="page-link" th:href="@{'/blogs?trang=' + ${trang}}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li th:each="i:${#numbers.sequence(1, totalPages)}" class="page-item" th:classappend="${trang + 1 == i ? 'active':''}">
+                            <a class="page-link" th:href="@{'/blogs?trang=' + ${i}}">[[${i}]]</a>
+                        </li>
+                        <li class="page-item" th:unless="${isLast}">
+                            <a class="page-link" aria-label="Next" th:href="@{'/blogs?trang=' + ${trang + 2}}">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
-    <nav aria-label="Page navigation example" class="d-flex justify-content-center" th:if="${blogs.size() > 0}">
-        <ul class="pagination">
-            <li class="page-item" th:unless="${isFirst}">
-                <a class="page-link" th:href="@{'/blogs?trang=' + ${trang}}" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li th:each="i:${#numbers.sequence(1, totalPages)}" class="page-item" th:classappend="${trang + 1 == i ? 'active':''}">
-                <a class="page-link" th:href="@{'/blogs?trang=' + ${i}}">[[${i}]]</a>
-            </li>
-            <li class="page-item" th:unless="${isLast}">
-                <a class="page-link" aria-label="Next" th:href="@{'/blogs?trang=' + ${trang + 2}}">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
 </section>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>

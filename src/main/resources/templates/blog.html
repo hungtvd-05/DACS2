@@ -11,13 +11,29 @@
 </head>
 <body>
 <section>
+  <style>
+    .blog-content img {
+      max-width: 100%;
+      width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+    .blog-content table {
+      width: 100% !important;
+      max-width: 100%;
+      border-collapse: collapse;
+    }
+  </style>
   <div class="container-xl my-5">
     <div class="card">
       <div class="card-body">
         <div class="text-center">
           <b class="fs-8" th:text="${blog.title}"></b>
         </div>
-        <p th:utext="${blog.content}"></p>
+        <div class="blog-content">
+          <p th:utext="${blog.content}"></p>
+        </div>
       </div>
     </div>
   </div>

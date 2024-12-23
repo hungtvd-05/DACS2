@@ -10,4 +10,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findByLevel(Integer level);
 
     List<Comment> findByProductAndUser_Role(Product product, String userRole);
+
+    Comment findByParentComment(Comment parentComment);
 }

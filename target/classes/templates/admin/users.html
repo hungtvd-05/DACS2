@@ -10,7 +10,7 @@
 <section>
   <link rel="stylesheet" th:href="@{/css/table.css}">
 
-  <div class="container-fluid pb-4 content1">
+  <div class="container-fluid content1">
     <h4 class="text-center">Users</h4>
     <hr>
     <div class="mb-2">
@@ -48,8 +48,7 @@
       <table class="table table-bordered mb-4">
         <thead>
         <tr>
-          <th scope="col">STT</th>
-          <th scope="col">Profile</th>
+          <th scope="col">Ảnh</th>
           <th scope="col">Tên</th>
           <th scope="col">Email</th>
           <th scope="col">SĐT</th>
@@ -59,15 +58,18 @@
         </thead>
         <tbody class="danhsach">
         <tr th:each="u,c:${users}">
-          <td data-label="STT" scope="row" class="fs-5 dulieu">[[${c.count}]]</td>
-          <td data-label="Profile" class="fs-5">
+          <td data-label="Ảnh" class="fs-5">
             <img th:src="@{'/img/profile_img/'+${u.profileImage}}"
                  width="70px" height="70px">
           </td>
           <td data-label="Tên" th:utext="${u.getName()}" class="fs-5 ten dulieu"></td>
           <td data-label="Email" th:utext="${u.getEmail()}" class="fs-5 dulieu"></td>
           <td data-label="SĐT" th:utext="${u.getMobileNumber()}" class="fs-5 dulieu"></td>
-          <td data-label="Địa chỉ" th:utext="${u.getAddress() + ', ' + u.getCity()}" class="fs-5 dulieu"></td>
+          <td data-label="Địa chỉ"
+              th:if="${u.address == null || u.city == null}" class="fs-5 dulieu"></td>
+          <td data-label="Địa chỉ"
+              th:utext="${u.getAddress() + ', ' + u.getCity()}"
+              th:unless="${u.address == null || u.city == null}" class="fs-5 dulieu"></td>
           <td data-label="Trạng thái" class="fs-5 dulieu text-end">
             <span class="status" th:userId="${u.id}" th:text="${u.isEnable ? 'Bật' : 'Tắt'}"></span>
             <a href="javascript:void(0)"
