@@ -85,7 +85,9 @@
                 <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner" >
                         <div th:class="${iterStat.first ? 'carousel-item active' : 'carousel-item'}" th:each="slide, iterStat:${slides}">
-                            <img th:src="@{'/img/slider/' + ${slide.image}}" class="d-block w-100" alt="...">
+                            <a th:href="${slide.url}">
+                                <img th:src="@{'/img/slider/' + ${slide.image}}" class="d-block w-100" alt="...">
+                            </a>
                         </div>
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
@@ -137,6 +139,46 @@
                     <div class="text-center mt-4">
                         <a th:href="@{'/san-pham?danh-muc='+${category.name}}" class="category btn bg-dark text-light m-0">
                             Xem thêm sản phẩm dành cho [[${category.name}]]
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <div class="separator">
+                        <div class="line"></div>
+                        <a href="/san-pham?sap-xep=Sản%20phẩm%20bán%20chạy" class="category">
+                            <h2>Sản phẩm bán chạy</h2>
+                        </a>
+                        <div class="line"></div>
+                    </div>
+                    <div class="row px-2">
+                        <div class="col-lg-2 col-md-3 col-sm-3 col-6 card-style" th:each="product:${listProductTop}">
+                            <div class="card overflow-hidden rounded-2 m-0 card-sh">
+                                <a th:href="@{'/san-pham/san-pham-id=' + ${product.id}}">
+                                    <div class="position-relative card-img-top">
+                                        <img th:src="@{'/img/product_img/' + ${product.getArrayAnh()[0]}}" alt="...">
+                                    </div>
+                                    <div class="card-body p-2" style="height: 77.58px">
+                                        <h6 class="fw-semibold fs-4 text-ellipsis mb-1">[[${product.ten}]]</h6>
+                                        <div th:if="${product.sale > 0}">
+                                            <h6 class=" fs-3 mb-0">
+                                                <b>[[${product.getGiaSaleFormatted()}]]</b>
+                                                <span class="fs-2 p-1" style="color: orangered; background: #FFEDE0"><b>[[${product.sale}]]%</b></span>
+                                            </h6>
+                                            <span class="fw-normal text-muted fs-2"><del>[[${product.getGiaFormatted()}]]</del></span>
+                                        </div>
+                                        <div th:unless="${product.sale > 0}">
+                                            <h6 class="fs-3 mb-0">
+                                                <b>[[${product.getGiaSaleFormatted()}]]</b>
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-4">
+                        <a href="/san-pham?sap-xep=Sản%20phẩm%20bán%20chạy" class="category btn bg-dark text-light m-0">
+                            Xem thêm sản phẩm dành bán chạy
                         </a>
                     </div>
                 </div>

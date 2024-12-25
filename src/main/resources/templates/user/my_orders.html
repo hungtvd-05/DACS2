@@ -7,6 +7,9 @@
 </head>
 <body>
 <section>
+
+    <link rel="stylesheet" th:href="@{/css/table.css}">
+
     <div class="container-fluid mt-5">
         <div class="text-center">
             <h4>Đơn hàng của tôi</h4>
@@ -35,11 +38,15 @@
                     </thead>
                     <tbody class="danhsach">
                     <tr th:each="order:${orders}">
-                        <td scope="row" ><b>[[${order.orderId}]]</b></td>
-                        <td th:text="${order.getDateFormatted()}"></td>
+                        <td data-label="Mã đơn hàng" scope="row" ><b>[[${order.orderId}]]</b></td>
+                        <td data-label="Ngày tạo" th:text="${order.getDateFormatted()}"></td>
                         <td th:text="${order.getOrderName() + 'Tổng: ' + order.getTotalPriceFormatted()}" style="white-space: pre-wrap; word-wrap: break-word;"></td>
-                        <td><span class="orderStatus" th:data-order-id="${order.id}">[[${order.getStatus()}]]</span></td>
-                        <td>
+                        <td data-label="Trạng thái">
+                            <span th:text="@{'Kiểu thanh toán: ' + ${order.paymentType == 'ONLINE' ? 'Thanh toán bằng thẻ ngân hàng' : 'COD'}}"></span>
+                            <br>
+                            <span class="orderStatus" th:data-order-id="${order.id}">[[${order.getStatus()}]]</span>
+                        </td>
+                        <td class="text-end">
                             <a class="btn btn-sm btn-primary" th:href="@{'/user/xem-don-hang/id=' + ${order.getOrderId()}}">Xem chi tiết</a>
                             <th:block th:if="${order.status!='Đã hủy!' && order.status!='Đã vận chuyển thành công!'}">
                                 <button class="btn btn-sm btn-danger update-status-btn"

@@ -102,12 +102,13 @@ public class HomeController {
 
         HashMap<String, List<Product>> map = new HashMap<>();
         for (Category category : categorys) {
-            List<Product> products = productService.getProductByDanhMuc(category.getName()).reversed();
+            List<Product> products = productService.getProductByDanhMuc(category);
             map.put(category.getName(), products.subList(0, Math.min(products.size(), 12)));
         }
         m.addAttribute("mapProduct", map);
         m.addAttribute("slides", sliderService.getSliderList());
         m.addAttribute("blogs", newsService.getNewsByStyle("Blog").stream().limit(9).collect(Collectors.toList()));
+        m.addAttribute("listProductTop", productService.getProductTop());
         return "index";
     }
 
@@ -125,6 +126,10 @@ public class HomeController {
     public String product(Model m,
                           @RequestParam(value = "danh-muc", defaultValue = "") String danhMuc,
                           @RequestParam(value = "thuong-hieu", defaultValue = "") String thuongHieu,
+                          @RequestParam(value = "sap-xep", defaultValue = "") String sapxep,
+                          @RequestParam(value = "danh-gia", defaultValue = "") String danhGia,
+                          @RequestParam(value = "gia-thap-nhat", defaultValue = "") Double giaThapNhat,
+                          @RequestParam(value = "gia-cao-nhat", defaultValue = "") Double giaCaoNhat,
                           @RequestParam(name = "trang", defaultValue = "1") Integer pageNumber,
                           @RequestParam(name = "pageSize", defaultValue = "36") Integer pageSize) {
         m.addAttribute("searchCh", "");
@@ -132,8 +137,12 @@ public class HomeController {
         m.addAttribute("brands", brandService.getAllBrandIsActive());
         m.addAttribute("danhMuc", danhMuc.trim());
         m.addAttribute("thuongHieu", thuongHieu.trim());
+        m.addAttribute("sapXep", sapxep);
+        m.addAttribute("ratingChoice", danhGia);
+        m.addAttribute("giaThapNhat", giaThapNhat);
+        m.addAttribute("giaCaoNhat", giaCaoNhat);
         m.addAttribute("search", false);
-        Page<Product> page = productService.getAllProductsForHomePagination(pageNumber - 1, pageSize, danhMuc.trim(), thuongHieu.trim());
+        Page<Product> page = productService.getAllProductsForHomePagination(pageNumber - 1, pageSize, danhMuc.trim(), thuongHieu.trim(), sapxep, danhGia, giaThapNhat, giaCaoNhat);
         m.addAttribute("products", page.getContent());
         m.addAttribute("trang", page.getNumber());
         m.addAttribute("pageSize", pageSize);
@@ -281,6 +290,12 @@ public class HomeController {
 
     @GetMapping("/search")
     public String searchProduct(@RequestParam String ch, Model m,
+                                @RequestParam(value = "danh-muc", defaultValue = "") String danhMuc,
+                                @RequestParam(value = "thuong-hieu", defaultValue = "") String thuongHieu,
+                                @RequestParam(value = "sap-xep", defaultValue = "") String sapxep,
+                                @RequestParam(value = "danh-gia", defaultValue = "") String danhGia,
+                                @RequestParam(value = "gia-thap-nhat", defaultValue = "") Double giaThapNhat,
+                                @RequestParam(value = "gia-cao-nhat", defaultValue = "") Double giaCaoNhat,
                                 @RequestParam(name = "trang", defaultValue = "1") Integer pageNumber,
                                 @RequestParam(name = "pageSize", defaultValue = "36") Integer pageSize) {
 
@@ -289,15 +304,22 @@ public class HomeController {
         }
 
         m.addAttribute("categories", categoryService.getCategoryByIsActive());
+        m.addAttribute("brands", brandService.getAllBrandIsActive());
         m.addAttribute("paramValue", "");
         m.addAttribute("searchCh", ch.trim());
-        Page<Product> page = productService.searchProductPagination(pageNumber - 1, pageSize, ch.trim());
+        Page<Product> page = productService.searchProductPagination(pageNumber - 1, pageSize, ch.trim(), danhMuc, thuongHieu, sapxep, danhGia, giaThapNhat, giaCaoNhat);
         if (ObjectUtils.isEmpty(page.getContent())) {
             m.addAttribute("searchResult", false);
         } else {
             m.addAttribute("searchResult", true);
         }
         m.addAttribute("search", true);
+        m.addAttribute("danhMuc", danhMuc.trim());
+        m.addAttribute("thuongHieu", thuongHieu.trim());
+        m.addAttribute("sapXep", sapxep);
+        m.addAttribute("ratingChoice", danhGia);
+        m.addAttribute("giaThapNhat", giaThapNhat);
+        m.addAttribute("giaCaoNhat", giaCaoNhat);
         m.addAttribute("products", page.getContent());
         m.addAttribute("trang", page.getNumber());
         m.addAttribute("pageSize", pageSize);

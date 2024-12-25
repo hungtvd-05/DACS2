@@ -65,6 +65,8 @@
                         <td th:text="${order.orderName}" style="white-space: pre-wrap; word-wrap: break-word;"></td>
                         <td th:text="${order.getTotalPriceFormatted()}"></td>
                         <td>
+                            <span th:text="@{'Kiểu thanh toán: ' + ${order.paymentType == 'ONLINE' ? 'Thanh toán bằng thẻ ngân hàng' : 'COD'}}"></span>
+                            <br>
                             <span class="orderStatus" th:data-order-id="${order.id}">[[${order.getStatus()}]]</span>
                             <select class="custom-select form-control" name="st" th:data-order-id="${order.id}">
                                 <option value="1">Đơn hàng đang được xử lí!</option>

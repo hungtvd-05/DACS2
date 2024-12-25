@@ -167,6 +167,15 @@ public class ApiController {
         return result;
     }
 
+    @GetMapping("/getTotalPriceByUsers")
+    public Map<String, Object> getTotalPriceByUsers() {
+        Map<String, Object> result = new HashMap<>();
+        result.put("getUsersTop", orderRepository.getUsersTop());
+        result.put("sumTotalPriceByUsers", orderRepository.sumTotalPriceByUsers());
+
+        return result;
+    }
+
     @GetMapping("/update-order-status")
     public Map<String, Object> updateOrderStatus(@RequestParam Integer id, @RequestParam Integer st) throws MessagingException, UnsupportedEncodingException {
         OrderStatus[] values = OrderStatus.values();

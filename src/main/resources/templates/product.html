@@ -51,7 +51,7 @@
                     col-md-8 offset-md-2">
                     <form action="search" method="get">
                         <div class="input-group">
-                            <input type="text" class="form-control" name="ch" th:value="${searchCh}" placeholder="Tìm kiếm sản phẩm">
+                            <input type="text" class="form-control" name="ch" id="search-input" th:value="${searchCh}" placeholder="Tìm kiếm sản phẩm">
                             <button class="btn btn-light text-dark col-md-2" ><i class="fa-solid fa-magnifying-glass"></i></button>
                         </div>
                     </form>
@@ -63,23 +63,53 @@
             <div class="card card-sh">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-6 d-flex align-items-center">
-                            <label class="mb-0 me-2" style="white-space: nowrap;">Danh mục</label>
-                            <select class="form-control" id="categorySelect" onchange="updateLocation();">
-                                <option value="">Tất cả</option>
+                        <div class="col-6 d-flex align-items-center p-2">
+                            <select class="form-control" id="categorySelect">
+                                <option value="">Danh mục</option>
                                 <option th:each="c : ${categories}"
                                         th:value="${c.name}"
                                         th:selected="${danhMuc == c.name}">[[${c.name}]]</option>
                             </select>
                         </div>
-                        <div class="col-6 d-flex align-items-center">
-                            <label class="mb-0 me-2" style="white-space: nowrap;">Thương hiệu</label>
-                            <select class="form-control" id="brandSelect" onchange="updateLocation();">
-                                <option value="">Tất cả</option>
+                        <div class="col-6 d-flex align-items-center p-2">
+                            <select class="form-control" id="brandSelect">
+                                <option value="">Thương hiệu</option>
                                 <option th:each="b : ${brands}"
                                         th:value="${b.name}"
                                         th:selected="${thuongHieu == b.name}">[[${b.name}]]</option>
                             </select>
+                        </div>
+                        <div class="col-6 d-flex align-items-center p-2">
+                            <select class="form-control" id="sortSelect">
+                                <option th:selected="${sapXep == ''}" value="">Sắp xếp</option>
+                                <option th:selected="${sapXep == 'Từ A->Z'}" value="Từ A->Z">Từ A->Z</option>
+                                <option th:selected="${sapXep == 'Từ Z->A'}" value="Từ Z->A">Từ Z->A</option>
+                                <option th:selected="${sapXep == 'Sản phẩm mới'}" value="Sản phẩm mới">Sản phẩm mới</option>
+                                <option th:selected="${sapXep == 'Sản phẩm cũ'}" value="Sản phẩm cũ">Sản phẩm cũ</option>
+                                <option th:selected="${sapXep == 'Sản phẩm bán chạy'}" value="Sản phẩm bán chạy">Sản phẩm bán chạy</option>
+                            </select>
+                        </div>
+                        <div class="col-6 d-flex align-items-center p-2">
+                            <select class="form-control" id="ratingSelect">
+                                <option th:selected="${ratingChoice == ''}" value="">Đánh giá</option>
+                                <option th:selected="${ratingChoice == 'Từ 1 sao'}" value="Từ 1 sao">Từ 1 sao</option>
+                                <option th:selected="${ratingChoice == 'Từ 2 sao'}" value="Từ 2 sao">Từ 2 sao</option>
+                                <option th:selected="${ratingChoice == 'Từ 3 sao'}" value="Từ 3 sao">Từ 3 sao</option>
+                                <option th:selected="${ratingChoice == 'Từ 4 sao'}" value="Từ 4 sao">Từ 4 sao</option>
+                                <option th:selected="${ratingChoice == 'Từ 5 sao'}" value="Từ 5 sao">Từ 5 sao</option>
+                            </select>
+                        </div>
+                        <div class="col-6 d-flex align-items-center p-2">
+                            <input type="number" min="0" class="form-control" id="minPrice" th:value="${giaThapNhat}" placeholder="Giá thấp nhất">
+                        </div>
+                        <div class="col-6 d-flex align-items-center p-2">
+                            <input type="number" min="0" class="form-control" id="maxPrice" th:value="${giaCaoNhat}" placeholder="Giá cao nhất">
+                        </div>
+                        <div class="col-6 d-flex align-items-center p-2">
+                            <button onclick="updateLocation()" class="btn btn-success text-light form-control">Lọc</button>
+                        </div>
+                        <div class="col-6 d-flex align-items-center p-2">
+                            <a href="san-pham" class="btn btn-danger text-light form-control">Xóa lọc</a>
                         </div>
                     </div>
                 </div>
@@ -119,29 +149,47 @@
             <ul class="pagination">
                 <li class="page-item" th:unless="${isFirst}">
                     <a class="page-link"
-                       th:if="${danhMuc == '' && thuongHieu == ''}"
+                       th:if="${danhMuc == '' && thuongHieu == '' && sapXep == '' && ratingChoice == '' && giaThapNhat == null && giaCaoNhat == null}"
                        th:href="@{'/san-pham?trang=' + ${trang}}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                     <a class="page-link"
-                       th:unless="${danhMuc == '' && thuongHieu == ''}"
-                       th:href="@{'/san-pham?danh-muc=' + ${danhMuc} + '&' + 'thuong-hieu=' + ${thuongHieu} + '&trang=' + ${trang}}" aria-label="Previous">
+                       th:unless="${danhMuc == '' && thuongHieu == '' && sapXep == '' && ratingChoice == '' && giaThapNhat == null && giaCaoNhat == null}"
+                       th:href="@{'/san-pham?danh-muc=' + ${danhMuc} +
+                       '&' + 'thuong-hieu=' + ${thuongHieu} +
+                       '&danh-gia=' + ${ratingChoice} +
+                       '&gia-thap-nhat=' + ${giaThapNhat != null ? giaThapNhat : ''} +
+                       '&gia-cao-nhat=' + ${giaCaoNhat != null ? giaCaoNhat : ''} +
+                       '&sap-xep=' + ${sapXep} +
+                       '&trang=' + ${trang}}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
                 <li th:each="i:${#numbers.sequence(1, totalPages)}" class="page-item" th:classappend="${trang + 1 == i ? 'active':''}">
                     <a class="page-link"
-                       th:unless="${danhMuc == '' && thuongHieu == ''}"
-                       th:href="@{'/san-pham?danh-muc=' + ${danhMuc} + '&' + 'thuong-hieu=' + ${thuongHieu} + '&' + 'trang=' + ${i}}">[[${i}]]</a>
-                    <a class="page-link" th:if="${danhMuc == '' && thuongHieu == ''}" th:href="@{'/san-pham?trang=' + ${i}}">[[${i}]]</a>
+                       th:unless="${danhMuc == '' && thuongHieu == '' && sapXep == '' && ratingChoice == '' && giaThapNhat == null && giaCaoNhat == null}"
+                       th:href="@{'/san-pham?danh-muc=' + ${danhMuc} +
+                       '&' + 'thuong-hieu=' + ${thuongHieu} +
+                       '&danh-gia=' + ${ratingChoice} +
+                       '&gia-thap-nhat=' + ${giaThapNhat != null ? giaThapNhat : ''} +
+                       '&gia-cao-nhat=' + ${giaCaoNhat != null ? giaCaoNhat : ''} +
+                       '&sap-xep=' + ${sapXep} +
+                       '&' + 'trang=' + ${i}}">[[${i}]]</a>
+                    <a class="page-link" th:if="${danhMuc == '' && thuongHieu == '' && sapXep == '' && ratingChoice == '' && giaThapNhat == null && giaCaoNhat == null}" th:href="@{'/san-pham?trang=' + ${i}}">[[${i}]]</a>
                 </li>
                 <li class="page-item" th:unless="${isLast}">
-                    <a class="page-link" aria-label="Next" th:if="${danhMuc == '' && thuongHieu == ''}" th:href="@{'/san-pham?trang=' + ${trang + 2}}">
+                    <a class="page-link" aria-label="Next" th:if="${danhMuc == '' && thuongHieu == '' && sapXep == '' && ratingChoice == '' && giaThapNhat == null && giaCaoNhat == null}" th:href="@{'/san-pham?trang=' + ${trang + 2}}">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                     <a class="page-link" aria-label="Next"
-                       th:unless="${danhMuc == '' && thuongHieu == ''}"
-                       th:href="@{'/san-pham?danh-muc=' + ${danhMuc} + '&' + 'thuong-hieu=' + ${thuongHieu} + '&trang=' + ${trang + 2}}">
+                       th:unless="${danhMuc == '' && thuongHieu == '' && sapXep == '' && ratingChoice == '' && giaThapNhat == null && giaCaoNhat == null}"
+                       th:href="@{'/san-pham?danh-muc=' + ${danhMuc} +
+                       '&' + 'thuong-hieu=' + ${thuongHieu} +
+                       '&danh-gia=' + ${ratingChoice} +
+                       '&gia-thap-nhat=' + ${giaThapNhat != null ? giaThapNhat : ''} +
+                       '&gia-cao-nhat=' + ${giaCaoNhat != null ? giaCaoNhat : ''} +
+                       '&sap-xep=' + ${sapXep} +
+                       '&trang=' + ${trang + 2}}">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
@@ -150,15 +198,49 @@
         <nav aria-label="Page navigation example" class="d-flex justify-content-center mb-3" th:if="${search == true && searchResult == true && products.size() > 0}">
             <ul class="pagination">
                 <li class="page-item" th:unless="${isFirst}">
-                    <a class="page-link" th:href="@{'/search?ch=' + ${searchCh} + '&trang=' + ${trang}}" aria-label="Previous">
+                    <a class="page-link" th:if="${danhMuc == '' && thuongHieu == '' && sapXep == '' && ratingChoice == '' && giaThapNhat == null && giaCaoNhat == null}"
+                       th:href="@{'/search?ch=' + ${searchCh} + '&trang=' + ${trang}}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                    <a class="page-link" th:unless="${danhMuc == '' && thuongHieu == '' && sapXep == '' && ratingChoice == '' && giaThapNhat == null && giaCaoNhat == null}"
+                       th:href="@{'/search?ch=' + ${searchCh} +
+                       '&danh-muc=' + ${danhMuc} +
+                       '&' + 'thuong-hieu=' + ${thuongHieu} +
+                       '&danh-gia=' + ${ratingChoice} +
+                       '&gia-thap-nhat=' + ${giaThapNhat != null ? giaThapNhat : ''} +
+                       '&gia-cao-nhat=' + ${giaCaoNhat != null ? giaCaoNhat : ''} +
+                       '&sap-xep=' + ${sapXep} +
+                       '&trang=' + ${trang}}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
                 <li th:each="i:${#numbers.sequence(1, totalPages)}" class="page-item" th:classappend="${trang + 1 == i ? 'active':''}">
-                    <a class="page-link" th:href="@{'/search?ch=' + ${searchCh} + '&' + 'trang=' + ${i}}">[[${i}]]</a>
+                    <a class="page-link" th:if="${danhMuc == '' && thuongHieu == '' && sapXep == '' && ratingChoice == '' && giaThapNhat == null && giaCaoNhat == null}"
+                       th:href="@{'/search?ch=' + ${searchCh} + '&' + 'trang=' + ${i}}">[[${i}]]</a>
+                    <a class="page-link" th:unless="${danhMuc == '' && thuongHieu == '' && sapXep == '' && ratingChoice == '' && giaThapNhat == null && giaCaoNhat == null}"
+                       th:href="@{'/search?ch=' + ${searchCh} +
+                       '&danh-muc=' + ${danhMuc} +
+                       '&' + 'thuong-hieu=' + ${thuongHieu} +
+                       '&danh-gia=' + ${ratingChoice} +
+                       '&gia-thap-nhat=' + ${giaThapNhat != null ? giaThapNhat : ''} +
+                       '&gia-cao-nhat=' + ${giaCaoNhat != null ? giaCaoNhat : ''} +
+                       '&sap-xep=' + ${sapXep}  +
+                       '&trang=' + ${i}}">[[${i}]]</a>
                 </li>
                 <li class="page-item" th:unless="${isLast}">
-                    <a class="page-link" aria-label="Next" th:href="@{'/search?ch=' + ${searchCh} + '&trang=' + ${trang + 2}}">
+                    <a class="page-link" th:if="${danhMuc == '' && thuongHieu == '' && sapXep == '' && ratingChoice == '' && giaThapNhat == null && giaCaoNhat == null}" aria-label="Next"
+                       th:href="@{'/search?ch=' + ${searchCh} + '&trang=' + ${trang + 2}}">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                    <a class="page-link" th:unless="${danhMuc == '' && thuongHieu == '' && sapXep == '' && ratingChoice == '' && giaThapNhat == null && giaCaoNhat == null}" aria-label="Next"
+                       th:href="@{'/search?ch=' + ${searchCh} +
+                       '&danh-muc=' + ${danhMuc} +
+                       '&' + 'thuong-hieu=' + ${thuongHieu} +
+                       '&danh-gia=' + ${ratingChoice} +
+                       '&gia-thap-nhat=' + ${giaThapNhat != null ? giaThapNhat : ''} +
+                       '&gia-cao-nhat=' + ${giaCaoNhat != null ? giaCaoNhat : ''} +
+                       '&sap-xep=' + ${sapXep} +
+                       '&trang=' + ${trang + 2}}">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
@@ -169,8 +251,27 @@
             function updateLocation() {
                 var category = document.getElementById('categorySelect').value;
                 var brand = document.getElementById('brandSelect').value;
+                var sort = document.getElementById('sortSelect').value;
+                var search = document.getElementById('search-input').value;
+                var ratingChoice = document.getElementById('ratingSelect').value;
+                var minPrice = document.getElementById('minPrice').value;
+                var maxPrice = document.getElementById('maxPrice').value;
 
-                var newUrl = '/san-pham?danh-muc=' + category + '&' + 'thuong-hieu=' + brand;
+                var newUrl = '';
+
+                if (search) {
+                    if (category === '' && brand === '' && sort === '' && minPrice === '' && maxPrice === '' && ratingChoice === '') {
+                        newUrl = '/search?ch=' + search;
+                    } else {
+                        newUrl = '/search?ch=' + search + '&' + 'danh-muc=' + category + '&' + 'thuong-hieu=' + brand + '&' + 'danh-gia=' + ratingChoice + '&' + 'gia-thap-nhat=' + minPrice + '&' + 'gia-cao-nhat=' + maxPrice + '&' + 'sap-xep=' + sort;
+                    }
+                } else {
+                    if (category === '' && brand === '' && sort === '' && minPrice === '' && maxPrice === '' && ratingChoice === '') {
+                        newUrl = '/san-pham';
+                    } else {
+                        newUrl += '/san-pham?danh-muc=' + category + '&' + 'thuong-hieu=' + brand + '&' + 'danh-gia=' + ratingChoice + '&' + 'gia-thap-nhat=' + minPrice + '&' + 'gia-cao-nhat=' + maxPrice + '&' + 'sap-xep=' + sort;
+                    }
+                }
 
                 window.location.href = newUrl;
             }

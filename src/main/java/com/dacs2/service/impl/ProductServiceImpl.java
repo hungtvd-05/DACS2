@@ -1,29 +1,26 @@
 package com.dacs2.service.impl;
 
+import com.dacs2.model.Category;
 import com.dacs2.model.Product;
 import com.dacs2.repository.CartRepository;
-import com.dacs2.repository.CategoryRepository;
 import com.dacs2.repository.ProductRepository;
 import com.dacs2.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductRepository productRepository;
-
-    @Autowired
-    private CategoryRepository categoryRepository;
 
     @Autowired
     private CartRepository cartRepository;
@@ -51,8 +48,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getProductByDanhMuc(String danhmuc) {
-        return productRepository.findByDanhmucAndTrangthai(categoryRepository.findByName(danhmuc), true);
+    public List<Product> getProductByDanhMuc(Category danhmuc) {
+        return productRepository.findByDanhmucAndBrand_StatusTrueAndTrangthaiTrueOrderByIdDesc(danhmuc);
     }
 
     public static Integer convertToNumber(String str) {
@@ -64,47 +61,79 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> searchProdcutOnAdmin(Integer pageNumber, Integer pageSize, String ch) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "id"));
-        return productRepository.findByKeywordForAdmin(pageable, convertToNumber(ch), ch);
+    public Page<Product> searchProdcutOnAdmin(Integer pageNumber, Integer pageSize, String ch, String sapxep) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return productRepository.findByKeywordForAdmin(pageable, convertToNumber(ch), ch, sapxep);
     }
 
     @Override
-    public Page<Product> getAllProductsForHomePagination(Integer pageNumber, Integer pageSize, String danhmuc, String thuonghieu) {
+    public Page<Product> getAllProductsForHomePagination(Integer pageNumber, Integer pageSize, String danhmuc, String thuonghieu, String sapxep, String danhGia, Double minPrice, Double maxPrice) {
 
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "id"));
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
 
-        if (!ObjectUtils.isEmpty(danhmuc) && !ObjectUtils.isEmpty(thuonghieu)) {
-            return productRepository.findByDanhmuc_NameAndBrand_NameAndTrangthaiTrue(pageable, danhmuc, thuonghieu);
-        } else if (!ObjectUtils.isEmpty(danhmuc)) {
-            return productRepository.findByDanhmuc_NameAndTrangthaiTrue(pageable, danhmuc);
-        } else if (!ObjectUtils.isEmpty(thuonghieu)) {
-            return productRepository.findByBrand_NameAndTrangthaiTrue(pageable, thuonghieu);
-        } else {
-            return productRepository.findByDanhmuc_IsActiveTrueAndBrand_StatusTrueAndTrangthaiTrue(pageable);
+        Integer rating = 0;
+
+        switch (danhGia) {
+            case "Từ 1 sao":
+                rating = 1;
+                break;
+            case "Từ 2 sao":
+                rating = 2;
+                break;
+            case "Từ 3 sao":
+                rating = 3;
+                break;
+            case "Từ 4 sao":
+                rating = 4;
+                break;
+            case "Từ 5 sao":
+                rating = 5;
+                break;
         }
+
+        return productRepository.findProductsForHome(pageable, danhmuc, thuonghieu, rating, sapxep, minPrice, maxPrice);
     }
 
     @Override
-    public Page<Product> searchProductPagination(Integer pageNumber, Integer pageSize, String ch) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "id"));
-        Page<Product> pageProduct = null;
-        if (ObjectUtils.isEmpty(ch)) {
-            pageProduct = productRepository.findByDanhmuc_IsActiveTrueAndTrangthaiTrue(pageable);
-        } else {
-            pageProduct = productRepository.findByKeywordForHome(pageable, ch);
+    public Page<Product> searchProductPagination(Integer pageNumber, Integer pageSize, String ch, String danhmuc, String thuonghieu, String sapxep, String danhGia, Double minPrice, Double maxPrice) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Integer rating = 0;
+
+        switch (danhGia) {
+            case "Từ 1 sao":
+                rating = 1;
+                break;
+            case "Từ 2 sao":
+                rating = 2;
+                break;
+            case "Từ 3 sao":
+                rating = 3;
+                break;
+            case "Từ 4 sao":
+                rating = 4;
+                break;
+            case "Từ 5 sao":
+                rating = 5;
+                break;
         }
-        return pageProduct;
+
+        return productRepository.findByKeywordForHome(pageable, ch, danhmuc, thuonghieu, rating, sapxep, minPrice, maxPrice);
     }
 
     @Override
-    public Page<Product> getAllProductsPagination(Integer pageNumber, Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "id"));
-        return productRepository.findAll(pageable);
+    public Page<Product> getAllProductsPagination(Integer pageNumber, Integer pageSize, String sapxep) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+        return productRepository.findProductsForAdmin(pageable, "", "", 0, sapxep, null, null);
     }
 
     @Override
     public List<Product> getProductForView(Integer id) {
         return productRepository.getProductForView(id);
+    }
+
+    @Override
+    public List<Product> getProductTop() {
+        return productRepository.findByDanhmuc_IsActiveTrueAndBrand_StatusTrueAndTrangthaiTrueOrderBySoluongDaBanDesc().stream().limit(6).collect(Collectors.toList());
     }
 }

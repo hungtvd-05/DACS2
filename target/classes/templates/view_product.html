@@ -244,6 +244,10 @@
           <br> Thương hiệu: <a th:href="@{'/san-pham?thuong-hieu=' + ${brand.name}}"
                             class="text-black text-decoration-none">[[${brand.name}]]</a>
 
+          <span th:if="${product.soluongDaBan > 0}">
+            <br>Đã bán <b th:text="${product.soluongDaBan}" class="text-black"></b>
+          </span>
+
           <br> Chính sách: Đổi trả miễn phí trong 7 ngày
         </p>
 

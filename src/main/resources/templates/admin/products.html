@@ -29,14 +29,28 @@
       <form action="/admin/search-san-pham" method="get">
         <div class="row">
           <div class="col">
-            <input type="text" class="form-control " name="ch" placeholder="Nhập id, tên, danh mục sản phẩm" th:value="${searchProduct}">
+            <input type="text" class="form-control " name="ch" id="search-input" placeholder="Nhập id, tên, danh mục sản phẩm" th:value="${searchProduct}">
           </div>
-          <div class="col p-0 inline">
+          <div class="col p-0">
             <button class="btn btn-primary col mb-2">Tìm kiếm</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <select class="form-control" id="sortSelect" onchange="updateLocation();">
+              <option th:selected="${sapXep == ''}" value="">Sắp xếp</option>
+              <option th:selected="${sapXep == 'Từ A->Z'}" value="Từ A->Z">Từ A->Z</option>
+              <option th:selected="${sapXep == 'Từ Z->A'}" value="Từ Z->A">Từ Z->A</option>
+              <option th:selected="${sapXep == 'Sản phẩm mới'}" value="Sản phẩm mới">Sản phẩm mới</option>
+              <option th:selected="${sapXep == 'Sản phẩm cũ'}" value="Sản phẩm cũ">Sản phẩm cũ</option>
+              <option th:selected="${sapXep == 'Sản phẩm bán chạy'}" value="Sản phẩm bán chạy">Sản phẩm bán chạy</option>
+            </select>
+          </div>
+          <div class="col p-0">
             <a href="/admin/them-san-pham" class="btn btn-success col mb-2">Thêm sản phẩm</a>
           </div>
-
         </div>
+
       </form>
     </div>
     <input type="hidden" th:value="${searchProduct}" id="searchProduct" name="searchProduct">
@@ -100,15 +114,22 @@
       <nav aria-label="Page navigation example" class="d-flex justify-content-center" th:if="${search == false}">
         <ul class="pagination">
           <li class="page-item" th:unless="${isFirst}">
-            <a class="page-link" th:href="@{'/admin/san-pham?trang=' + ${trang}}" aria-label="Previous">
+            <a class="page-link" th:if="${sapXep == ''}" th:href="@{'/admin/san-pham?trang=' + ${trang}}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+            <a class="page-link" th:unless="${sapXep == ''}" th:href="@{'/admin/san-pham?sap-xep=' + ${sapXep} + '&trang=' + ${trang}}" aria-label="Previous">
               <span aria-hidden="true">&laquo;</span>
             </a>
           </li>
           <li th:each="i:${#numbers.sequence(1, totalPages)}" class="page-item" th:classappend="${trang + 1 == i ? 'active':''}">
-            <a class="page-link" th:href="@{'/admin/san-pham?trang=' + ${i}}">[[${i}]]</a>
+            <a class="page-link" th:if="${sapXep == ''}" th:href="@{'/admin/san-pham?trang=' + ${i}}">[[${i}]]</a>
+            <a class="page-link" th:unless="${sapXep == ''}" th:href="@{'/admin/san-pham?sap-xep=' + ${sapXep} + '&trang=' + ${i}}">[[${i}]]</a>
           </li>
           <li class="page-item" th:unless="${isLast}">
-            <a class="page-link" aria-label="Next" th:href="@{'/admin/san-pham?trang=' + ${trang + 2}}">
+            <a class="page-link" th:if="${sapXep == ''}" aria-label="Next" th:href="@{'/admin/san-pham?trang=' + ${trang + 2}}">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+            <a class="page-link" th:unless="${sapXep == ''}" aria-label="Next" th:href="@{'/admin/san-pham?sap-xep=' + ${sapXep} + '&trang=' + ${trang + 2}}">
               <span aria-hidden="true">&raquo;</span>
             </a>
           </li>
@@ -117,15 +138,22 @@
       <nav aria-label="Page navigation example" class="d-flex justify-content-center" th:if="${search == true}">
         <ul class="pagination">
           <li class="page-item" th:unless="${isFirst}">
-            <a class="page-link" th:href="@{'/admin/search-san-pham?ch=' + ${searchProduct} + '&trang=' + ${trang}}" aria-label="Previous">
+            <a class="page-link" th:if="${sapXep == ''}" th:href="@{'/admin/search-san-pham?ch=' + ${searchProduct} + '&trang=' + ${trang}}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+            <a class="page-link" th:unless="${sapXep == ''}" th:href="@{'/admin/search-san-pham?ch=' + ${searchProduct} + '&sap-xep=' + ${sapXep} + '&trang=' + ${trang}}" aria-label="Previous">
               <span aria-hidden="true">&laquo;</span>
             </a>
           </li>
           <li th:each="i:${#numbers.sequence(1, totalPages)}" class="page-item" th:classappend="${trang + 1 == i ? 'active':''}">
-            <a class="page-link" th:href="@{'/admin/search-san-pham?ch=' + ${searchProduct} + '&trang=' + ${i}}">[[${i}]]</a>
+            <a class="page-link" th:if="${sapXep == ''}" th:href="@{'/admin/search-san-pham?ch=' + ${searchProduct} + '&trang=' + ${i}}">[[${i}]]</a>
+            <a class="page-link" th:unless="${sapXep == ''}" th:href="@{'/admin/search-san-pham?ch=' + ${searchProduct} + '&sap-xep=' + ${sapXep} + '&trang=' + ${i}}">[[${i}]]</a>
           </li>
           <li class="page-item" th:unless="${isLast}">
-            <a class="page-link" aria-label="Next" th:href="@{'/admin/search-san-pham?ch=' + ${searchProduct} + '&trang=' + ${trang + 2}}">
+            <a class="page-link" th:if="${sapXep == ''}" aria-label="Next" th:href="@{'/admin/search-san-pham?ch=' + ${searchProduct} + '&trang=' + ${trang + 2}}">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+            <a class="page-link" th:unless="${sapXep == ''}" aria-label="Next" th:href="@{'/admin/search-san-pham?ch=' + ${searchProduct} + '&sap-xep=' + ${sapXep} + '&trang=' + ${trang + 2}}">
               <span aria-hidden="true">&raquo;</span>
             </a>
           </li>
@@ -133,6 +161,31 @@
       </nav>
 
       <script>
+
+        function updateLocation() {
+          var sort = document.getElementById('sortSelect').value;
+          var search = document.getElementById('search-input').value;
+
+          var newUrl = '';
+
+          if (search) {
+            if (category === '' && brand === '' && sort === '' && minPrice === '' && maxPrice === '' && ratingChoice === '') {
+              newUrl = '/admin/search-san-pham?ch=' + search;
+            } else {
+              newUrl = '/admin/search-san-pham?ch=' + search + '&' + 'danh-muc=' + category + '&' + 'thuong-hieu=' + brand + '&' + 'danh-gia=' + ratingChoice + '&' + 'gia-thap-nhat=' + minPrice + '&' + 'gia-cao-nhat=' + maxPrice + '&' + 'sap-xep=' + sort;
+            }
+          } else {
+            if (category === '' && brand === '' && sort === '' && minPrice === '' && maxPrice === '' && ratingChoice === '') {
+              newUrl = '/admin/san-pham';
+            } else {
+              newUrl += '/admin/san-pham?danh-muc=' + category + '&' + 'thuong-hieu=' + brand + '&' + 'danh-gia=' + ratingChoice + '&' + 'gia-thap-nhat=' + minPrice + '&' + 'gia-cao-nhat=' + maxPrice + '&' + 'sap-xep=' + sort;
+            }
+          }
+
+
+          window.location.href = newUrl;
+        }
+
         $(document).ready(function() {
 
           $('.delete-btn').click(function() {

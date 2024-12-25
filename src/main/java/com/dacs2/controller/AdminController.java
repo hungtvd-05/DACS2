@@ -239,10 +239,12 @@ public class AdminController {
     @GetMapping("/san-pham")
     public String loadViewProduct(Model m,
                                   @RequestParam(name = "trang", defaultValue = "1") Integer pageNumber,
+                                  @RequestParam(value = "sap-xep", defaultValue = "") String sapxep,
                                   @RequestParam(name = "pageSize", defaultValue = "40") Integer pageSize) {
-        Page<Product> page = productService.getAllProductsPagination(pageNumber - 1, pageSize);
+        Page<Product> page = productService.getAllProductsPagination(pageNumber - 1, pageSize, sapxep);
         m.addAttribute("search", false);
         m.addAttribute("products", page.getContent());
+        m.addAttribute("sapXep", sapxep);
         m.addAttribute("trang", page.getNumber());
         m.addAttribute("pageSize", pageSize);
         m.addAttribute("totalElements", page.getTotalElements());
@@ -462,13 +464,14 @@ public class AdminController {
 
     @GetMapping("/search-san-pham")
     public String searchProduct(@RequestParam String ch, Model m,
+                                @RequestParam(value = "sap-xep", defaultValue = "") String sapxep,
                                 @RequestParam(name = "trang", defaultValue = "1") Integer pageNumber,
                                 @RequestParam(name = "pageSize", defaultValue = "40") Integer pageSize) {
         if (ch.trim().isEmpty()) {
             return "redirect:/admin/san-pham";
         }
-        Page<Product> page = productService.searchProdcutOnAdmin(pageNumber - 1, pageSize, ch.trim());
-
+        Page<Product> page = productService.searchProdcutOnAdmin(pageNumber - 1, pageSize, ch.trim(), sapxep);
+        m.addAttribute("sapXep", sapxep);
         m.addAttribute("search", true);
         m.addAttribute("products", page.getContent());
         m.addAttribute("searchProduct", ch);

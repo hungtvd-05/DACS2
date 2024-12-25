@@ -124,6 +124,16 @@
             <div id="productsChart"></div>
           </div>
         </div>
+        <div class="card w-100">
+          <div class="card-body">
+            <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+              <div class="mb-3 mb-sm-0">
+                <h5 class="card-title fw-semibold">Doanh thu theo người dùng</h5>
+              </div>
+            </div>
+            <div id="usersChart"></div>
+          </div>
+        </div>
       </div>
 
       <script>
@@ -586,11 +596,8 @@
             plotOptions: {
               bar: {
                 horizontal: true,
-                // columnWidth: "35%",
-                // borderRadius: [6],
                 borderRadius: 4,
                 borderRadiusApplication: 'end',
-                // borderRadiusWhenStacked: 'all'
               },
             },
             markers: { size: 0 },
@@ -625,7 +632,6 @@
               show: true,
               min: 0,
               tickAmount: 4,
-              // max: 7,
               labels: {
                 style: {
                   cssClass: "grey--text lighten-2--text fill-color",
@@ -647,13 +653,6 @@
 
             tooltip: {
               theme: 'light',
-              // x: {
-              //     title: {
-              //         formatter: function() {
-              //             return 'Doanh thu:';
-              //         }
-              //     }
-              // },
               y: {
                 formatter: function(val) {
                   return new Intl.NumberFormat('vi-VN', {
@@ -696,14 +695,6 @@
                     xaxis: {
                       categories: response.productNames
                     },
-                    // xaxis: {
-                    //     min: 0,
-                    //     labels: {
-                    //         formatter: function(val) {
-                    //             return Math.floor(val);
-                    //         }
-                    //     }
-                    // }
                   });
 
                   productsChartRender.updateSeries([
@@ -726,6 +717,152 @@
           }
 
           loadProductsData();
+
+
+          var usersChart = {
+            series: [
+              { name: "Doanh thu", data: [] }
+            ],
+
+            chart: {
+              type: "bar",
+              height: 345,
+              offsetX: -15,
+              toolbar: { show: true },
+              foreColor: "#adb0bb",
+              fontFamily: 'inherit',
+              sparkline: { enabled: false },
+            },
+
+
+            colors: ["#5D87FF", "#49BEFF"],
+
+
+            plotOptions: {
+              bar: {
+                horizontal: true,
+                borderRadius: 4,
+                borderRadiusApplication: 'end',
+              },
+            },
+            markers: { size: 0 },
+
+            dataLabels: {
+              enabled: false,
+            },
+
+
+            legend: {
+              show: false,
+            },
+
+
+            grid: {
+              borderColor: "rgba(0,0,0,0.1)",
+              strokeDashArray: 3,
+              yaxis: {
+                lines: {
+                  show: false,
+                },
+              }
+            },
+            xaxis: {
+              type: "category",
+              categories: [],
+              labels: {
+                style: { cssClass: "grey--text lighten-2--text fill-color" },
+              },
+            },
+            yaxis: {
+              show: true,
+              min: 0,
+              tickAmount: 4,
+              labels: {
+                style: {
+                  cssClass: "grey--text lighten-2--text fill-color",
+                },
+              },
+            },
+
+
+
+            stroke: {
+              show: true,
+              width: 3,
+              lineCap: "butt",
+              colors: ["transparent"],
+            },
+
+
+            tooltip: { theme: "light" },
+
+            tooltip: {
+              theme: 'light',
+              y: {
+                formatter: function(val) {
+                  return new Intl.NumberFormat('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND'
+                  }).format(val);
+                }
+              }
+            },
+
+            responsive: [
+              {
+                breakpoint: 600,
+                options: {
+                  plotOptions: {
+                    bar: {
+                      borderRadius: 3,
+                    }
+                  },
+                }
+              }
+            ]
+
+
+          };
+
+          var usersChartRender = new ApexCharts(document.querySelector("#usersChart"), usersChart);
+          usersChartRender.render();
+
+          function loadUsersData() {
+            $("#usersChart").addClass("loading");
+
+            $.ajax({
+              url: '/api/getTotalPriceByUsers',
+              method: 'GET',
+              success: function(response) {
+                if (response && response.getUsersTop && response.sumTotalPriceByUsers) {
+                  usersChartRender.updateOptions({
+
+                    xaxis: {
+                      categories: response.getUsersTop
+                    },
+                  });
+
+                  usersChartRender.updateSeries([
+                    {
+                      name: "Doanh thu",
+                      data: response.sumTotalPriceByUsers
+                    },
+                  ]);
+                }
+
+              },
+              error: function(xhr, status, error) {
+                console.error('Error loading revenue data:', error);
+                $("#error-message").show().text('Không thể tải dữ liệu. Vui lòng thử lại sau.');
+              },
+              complete: function() {
+                $("#usersChart").removeClass("loading");
+              }
+            });
+          }
+
+          loadUsersData();
+
         });
       </script>
     </section>

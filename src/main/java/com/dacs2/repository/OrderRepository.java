@@ -306,4 +306,24 @@ public interface OrderRepository extends JpaRepository<Orders, Integer> {
     public List<String> getProductsTop();
 
     Page<Orders> findByProcessed(Boolean processed, Pageable pageable);
+
+    @Query("""
+    SELECT
+        sum(o.totalPrice)
+    from Orders o
+        where o.processed = true and o.status = 'Đã vận chuyển thành công!'
+            group by o.user
+                order by sum(o.totalPrice) desc
+    """)
+    public List<Double> sumTotalPriceByUsers();
+
+    @Query("""
+    SELECT
+        o.user.email
+    from Orders o
+        where o.processed = true and o.status = 'Đã vận chuyển thành công!'
+            group by o.user
+                order by sum(o.totalPrice) desc
+    """)
+    public List<String> getUsersTop();
 }
